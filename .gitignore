@@ -10,3 +10,9 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/Commerce/Commerce-ejb/build/
+/Commerce/Commerce-ejb/dist/
+/Commerce/Commerce-war/build/
+/Commerce/dist/
+/Commerce/build/
+/Commerce/Commerce-war/dist/
