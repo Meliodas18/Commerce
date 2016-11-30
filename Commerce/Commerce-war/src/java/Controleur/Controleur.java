@@ -10,7 +10,6 @@ import entity.Client;
 import entity.Dvd;
 import entity.Employe;
 import entity.Realisateur;
-import session.SessionTest;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import session.AuteurFacade;
 import session.ClientFacade;
+import session.CommandeFacade;
 import session.DvdFacade;
 import session.Panier;
 import session.EmployeFacade;
@@ -38,10 +38,7 @@ import session.RealisateurFacade;
  */
 @WebServlet(name = "Controleur", urlPatterns = {"/Controleur"})
 public class Controleur extends HttpServlet {
-    
-    @EJB
-    private SessionTest st;
-    
+        
     @EJB
     private AuteurFacade auteurf;
     
@@ -56,6 +53,11 @@ public class Controleur extends HttpServlet {
     
     @EJB
     private RealisateurFacade realisateurf;
+    
+    @EJB
+    private CommandeFacade commandef;
+    
+    private Client clientConnect = new Client();
     
     
     /**
@@ -140,6 +142,9 @@ public class Controleur extends HttpServlet {
                 break;
             case "interactiveResearch":
                 interactiveResearch(request,response);
+                break;
+            case "pageCommandes":
+                pageCommandes(request,response);
                 break;
             default:
                 break;
@@ -283,19 +288,19 @@ public class Controleur extends HttpServlet {
             request.setAttribute("erreur", true);
             getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
         } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("email", request.getParameter("email"));
-            session.setAttribute("passWord", request.getParameter("passWord"));
-            session.setAttribute("mode","client");
+            request.getSession().setAttribute("mode","client");
+            clientConnect.setEmail(request.getParameter("email"));
+            clientConnect.setMotDePasse(request.getParameter("passWord"));
+            clientConnect = clientf.find(clientf.getId(clientConnect, parametres).get(0));
             getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request,response);
         }
     }
 
-    private void confirmOrder(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+    private void confirmOrder(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (request.getParameter("ok").equals("Annuler")){
             panierClient.removeAll();
         } else {
-            panierClient.confirmOrder();
+            panierClient.confirmOrder(clientConnect);
             request.getSession().removeAttribute("panier"); //On retire le panier de la request car il n'existe plus
         }
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
@@ -340,7 +345,7 @@ public class Controleur extends HttpServlet {
     }
     
     private void pageConnexionEmploye(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-     getServletContext().getRequestDispatcher("/WEB-INF/ConnexionEmploye.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/ConnexionEmploye.jsp").forward(request, response);
     }
     
     private void connexionEmploye(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -366,11 +371,14 @@ public class Controleur extends HttpServlet {
        }
     
     private void supprimerLeClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         
         clientf.remove(clientf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))));
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
-        
-        
+        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);        
+    }
+
+    //Affiche les commandes
+    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("listCommandes",commandef.findAll());
+        getServletContext().getRequestDispatcher("/WEB-INF/Commande.jsp").forward(request, response);
     }
     
  

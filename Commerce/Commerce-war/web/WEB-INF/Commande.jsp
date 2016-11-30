@@ -4,14 +4,21 @@
     Author     : aymeric
 --%>
 
+<%@page import="entity.Commande"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Commandes</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Commandes en Stock</h1>
+         <% List<Commande> contenu = (List<Commande>) request.getAttribute("listCommandes");
+           for (Commande c : contenu){
+                out.print(c + "</br>");
+           }
+         %>
     </body>
 </html>

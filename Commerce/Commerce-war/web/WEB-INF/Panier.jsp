@@ -4,6 +4,7 @@
     Author     : aymeric
 --%>
 
+<%@page import="java.util.HashMap"%>
 <%@page import="entity.Dvd"%>
 <%@page import="java.util.LinkedList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,19 +13,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Panier</title>
-         <SCRIPT language=javascript>
-   function ConfirmMessage() {
-       if (confirm("Voulez-vous confirmer la commande ?")) { 
-           document.bgColor="silver";
-       }
-   }
+        <SCRIPT language=javascript>
+            function ConfirmMessage() {
+                if (confirm("Voulez-vous confirmer la commande ?")) { 
+                    document.bgColor="silver";
+                }
+            }
         </SCRIPT>
     </head>
     <body>
         <h1>Contenu du panier !</h1>
-        <% LinkedList<Dvd> contenu = (LinkedList<Dvd>) request.getAttribute("panier");
-           for (Dvd d : contenu){
-                out.print(d + "</br>");
+        <% HashMap<Dvd,Integer> contenu = (HashMap<Dvd,Integer>) request.getAttribute("panier");
+           for (Dvd d : contenu.keySet()){
+                out.print(d + ", Quantité : " + contenu.get(d) + "</br>");
            }
         %>
         <form method="GET" action="Controleur">

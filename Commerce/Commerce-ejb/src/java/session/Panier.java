@@ -5,14 +5,18 @@
  */
 package session;
 
+import entity.Client;
+import entity.Commande;
 import entity.Dvd;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.Remove;
+import javax.ejb.SessionContext;
 import javax.ejb.StatefulTimeout;
 
 /**
@@ -25,47 +29,57 @@ public class Panier{
     
     @EJB
     private DvdFacade dvdf;
-
-    private HashMap<Dvd,Integer> dvds;
+    
+    @EJB
+    private CommandeFacade commandef;
+    
+    private HashMap<Dvd,Integer> dvdh;
     
     @PostConstruct
     private void initializeBean(){
-        dvds = new HashMap<>();
+        dvdh = new HashMap<>();
     }
     
     public void addDvd(Dvd dvd,int quantity){
         dvdf.decreaseQuantity(quantity,dvd);   
-        if (!dvds.containsKey(dvd)){
-            this.dvds.put(dvd,quantity);
+        if (!dvdh.containsKey(dvd)){
+            this.dvdh.put(dvd,quantity);
         } else {
-            this.dvds.replace(dvd,quantity + dvds.get(dvd));
+            this.dvdh.replace(dvd,quantity + dvdh.get(dvd));
         }
 
     }
     
-    //Pour toutes les fonctions, prendre la valueur de dvd dans la base pour etre à jour
+    //Pour toutes les fonctions, prendre la valeur de dvd dans la base pour etre à jour
     
     //Remove une quantite :quantity de dvd :dvd
     public void removeDvd(Dvd dvd, int quantity){
-        dvds.replace(dvd,dvdf.find(dvd.getId()).getQuantite() + quantity);
+        dvdh.replace(dvd,dvdf.find(dvd.getId()).getQuantite() + quantity);
         dvdf.increaseQuantity(quantity,dvdf.find(dvd.getId()));
     }
     
     //Retire tous les dvds du panier mais les rajoute dans la base de données
     public void removeAll(){
-        for (Dvd dvd : dvds.keySet()){
-            removeDvd(dvd,dvds.get(dvd));
+        for (Dvd dvd : dvdh.keySet()){
+            removeDvd(dvd,dvdh.get(dvd));
         }
-        dvds.clear();
+        dvdh.clear();
     }
     
-    public LinkedList<Dvd> getDvd(){
-        return new LinkedList<>(this.dvds.keySet());
+    public HashMap<Dvd,Integer> getDvd(){
+        return this.dvdh;
     }
     
     @Remove
-    public void confirmOrder(){
-        this.dvds.clear();
+    public void confirmOrder(Client client) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+       Commande commande = new Commande("En Attente",client);
+       commande.setDvds(dvdh.keySet());
+       commandef.create(commande);
+       for (Dvd dvd : dvdh.keySet()){
+           dvd.setCommande(commande);
+           dvdf.edit(dvd);
+       }
+       this.dvdh.clear();
     }
 
 }

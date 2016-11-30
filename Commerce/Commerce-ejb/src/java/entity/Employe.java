@@ -22,7 +22,6 @@ public class Employe implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Id
     private String email;
     private String nom;
     private String prenom;
@@ -76,9 +75,7 @@ public class Employe implements Serializable {
 
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
-    }
-    
-    
+    }   
 
     @Override
     public int hashCode() {

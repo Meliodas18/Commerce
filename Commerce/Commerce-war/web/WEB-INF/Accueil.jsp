@@ -21,6 +21,7 @@
                    out.println("<li><a href=\"Controleur?action=pagePanier\">Panier</a></li>");
                    out.println("<li><a href=\"Controleur?action=deconnexion\">Deconnexion</a></li>");
                    out.println("<li><a href=\"Controleur?action=SupprimerClient\">Supprimer Client</a></li>");
+                   out.println("<li><a href=\"Controleur?action=pageCommandes\">Commandes</a></li>");
                
                } else if((String)(sess.getAttribute("mode")) == "employe"){
                    out.println("<li><a href=\"Controleur?action=pageAjouterDvd\">Ajouter des dvds</a></li>");
@@ -28,11 +29,12 @@
                    out.println("<li><a href=\"Controleur?action=pagePanier\">Panier</a></li>");
                    out.println("<li><a href=\"Controleur?action=deconnexion\">Deconnexion</a></li>");
                    out.println("<li><a href=\"Controleur?action=SupprimerClient\">Supprimer Client</a></li>");
-               
-               }else{
+                   out.println("<li><a href=\"Controleur?action=pageCommandes\">Commandes</a></li>");
+                   
+               } else {
                    out.println("<li><a href=\"Controleur?action=pageConnexion\">Connexion</a></li>"); 
                    out.println("<li><a href=\"Controleur?action=pageInscription\">Inscription</a></li>");
-                    out.println("<li><a href=\"Controleur?action=pageConnexionEmploye\">Connexion Employer</a></li>"); 
+                   out.println("<li><a href=\"Controleur?action=pageConnexionEmploye\">Connexion Employer</a></li>"); 
                
                }
             %>

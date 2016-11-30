@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -115,7 +116,18 @@ public class Dvd implements Serializable {
     public String toString() {
         return "Dvd{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", prix=" + prix + ", dateSortie=" + dateSortie + ", quantite=" + quantite + '}';
     }
-    
+
+    @ManyToOne
+    protected Commande commande;
+
+    public void setCommande(Commande commande) {
+        this.commande = commande;
+    }
+
+    public Commande getCommande() {
+        return commande;
+    }
+
     @ManyToMany(mappedBy="dvds")
     protected Set<Auteur> auteurs;
     

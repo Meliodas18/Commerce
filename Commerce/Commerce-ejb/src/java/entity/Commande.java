@@ -6,10 +6,16 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,6 +28,46 @@ public class Commande implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String etat;
+    
+    @ManyToOne
+    protected Client client;
+    
+    @OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.MERGE,mappedBy="commande")
+    protected Set<Dvd> dvds;
+
+    public Commande(String etat, Client client) {
+        this.etat = etat;
+        this.client = client;
+        this.dvds = new HashSet<>();
+    }
+    
+    public Commande(){
+    }
+
+    public void setDvds(Set<Dvd> dvds) {
+        this.dvds = dvds;
+    }
+
+    public Set<Dvd> getDvds() {
+        return dvds;
+    }
+
+    public void setEtat(String etat) {
+        this.etat = etat;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public String getEtat() {
+        return etat;
+    }
+
+    public Client getClient() {
+        return client;
+    }
 
     public Long getId() {
         return id;
@@ -53,7 +99,8 @@ public class Commande implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Commande[ id=" + id + " ]";
+        return "Commande{" + "id=" + id + ", etat=" + etat + ", client=" + client + ", dvds=" + dvds + '}';
     }
+    
     
 }
