@@ -8,14 +8,13 @@ package entity;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -33,7 +32,7 @@ public class Commande implements Serializable {
     @ManyToOne
     protected Client client;
     
-    @OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.MERGE,mappedBy="commande")
+    @ManyToMany(fetch = FetchType.EAGER,mappedBy="commande")
     protected Set<Dvd> dvds;
 
     public Commande(String etat, Client client) {

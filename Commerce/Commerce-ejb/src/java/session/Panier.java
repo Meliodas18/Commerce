@@ -10,13 +10,13 @@ import entity.Commande;
 import entity.Dvd;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.Remove;
-import javax.ejb.SessionContext;
 import javax.ejb.StatefulTimeout;
 
 /**
@@ -73,10 +73,16 @@ public class Panier{
     @Remove
     public void confirmOrder(Client client) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
        Commande commande = new Commande("En Attente",client);
-       commande.setDvds(dvdh.keySet());
        commandef.create(commande);
+       Set<Commande> setCom;
        for (Dvd dvd : dvdh.keySet()){
-           dvd.setCommande(commande);
+           if (dvd.getCommande().isEmpty()){
+               setCom = new HashSet<>();
+           } else {
+               setCom = dvd.getCommande();
+           }
+           setCom.add(commande);
+           dvd.setCommande(setCom);
            dvdf.edit(dvd);
        }
        this.dvdh.clear();

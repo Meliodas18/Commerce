@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,6 +40,7 @@ public class Dvd implements Serializable {
         this.dateSortie = dateSortie;
         this.quantite = quantite;
         this.auteurs = new HashSet<>();
+        this.commande = new HashSet<>();
     }
         
     public Dvd(){
@@ -117,15 +119,15 @@ public class Dvd implements Serializable {
         return "Dvd{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", prix=" + prix + ", dateSortie=" + dateSortie + ", quantite=" + quantite + '}';
     }
 
-    @ManyToOne
-    protected Commande commande;
+    @ManyToMany(fetch = FetchType.EAGER)
+    protected Set<Commande> commande;
 
-    public void setCommande(Commande commande) {
-        this.commande = commande;
+    public Set<Commande> getCommande() {
+        return commande;
     }
 
-    public Commande getCommande() {
-        return commande;
+    public void setCommande(Set<Commande> commande) {
+        this.commande = commande;
     }
 
     @ManyToMany(mappedBy="dvds")
