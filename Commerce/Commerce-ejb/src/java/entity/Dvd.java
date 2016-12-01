@@ -8,11 +8,15 @@ package entity;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -119,10 +123,12 @@ public class Dvd implements Serializable {
         return "Dvd{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", prix=" + prix + ", dateSortie=" + dateSortie + ", quantite=" + quantite + '}';
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ElementCollection(fetch=FetchType.EAGER)
+    @CollectionTable(name="DVD_COMMANDE", joinColumns=@JoinColumn(name="DVDS_KEY"))
+    @Column(name="COMMANDE_ID")
     protected Set<Commande> commande;
 
-    public Set<Commande> getCommande() {
+   public Set<Commande> getCommande() {
         return commande;
     }
 

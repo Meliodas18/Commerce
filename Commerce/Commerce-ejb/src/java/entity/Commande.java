@@ -6,15 +6,22 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
 
 /**
  *
@@ -32,23 +39,28 @@ public class Commande implements Serializable {
     @ManyToOne
     protected Client client;
     
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy="commande")
-    protected Set<Dvd> dvds;
+    //@ManyToMany(fetch = FetchType.EAGER,mappedBy="commande")
+    @ElementCollection(fetch=FetchType.EAGER)
+    @CollectionTable(name = "DVD_COMMANDE")
+    @MapKeyColumn(name = "COMMANDE_ID")
+    @Column(name = "Quantite")
+    protected Map<Dvd,Integer> dvds = new HashMap<>();
 
     public Commande(String etat, Client client) {
         this.etat = etat;
         this.client = client;
-        this.dvds = new HashSet<>();
     }
     
     public Commande(){
     }
 
-    public void setDvds(Set<Dvd> dvds) {
-        this.dvds = dvds;
+    public void setDvds(Map<Dvd,Integer> dvds) {
+        for (Dvd dvd : dvds.keySet()){
+            this.dvds.put(dvd, dvds.get(dvd));
+        }
     }
 
-    public Set<Dvd> getDvds() {
+    public Map<Dvd,Integer> getDvds() {
         return dvds;
     }
 

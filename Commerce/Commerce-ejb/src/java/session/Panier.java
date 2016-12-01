@@ -73,18 +73,8 @@ public class Panier{
     @Remove
     public void confirmOrder(Client client) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
        Commande commande = new Commande("En Attente",client);
+       commande.setDvds(dvdh);
        commandef.create(commande);
-       Set<Commande> setCom;
-       for (Dvd dvd : dvdh.keySet()){
-           if (dvd.getCommande().isEmpty()){
-               setCom = new HashSet<>();
-           } else {
-               setCom = dvd.getCommande();
-           }
-           setCom.add(commande);
-           dvd.setCommande(setCom);
-           dvdf.edit(dvd);
-       }
        this.dvdh.clear();
     }
 
