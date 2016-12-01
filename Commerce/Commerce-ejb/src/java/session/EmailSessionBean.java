@@ -10,7 +10,6 @@ import java.util.Properties;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.mail.Session;
-import session.Protocol;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;

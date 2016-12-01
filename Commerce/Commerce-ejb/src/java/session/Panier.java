@@ -33,7 +33,11 @@ public class Panier{
     @EJB
     private CommandeFacade commandef;
     
+    @EJB
+    private EmailSessionBean emailf;
+    
     private HashMap<Dvd,Integer> dvdh;
+    private String emailFournisseur = "aymeric.delecourt@phelma.grenoble-inp.fr";
     
     @PostConstruct
     private void initializeBean(){
@@ -71,11 +75,21 @@ public class Panier{
     }
     
     @Remove
+    //On crée une commande et on ajoute la hashMap des dvds dans la commande avant d'effacer la hashMap
     public void confirmOrder(Client client) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-       Commande commande = new Commande("En Attente",client);
-       commande.setDvds(dvdh);
-       commandef.create(commande);
-       this.dvdh.clear();
+        Commande commande = new Commande("Effectuée",client);
+        for (Dvd dvd : dvdh.keySet()){
+            if (dvdf.find(dvd.getId()).getQuantite() < 0){
+                commande.setEtat("En Attente");
+            }
+        }
+        commande.setDvds(dvdh);
+        commandef.create(commande);
+        this.dvdh.clear();
+        
+        if (commande.getEtat().equals("En Attente")){
+            emailf.sendemail(emailFournisseur, "[Projet Jboss EJB] Commande de dvds", commande.toString());
+        }
     }
 
 }
