@@ -96,7 +96,9 @@
                    
                                                         <li><a href="Controleur?action=pageInscription">Inscription</a></li>
 						    	<li><a href="Controleur?action=pageConnexion">Connexion</a></li>
-							<li><a href="Controleur?action=pageConnexionEmploye">Employé</a></li>								
+							<li><a href="Controleur?action=pageConnexionEmploye">Employé</a></li>
+                                                         <li><a href="Controleur?action=email">Email</a></li>
+              
 								<div class="clear"></div>
                     <%
                }

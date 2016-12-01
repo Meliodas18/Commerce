@@ -28,6 +28,7 @@ import session.AuteurFacade;
 import session.ClientFacade;
 import session.CommandeFacade;
 import session.DvdFacade;
+import session.EmailSessionBean;
 import session.Panier;
 import session.EmployeFacade;
 import session.RealisateurFacade;
@@ -59,6 +60,9 @@ public class Controleur extends HttpServlet {
     
     private Client clientConnect = new Client();
     
+    @EJB
+    private EmailSessionBean emailBean;
+    
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -75,6 +79,8 @@ public class Controleur extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         response.setContentType("text/html;charset=UTF-8");
+        
+       
         
         //Récupération du panier
         Panier panierClient = (Panier)request.getSession().getAttribute("panier");
@@ -146,6 +152,12 @@ public class Controleur extends HttpServlet {
             case "pageCommandes":
                 pageCommandes(request,response);
                 break;
+            case "email":
+                email(request,response);
+                break;  
+            case "emailSend":
+                emailSend(request,response);
+                break;      
             default:
                 break;
         }
@@ -380,6 +392,28 @@ public class Controleur extends HttpServlet {
         request.setAttribute("listCommandes",commandef.findAll());
         getServletContext().getRequestDispatcher("/WEB-INF/Commande.jsp").forward(request, response);
     }
+    
+    //Aller à la page email
+    private void email(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+            getServletContext().getRequestDispatcher("/WEB-INF/email.jsp").forward(request, response);
+    }
+    
+    //Aller à la page email
+    private void emailSend(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+          String to = request.getParameter("to");
+          String subject = request.getParameter("subject");
+          String body = request.getParameter("body");  
+          
+          emailBean.sendemail(to, subject, body);
+          
+          getServletContext().getRequestDispatcher("/WEB-INF/EnvoiRéussi.jsp").forward(request, response);
+    
+    
+    }
+    
+    
     
  
 }
