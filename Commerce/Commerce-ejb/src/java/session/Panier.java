@@ -34,6 +34,7 @@ public class Panier{
     private HashMap<Dvd,Integer> dvdh;
     private HashMap<Dvd,Integer> dvdToCommand;
     private String emailFournisseur = "aymeric.delecourt@phelma.grenoble-inp.fr";
+    private String emailEmploye = "aymeric.delecourt@phelma.grenoble-inp.fr";
     
     @PostConstruct
     private void initializeBean(){
@@ -66,6 +67,7 @@ public class Panier{
     public void removeDvd(Dvd dvd, int quantity){
         dvdh.replace(dvd,dvdf.find(dvd.getId()).getQuantite() + quantity);
         dvdf.increaseQuantity(quantity,dvdf.find(dvd.getId()));
+        commandef.changeState(dvdf.find(dvd.getId()).getCommande(), quantity, emailEmploye);
     }
     
     //Retire tous les dvds du panier mais les rajoute dans la base de données

@@ -60,6 +60,7 @@ public class Controleur extends HttpServlet {
     private CommandeFacade commandef;
     
     private Client clientConnect = new Client();
+    private String emailEmploye = "aymeric.delecourt@phelma.grenoble-inp.fr";
     
     @EJB
     private EmailSessionBean emailBean;
@@ -430,7 +431,7 @@ public class Controleur extends HttpServlet {
         Dvd dvd = new Dvd();
         dvd.setId(Long.parseLong((request.getParameter("id"))));
         dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
-        commandef.changeState(dvdf.getCommande(dvd),Integer.parseInt(request.getParameter("quantite")));
+        commandef.changeState(dvdf.getCommande(dvd),Integer.parseInt(request.getParameter("quantite")),emailEmploye);
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
 

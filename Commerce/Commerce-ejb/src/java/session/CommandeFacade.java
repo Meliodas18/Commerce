@@ -40,7 +40,8 @@ public class CommandeFacade extends AbstractFacade<Commande> {
         }
     }
     
-    public void changeState(Set<Commande> commandes, int quantiteRajoutee){
+    //Pour les commandes en attente qui peuvent passer en mode en cours
+    public void changeState(Set<Commande> commandes, int quantiteRajoutee, String emailEmploye){
         for (Commande com : commandes) {
             Map<Dvd,Integer> dvdQuantite = com.getDvds();
             for(Dvd dvd : dvdQuantite.keySet()){
@@ -51,6 +52,7 @@ public class CommandeFacade extends AbstractFacade<Commande> {
                         com.setEtat("En Cours");
                         this.edit(com);
                         quantiteRajoutee -= dvdQuantite.get(dvd);
+                        sendEmail(emailEmploye, "[Projet Jboss EJB] Livraison de dvds effectuée", com.toString());
                     } else {
                         dvdQuantite.replace(dvd, dvdQuantite.get(dvd) - quantiteRajoutee);
                         this.edit(com);
