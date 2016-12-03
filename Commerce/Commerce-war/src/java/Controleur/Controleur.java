@@ -7,6 +7,7 @@ package Controleur;
 
 import entity.Auteur;
 import entity.Client;
+import entity.Commande;
 import entity.Dvd;
 import entity.Employe;
 import entity.Realisateur;
@@ -157,7 +158,19 @@ public class Controleur extends HttpServlet {
                 break;  
             case "emailSend":
                 emailSend(request,response);
-                break;      
+                break;   
+            case "pageLivraisons":
+                pageLivraisons(request,response);
+                break;
+            case "livraisons":
+                livraisons(request,response);
+                break;
+            case "pageEnvoiColis":
+                pageEnvoiColis(request,response);
+                break;
+            case "envoiColis":
+                envoiColis(request,response);
+                break;
             default:
                 break;
         }
@@ -406,11 +419,34 @@ public class Controleur extends HttpServlet {
           String subject = request.getParameter("subject");
           String body = request.getParameter("body");  
           
-          emailBean.sendemail(to, subject, body);
+          emailBean.sendEmail(to, subject, body);
           
           getServletContext().getRequestDispatcher("/WEB-INF/EnvoiRéussi.jsp").forward(request, response);
     
     
+    }
+
+    private void livraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Dvd dvd = new Dvd();
+        dvd.setId(Long.parseLong((request.getParameter("id"))));
+        dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
+        commandef.changeState(dvdf.getCommande(dvd),Integer.parseInt(request.getParameter("quantite")));
+        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
+    }
+
+    private void pageLivraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        getServletContext().getRequestDispatcher("/WEB-INF/Livraisons.jsp").forward(request, response);
+    }
+
+    private void envoiColis(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Commande commande = commandef.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
+        commande.setEtat("Effectuée");
+        commandef.edit(commande);
+        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
+    }
+
+    private void pageEnvoiColis(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        getServletContext().getRequestDispatcher("/WEB-INF/EnvoiColis.jsp").forward(request, response);
     }
     
     

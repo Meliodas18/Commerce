@@ -5,7 +5,10 @@
  */
 package session;
 
+import entity.Commande;
 import entity.Dvd;
+import static java.lang.Integer.max;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,14 +32,30 @@ public class DvdFacade extends AbstractFacade<Dvd> {
         super(Dvd.class);
     }
     
-    public void decreaseQuantity(int quantite, Dvd dvd){
-        dvd.setQuantite(dvd.getQuantite() - quantite);
-        this.edit(dvd); //très important à faire !!! 
+    public int decreaseQuantity(int quantite, Dvd dvd){
+        Dvd dvdTemp = this.find(dvd.getId());
+        if (dvdTemp != null){
+            dvdTemp.setQuantite(dvdTemp.getQuantite() - quantite);
+            this.edit(dvdTemp);
+        } 
+        return dvdTemp.getQuantite();
     }
     
     public void increaseQuantity(int quantite, Dvd dvd){
-        dvd.setQuantite(dvd.getQuantite() + quantite);
-        this.edit(dvd);
+        Dvd dvdTemp = this.find(dvd.getId());
+        if (dvdTemp != null){
+            dvdTemp.setQuantite(dvdTemp.getQuantite() + quantite);
+            this.edit(dvdTemp);
+        }  
+    }
+    
+    public Set<Commande> getCommande(Dvd dvd){
+        Dvd dvdTemp = this.find(dvd.getId());
+        if (dvdTemp != null){
+            return dvdTemp.getCommande();
+        } else {
+            return null;
+        }
     }
     
 }

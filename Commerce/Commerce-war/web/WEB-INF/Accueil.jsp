@@ -81,6 +81,8 @@
                    <li><a href="Controleur?action=deconnexion">Deconnexion</a></li>
                    <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
                    <li><a href="Controleur?action=pageCommandes">Commandes</a></li>
+                   <li><a href="Controleur?action=pageLivraisons">Livraisons</a></li>
+                   <li><a href="Controleur?action=pageEnvoiColis">Envoi Colis</a></li>
                <%
                } else if((String)(sess.getAttribute("mode")) == "employe"){
                 %>
@@ -90,6 +92,8 @@
                    <li><a href="Controleur?action=deconnexion">Deconnexion</a></li>
                    <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
                    <li><a href="Controleur?action=pageCommandes">Commandes</a></li>
+                   <li><a href="Controleur?action=pageLivraisons">Livraisons</a></li>
+                   <li><a href="Controleur?action=pageEnvoiColis">Envoi Colis</a></li>
                    <%
                } else {
                %>

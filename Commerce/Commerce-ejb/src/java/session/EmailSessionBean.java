@@ -25,16 +25,16 @@ import java.util.Date;
 public class EmailSessionBean {
 
 // Définition des configuration 
-private int port = 465;
-private String host = "smtp.gmail.com";
-private String from = "projetjboss@gmail.com";
-private boolean auth = true;
-private String username = "projetjboss@gmail.com";
-private String password = "projet2016";
-private Protocol protocol = Protocol.SMTPS;
-private boolean debug = true;
+private static int port = 465;
+private static String host = "smtp.gmail.com";
+private static String from = "projetjboss@gmail.com";
+private static boolean auth = true;
+private static String username = "projetjboss@gmail.com";
+private static String password = "projet2016";
+private static Protocol protocol = Protocol.SMTPS;
+private static boolean debug = true;
     
-    public void sendemail(String to, String subject, String body){
+    public static void sendEmail(String to, String subject, String body){
         
         // définir les propriétés
         Properties props = new Properties();
