@@ -28,11 +28,14 @@
                 <li><label> Nom : </label> <input type="text" name="nomAuteur"/></li>
                 <li><label> Prénom : </label> <input type="text" name="prenomAuteur"/></li>
             </ul>
-            
             <h2> Realisateur </h2>
             <ul>
                 <li><label> Nom : </label> <input type="text" name="nomRealisateur"/></li>
                 <li><label> Prénom : </label> <input type="text" name="prenomRealisateur"/></li>
+            </ul>
+            <h2> Editeur </h2>
+            <ul>
+                <li><label> Nom : </label> <input type="text" name="nomEditeur"/></li>
             </ul>
             <input type="submit" value="Ajouter le dvd"/>        
         </form>

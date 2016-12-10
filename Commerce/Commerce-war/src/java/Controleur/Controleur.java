@@ -9,6 +9,7 @@ import entity.Auteur;
 import entity.Client;
 import entity.Commande;
 import entity.Dvd;
+import entity.Editeur;
 import entity.Employe;
 import entity.Realisateur;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import session.AuteurFacade;
 import session.ClientFacade;
 import session.CommandeFacade;
 import session.DvdFacade;
+import session.EditeurFacade;
 import session.EmailSessionBean;
 import session.Panier;
 import session.EmployeFacade;
@@ -64,6 +66,9 @@ public class Controleur extends HttpServlet {
     
     @EJB
     private EmailSessionBean emailBean;
+    
+    @EJB
+    private EditeurFacade editeurf;
     
     
     /**
@@ -251,27 +256,38 @@ public class Controleur extends HttpServlet {
         String[] paramDvd = {"titre","description","prix","dateSortie"};
         String[] paramAuteur = {"prenom","nom"};
         String[] paramRealisateur = {"prenomRealisateur","nomRealisateur"};
+        String[] paramEditeur = {"nom"};
         
         //Si le dvd n'existe pas, on crée le dvd
         if (dvdf.getId(dvd, paramDvd).isEmpty()){
             dvdf.create(dvd);
             Auteur auteur = new Auteur(request.getParameter("prenomAuteur"),request.getParameter("nomAuteur"));
-            Realisateur realisateur = new Realisateur(request.getParameter("prenomRealisateur"),request.getParameter("nomRealisateur"));
+            //Realisateur realisateur = new Realisateur(request.getParameter("prenomRealisateur"),request.getParameter("nomRealisateur"));
             
             //Si l'auteur existe, il faut le recuperer et remerger après avoir ajouter le dvd
             if (auteurf.getId(auteur, paramAuteur).isEmpty()){
                 auteur.addDvds(dvd);
                 auteurf.create(auteur);
-                realisateur.addDvds(dvd);
-                realisateurf.create(realisateur);
+                //realisateur.addDvds(dvd);
+                //realisateurf.create(realisateur);
             } else {
                 auteur = auteurf.find(auteurf.getId(auteur, paramAuteur).get(0));
-                realisateur = realisateurf.find(realisateurf.getId(realisateur, paramRealisateur).get(0));
+                //realisateur = realisateurf.find(realisateurf.getId(realisateur, paramRealisateur).get(0));
                 auteur.addDvds(dvd);
-                realisateur.addDvds(dvd);
+                //realisateur.addDvds(dvd);
                 auteurf.edit(auteur);
-                realisateurf.edit(realisateur);
+                //realisateurf.edit(realisateur);
             }
+            
+            Editeur editeur = new Editeur(request.getParameter("nomEditeur"));
+            if (editeurf.getId(editeur, paramEditeur).isEmpty()){
+                editeurf.create(editeur);
+            } else {
+                editeur = editeurf.find(editeurf.getId(editeur, paramEditeur).get(0));
+                editeurf.edit(editeur);
+            }
+            dvd.setEditeur(editeur);
+            dvdf.edit(dvd);
         }
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
 

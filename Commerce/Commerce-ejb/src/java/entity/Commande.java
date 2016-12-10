@@ -18,10 +18,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -39,19 +38,30 @@ public class Commande implements Serializable {
     @ManyToOne
     protected Client client;
     
-    //@ManyToMany(fetch = FetchType.EAGER,mappedBy="commande")
     @ElementCollection(fetch=FetchType.EAGER)
     @CollectionTable(name = "DVD_COMMANDE")
     @MapKeyColumn(name = "COMMANDE_ID")
     @Column(name = "Quantite")
     protected Map<Dvd,Integer> dvds = new HashMap<>();
+    
+    @OneToMany
+    protected Set<SousCommande> sousCommandes;
 
     public Commande(String etat, Client client) {
         this.etat = etat;
         this.client = client;
+        this.sousCommandes = new HashSet<>();
     }
     
     public Commande(){
+    }
+
+    public Set<SousCommande> getSousCommandes() {
+        return sousCommandes;
+    }
+
+    public void setSousCommandes(Set<SousCommande> sousCommandes) {
+        this.sousCommandes = sousCommandes;
     }
 
     public void setDvds(Map<Dvd,Integer> dvds) {

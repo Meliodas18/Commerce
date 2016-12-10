@@ -152,6 +152,15 @@ public class Dvd implements Serializable {
         this.auteurs.add(auteur);
     }
     
-    
+    @ManyToOne
+    private Editeur editeur;
+
+    public Editeur getEditeur() {
+        return editeur;
+    }
+
+    public void setEditeur(Editeur editeur) {
+        this.editeur = editeur;
+    }    
     
 }
