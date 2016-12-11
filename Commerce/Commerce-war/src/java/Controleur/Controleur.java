@@ -261,22 +261,25 @@ public class Controleur extends HttpServlet {
         //Si le dvd n'existe pas, on crée le dvd
         if (dvdf.getId(dvd, paramDvd).isEmpty()){
             dvdf.create(dvd);
-            Auteur auteur = new Auteur(request.getParameter("prenomAuteur"),request.getParameter("nomAuteur"));
-            //Realisateur realisateur = new Realisateur(request.getParameter("prenomRealisateur"),request.getParameter("nomRealisateur"));
             
-            //Si l'auteur existe, il faut le recuperer et remerger après avoir ajouter le dvd
+            Auteur auteur = new Auteur(request.getParameter("prenomAuteur"),request.getParameter("nomAuteur"));
             if (auteurf.getId(auteur, paramAuteur).isEmpty()){
                 auteur.addDvds(dvd);
                 auteurf.create(auteur);
-                //realisateur.addDvds(dvd);
-                //realisateurf.create(realisateur);
             } else {
                 auteur = auteurf.find(auteurf.getId(auteur, paramAuteur).get(0));
-                //realisateur = realisateurf.find(realisateurf.getId(realisateur, paramRealisateur).get(0));
                 auteur.addDvds(dvd);
-                //realisateur.addDvds(dvd);
                 auteurf.edit(auteur);
-                //realisateurf.edit(realisateur);
+            }
+            
+            Realisateur realisateur = new Realisateur(request.getParameter("prenomRealisateur"),request.getParameter("nomRealisateur"));
+            if (realisateurf.getId(realisateur, paramAuteur).isEmpty()){
+                realisateur.addDvds(dvd);
+                realisateurf.create(realisateur);
+            } else {
+                realisateur = realisateurf.find(realisateurf.getId(realisateur, paramRealisateur).get(0));
+                realisateur.addDvds(dvd);
+                realisateurf.edit(realisateur);
             }
             
             Editeur editeur = new Editeur(request.getParameter("nomEditeur"));

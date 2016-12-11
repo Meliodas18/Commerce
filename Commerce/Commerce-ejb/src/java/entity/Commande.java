@@ -43,25 +43,14 @@ public class Commande implements Serializable {
     @MapKeyColumn(name = "COMMANDE_ID")
     @Column(name = "Quantite")
     protected Map<Dvd,Integer> dvds = new HashMap<>();
+  
     
-    @OneToMany
-    protected Set<SousCommande> sousCommandes;
-
     public Commande(String etat, Client client) {
         this.etat = etat;
         this.client = client;
-        this.sousCommandes = new HashSet<>();
     }
     
     public Commande(){
-    }
-
-    public Set<SousCommande> getSousCommandes() {
-        return sousCommandes;
-    }
-
-    public void setSousCommandes(Set<SousCommande> sousCommandes) {
-        this.sousCommandes = sousCommandes;
     }
 
     public void setDvds(Map<Dvd,Integer> dvds) {
