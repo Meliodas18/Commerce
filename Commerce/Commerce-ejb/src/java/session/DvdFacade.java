@@ -7,7 +7,8 @@ package session;
 
 import entity.Commande;
 import entity.Dvd;
-import static java.lang.Integer.max;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -49,10 +50,11 @@ public class DvdFacade extends AbstractFacade<Dvd> {
         }  
     }
     
-    public Set<Commande> getCommande(Dvd dvd){
+    public List<Commande> getCommande(Dvd dvd){
         Dvd dvdTemp = this.find(dvd.getId());
         if (dvdTemp != null){
-            return dvdTemp.getCommande();
+            return null;
+            //return dvdTemp.getCommande();
         } else {
             return null;
         }

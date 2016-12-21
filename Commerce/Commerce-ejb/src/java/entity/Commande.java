@@ -7,9 +7,8 @@ package entity;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -18,9 +17,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
@@ -39,18 +40,19 @@ public class Commande implements Serializable {
     protected Client client;
     
     @ElementCollection(fetch=FetchType.EAGER)
-    @CollectionTable(name = "DVD_COMMANDE")
-    @MapKeyColumn(name = "COMMANDE_ID")
+    @MapKeyJoinColumn(name = "DVD_ID")
     @Column(name = "Quantite")
-    protected Map<Dvd,Integer> dvds = new HashMap<>();
-  
+    @CollectionTable(name = "DVD_COMMANDE")
+    protected Map<Dvd,Integer> dvds; 
     
     public Commande(String etat, Client client) {
+        this.dvds = new HashMap<>();
         this.etat = etat;
         this.client = client;
     }
     
     public Commande(){
+        this.dvds = new HashMap<>();
     }
 
     public void setDvds(Map<Dvd,Integer> dvds) {

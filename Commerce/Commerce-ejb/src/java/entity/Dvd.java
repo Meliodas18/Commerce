@@ -6,7 +6,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -17,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -44,7 +47,7 @@ public class Dvd implements Serializable {
         this.dateSortie = dateSortie;
         this.quantite = quantite;
         this.auteurs = new HashSet<>();
-        this.commande = new HashSet<>();
+        this.commande = new ArrayList<>();
     }
         
     public Dvd(){
@@ -54,7 +57,7 @@ public class Dvd implements Serializable {
         return titre;
     }   
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -123,16 +126,15 @@ public class Dvd implements Serializable {
         return "Dvd{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", prix=" + prix + ", dateSortie=" + dateSortie + ", quantite=" + quantite + '}';
     }
 
-    @ElementCollection(fetch=FetchType.EAGER)
-    @CollectionTable(name="DVD_COMMANDE", joinColumns=@JoinColumn(name="DVDS_KEY"))
-    @Column(name="COMMANDE_ID")
-    protected Set<Commande> commande;
-
-   public Set<Commande> getCommande() {
+    @ManyToMany
+    protected List<Commande> commande;
+    
+    
+    public List<Commande> getCommande() {
         return commande;
     }
 
-    public void setCommande(Set<Commande> commande) {
+    public void setCommande(ArrayList<Commande> commande) {
         this.commande = commande;
     }
 

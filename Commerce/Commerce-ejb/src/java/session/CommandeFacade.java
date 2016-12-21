@@ -7,6 +7,8 @@ package session;
 
 import entity.Commande;
 import entity.Dvd;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -41,7 +43,7 @@ public class CommandeFacade extends AbstractFacade<Commande> {
     }
     
     //Pour les commandes en attente qui peuvent passer en mode en cours
-    public void changeState(Set<Commande> commandes, int quantiteRajoutee, String emailEmploye){
+    public void changeState(List<Commande> commandes, int quantiteRajoutee, String emailEmploye){
         for (Commande com : commandes) {
             Map<Dvd,Integer> dvdQuantite = com.getDvds();
             for(Dvd dvd : dvdQuantite.keySet()){
