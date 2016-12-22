@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Inscription</h1>
-        <form method="POST" action="Controleur">
+        <form method="POST" action="ControleurClients">
             <input type="hidden" name="action" value="ajouterClient"/>
             <h2> Informations </h2>
             <ul>

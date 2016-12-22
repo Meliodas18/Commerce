@@ -28,7 +28,7 @@
                 out.print(d + ", Quantité : " + contenu.get(d) + "</br>");
            }
         %>
-        <form method="GET" action="Controleur">
+        <form method="GET" action="ControleurClients">
             <input type="hidden" name="action" value="confirmOrder"/>
             <input type="submit" name="ok" value="Terminer la commande" onClick="ConfirmMessage()"/>
             <input type="submit" name="ok" value="Annuler" />

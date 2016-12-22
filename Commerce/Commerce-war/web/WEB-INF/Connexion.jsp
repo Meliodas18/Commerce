@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Connexion</h1>
-        <form method="POST" action="Controleur">
+        <form method="POST" action="ControleurClients">
             <input type="hidden" name="action" value="connexion"/>
             <ul>
                 <li><label> Email : </label> <input type="text" name="email"/></li>

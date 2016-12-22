@@ -76,9 +76,9 @@
                
                
                    <li><a href="Controleur?action=pageAjouterDvd">Ajouter des dvds</a></li>
-                   <li><a href="Controleur?action=pageRechercherDvd">Rechercher des dvds</a></li>
-                   <li><a href="Controleur?action=pagePanier">Panier</a></li>
-                   <li><a href="Controleur?action=deconnexion">Deconnexion</a></li>
+                   <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
+                   <li><a href="ControleurClients?action=pagePanier">Panier</a></li>
+                   <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
                    <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
                    <li><a href="Controleur?action=pageCommandes">Commandes</a></li>
                    <li><a href="Controleur?action=pageLivraisons">Livraisons</a></li>
@@ -87,9 +87,9 @@
                } else if((String)(sess.getAttribute("mode")) == "employe"){
                 %>
                    <li><a href="Controleur?action=pageAjouterDvd">Ajouter des dvds</a></li>
-                   <li><a href="Controleur?action=pageRechercherDvd">Rechercher des dvds</a></li>
-                   <li><a href="Controleur?action=pagePanier">Panier</a></li>
-                   <li><a href="Controleur?action=deconnexion">Deconnexion</a></li>
+                   <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
+                   <li><a href="ControleurClients?action=pagePanier">Panier</a></li>
+                   <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
                    <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
                    <li><a href="Controleur?action=pageCommandes">Commandes</a></li>
                    <li><a href="Controleur?action=pageLivraisons">Livraisons</a></li>
@@ -98,10 +98,10 @@
                } else {
                %>
                    
-                                                        <li><a href="Controleur?action=pageInscription">Inscription</a></li>
-						    	<li><a href="Controleur?action=pageConnexion">Connexion</a></li>
+                                                        <li><a href="ControleurClients?action=pageInscription">Inscription</a></li>
+						    	<li><a href="ControleurClients?action=pageConnexion">Connexion</a></li>
 							<li><a href="Controleur?action=pageConnexionEmploye">Employé</a></li>
-                                                         <li><a href="Controleur?action=email">Email</a></li>
+                                                        <li><a href="Controleur?action=email">Email</a></li>
               
 								<div class="clear"></div>
                     <%

@@ -7,10 +7,8 @@ package session;
 
 import entity.Commande;
 import entity.Dvd;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

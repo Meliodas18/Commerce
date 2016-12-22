@@ -15,7 +15,7 @@
         <title>Recherche de dvds</title>
     </head>
         <h1>Recherche de DVD</h1></br>
-        <form method="POST" action="Controleur">
+        <form method="POST" action="ControleurClients">
             <input type="hidden" name="action" value="interactiveResearch"/>   
             <label> Auteur : </label> <input type="text" name="auteur"/>
             <input type="submit" value="Rechercher"/>        
@@ -23,7 +23,7 @@
         <% ArrayList<Dvd> arrayDvd = (ArrayList<Dvd>) request.getAttribute("setDvd");
             if (arrayDvd != null){
                 for (Dvd dvd: arrayDvd){
-                    out.print("<a href=\"Controleur?action=ajouterPanier&id=" + dvd.getId() + "\">" + dvd.toString() + "</a></br>");
+                    out.print("<a href=\"ControleurClients?action=ajouterPanier&id=" + dvd.getId() + "\">" + dvd.toString() + "</a></br>");
                 }
             }
         %>
@@ -32,7 +32,7 @@
         <% ArrayList<Dvd> list = (ArrayList<Dvd>) request.getAttribute("listeDvds");
            if (list != null){ 
                 for (Dvd dvd: list){
-                    out.print("<a href=\"Controleur?action=ajouterPanier&id=" + dvd.getId() + "\">" + dvd.toString() + "</a></br>");
+                    out.print("<a href=\"ControleurClients?action=ajouterPanier&id=" + dvd.getId() + "\">" + dvd.toString() + "</a></br>");
                 }
             }
         %>
