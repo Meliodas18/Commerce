@@ -6,7 +6,11 @@
     </servlet>
     <servlet>
         <servlet-name>ControleurClients</servlet-name>
-        <servlet-class>Controleur.ControleurClients</servlet-class>
+        <servlet-class>ControleurClients.ControleurClients</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControleurEmployes</servlet-name>
+        <servlet-class>ControleurEmployes.ControleurEmployes</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Controleur</servlet-name>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>ControleurClients</servlet-name>
         <url-pattern>/ControleurClients</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControleurEmployes</servlet-name>
+        <url-pattern>/ControleurEmployes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

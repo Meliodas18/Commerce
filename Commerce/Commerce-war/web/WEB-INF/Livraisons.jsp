@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Livraisons du fournissuer</h1>
-        <form method="POST" action="Controleur">
+        <form method="POST" action="ControleurEmployes">
             <input type="hidden" name="action" value="livraisons"/>
             <ul>
                 <li><label> ID Dvd : </label> <input type="text" name="id"/></li>

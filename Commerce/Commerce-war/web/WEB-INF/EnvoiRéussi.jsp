@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Envoi réussi</h1
-        <li><a href="Controleur?action=accueil">Accueil</a></li>
+        <li><a href="ControleurEmployes?action=accueil">Accueil</a></li>
                    
     </body>
 </html>

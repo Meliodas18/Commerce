@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Colis à envoyer</h1>
-        <form method="POST" action="Controleur">
+        <form method="POST" action="ControleurEmployes">
             <input type="hidden" name="action" value="envoiColis"/>
             <ul>
                 <li><label> ID Commande : </label> <input type="text" name="id"/></li>

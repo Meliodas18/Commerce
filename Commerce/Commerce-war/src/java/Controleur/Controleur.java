@@ -5,13 +5,7 @@
  */
 package Controleur;
 
-import entity.Auteur;
 import entity.Client;
-import entity.Commande;
-import entity.Dvd;
-import entity.Editeur;
-import entity.Employe;
-import entity.Realisateur;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -25,16 +19,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import session.AuteurFacade;
 import session.ClientFacade;
-import session.CommandeFacade;
-import session.DvdFacade;
-import session.EditeurFacade;
 import session.EmailSessionBean;
 import session.Panier;
-import session.EmployeFacade;
-import session.RealisateurFacade;
 
 /**
  *
@@ -42,33 +29,9 @@ import session.RealisateurFacade;
  */
 @WebServlet(name = "Controleur", urlPatterns = {"/Controleur"})
 public class Controleur extends HttpServlet {
-        
+            
     @EJB
-    private AuteurFacade auteurf;
-    
-    @EJB
-    private DvdFacade dvdf;
-    
-    @EJB
-    private ClientFacade clientf;
-    
-    @EJB
-    private EmployeFacade employef;
-    
-    @EJB
-    private RealisateurFacade realisateurf;
-    
-    @EJB
-    private CommandeFacade commandef;
-    
-    private String emailEmploye = "aymeric.delecourt@phelma.grenoble-inp.fr";
-    
-    @EJB
-    private EmailSessionBean emailBean;
-    
-    @EJB
-    private EditeurFacade editeurf;
-    
+    private ClientFacade clientf;  
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -107,26 +70,11 @@ public class Controleur extends HttpServlet {
             case "accueil":
                 accueil(request,response);
                 break;
-            case "pageAjouterDvd":
-                pageAjouterDvd(request,response);
-                break;
-            case "ajouterDvd":
-                ajouterDvd(request,response);
-                break;
-            case "pageConnexionEmploye":
-                pageConnexionEmploye(request,response);
-                break;
-            case "connexionEmploye":
-                connexionEmploye(request,response);
-                break;
             case "SupprimerClient":
                 supprimerClient(request,response);
                 break;
             case "supprimerLeClient":
                 supprimerLeClient(request,response);
-                break;
-            case "pageCommandes":
-                pageCommandes(request,response);
                 break;
             case "email":
                 email(request,response);
@@ -134,20 +82,6 @@ public class Controleur extends HttpServlet {
             case "emailSend":
                 emailSend(request,response);
                 break;   
-            case "pageLivraisons":
-                pageLivraisons(request,response);
-                break;
-            case "livraisons":
-                livraisons(request,response);
-                break;
-            case "pageEnvoiColis":
-                pageEnvoiColis(request,response);
-                break;
-            case "envoiColis":
-                envoiColis(request,response);
-                break;
-            default:
-                break;
         }
     }
 
@@ -211,82 +145,12 @@ public class Controleur extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void pageAjouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getServletContext().getRequestDispatcher("/WEB-INF/AjoutDvds.jsp").forward(request, response);
-    }
 
     private void accueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
 
-    //Attention aux exceptions -- doivent pas etre lancées ici à priori
-    private void ajouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Dvd dvd = new Dvd(request.getParameter("titre"), request.getParameter("description"), Double.parseDouble(request.getParameter("prix")), request.getParameter("dateSortie"), Integer.parseInt(request.getParameter("quantite")));
-        String[] paramDvd = {"titre","description","prix","dateSortie"};
-        String[] param = {"prenom","nom"};
-        String[] paramEditeur = {"nom"};
-        ArrayList<Long> id;
-        
-        //Si le dvd n'existe pas, on crée le dvd
-        if (dvdf.getId(dvd, paramDvd).isEmpty()){
-            dvdf.create(dvd);
-            
-            Auteur auteur = new Auteur(request.getParameter("prenomAuteur"),request.getParameter("nomAuteur"));
-            id = auteurf.getId(auteur, param);
-            if (id.isEmpty()){
-                auteur.addDvds(dvd);
-                auteurf.create(auteur);
-            } else {
-                auteur = auteurf.find(id.get(0));
-                auteur.addDvds(dvd);
-                auteurf.edit(auteur);
-            }
-            
-            Realisateur realisateur = new Realisateur(request.getParameter("prenomRealisateur"),request.getParameter("nomRealisateur"));
-            id = realisateurf.getId(realisateur, param);
-            if (id.isEmpty()){
-                realisateur.addDvds(dvd);
-                realisateurf.create(realisateur);
-            } else {
-                realisateur = realisateurf.find(id.get(0));
-                realisateur.addDvds(dvd);
-                realisateurf.edit(realisateur);
-            }
-            
-            Editeur editeur = new Editeur(request.getParameter("nomEditeur"));
-            id = editeurf.getId(editeur, paramEditeur);
-            if (id.isEmpty()){
-                editeurf.create(editeur);
-            } else {
-                editeur = editeurf.find(id.get(0));
-                editeurf.edit(editeur);
-            }
-            dvd.setEditeur(editeur);
-            dvdf.edit(dvd);
-        }
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
-
-    }
-
-    private void pageConnexionEmploye(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getServletContext().getRequestDispatcher("/WEB-INF/ConnexionEmploye.jsp").forward(request, response);
-    }
     
-    private void connexionEmploye(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        
-        String[] parametres = {"email","motDePasse"};
-        ArrayList<Long> findId = employef.getId(new Employe(request.getParameter("nomEmploye"), request.getParameter("prenomEmploye"), request.getParameter("passWord"),request.getParameter("email")), parametres);
-        if (findId.isEmpty()){
-            request.setAttribute("erreur", true);
-            getServletContext().getRequestDispatcher("/WEB-INF/ConnexionEmploye.jsp").forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("email", request.getParameter("email"));
-            session.setAttribute("passWord", request.getParameter("passWord"));
-            session.setAttribute("mode","employe");
-            getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request,response);
-        }
-    }
 
     private void supprimerClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<Client> list = (ArrayList<Client>) clientf.findAll();
@@ -299,11 +163,6 @@ public class Controleur extends HttpServlet {
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);        
     }
 
-    //Affiche les commandes
-    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("listCommandes",commandef.findAll());
-        getServletContext().getRequestDispatcher("/WEB-INF/Commande.jsp").forward(request, response);
-    }
     
     //Aller à la page email
     private void email(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -318,36 +177,8 @@ public class Controleur extends HttpServlet {
           String subject = request.getParameter("subject");
           String body = request.getParameter("body");  
           
-          emailBean.sendEmail(to, subject, body);
+          EmailSessionBean.sendEmail(to, subject, body);
           
           getServletContext().getRequestDispatcher("/WEB-INF/EnvoiRéussi.jsp").forward(request, response);
-    }
-
-    private void livraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Dvd dvd = new Dvd();
-        dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
-        //dvd.setId();
-        dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
-        commandef.changeState(dvdf.getCommande(dvd),Integer.parseInt(request.getParameter("quantite")),emailEmploye);
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
-    }
-
-    private void pageLivraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getServletContext().getRequestDispatcher("/WEB-INF/Livraisons.jsp").forward(request, response);
-    }
-
-    private void envoiColis(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Commande commande = commandef.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
-        commande.setEtat("Effectuée");
-        commandef.edit(commande);
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
-    }
-
-    private void pageEnvoiColis(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        getServletContext().getRequestDispatcher("/WEB-INF/EnvoiColis.jsp").forward(request, response);
-    }
-    
-    
-    
- 
+    } 
 }

@@ -21,7 +21,7 @@
             </header>
         </div>
        
-        <form method="POST" action="Controleur">
+        <form method="POST" action="ControleurEmployes">
             <input type="hidden" name="action" value="connexionEmploye"/>
             <ul>
                 <li><label> Email : </label> <input type="text" name="email"/></li>

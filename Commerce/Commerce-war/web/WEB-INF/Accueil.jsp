@@ -73,43 +73,35 @@
                                                         
                                                         <% HttpSession sess = request.getSession();
                if ((String)(sess.getAttribute("mode")) == "client"){ %>
-               
-               
-                   <li><a href="Controleur?action=pageAjouterDvd">Ajouter des dvds</a></li>
-                   <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
-                   <li><a href="ControleurClients?action=pagePanier">Panier</a></li>
-                   <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
-                   <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
-                   <li><a href="Controleur?action=pageCommandes">Commandes</a></li>
-                   <li><a href="Controleur?action=pageLivraisons">Livraisons</a></li>
-                   <li><a href="Controleur?action=pageEnvoiColis">Envoi Colis</a></li>
+                    <li><a href="ControleurEmployes?action=pageAjouterDvd">Ajouter des dvds</a></li>
+                    <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
+                    <li><a href="ControleurClients?action=pagePanier">Panier</a></li>
+                    <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
+                    <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
+                    <li><a href="ControleurEmployes?action=pageCommandes">Commandes</a></li>
+                    <li><a href="ControleurEmployes?action=pageLivraisons">Livraisons</a></li>
+                    <li><a href="ControleurEmployes?action=pageEnvoiColis">Envoi Colis</a></li>
                <%
                } else if((String)(sess.getAttribute("mode")) == "employe"){
                 %>
-                   <li><a href="Controleur?action=pageAjouterDvd">Ajouter des dvds</a></li>
-                   <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
-                   <li><a href="ControleurClients?action=pagePanier">Panier</a></li>
-                   <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
-                   <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
-                   <li><a href="Controleur?action=pageCommandes">Commandes</a></li>
-                   <li><a href="Controleur?action=pageLivraisons">Livraisons</a></li>
-                   <li><a href="Controleur?action=pageEnvoiColis">Envoi Colis</a></li>
+                    <li><a href="ControleurEmployes?action=pageAjouterDvd">Ajouter des dvds</a></li>
+                    <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
+                    <li><a href="ControleurClients?action=pagePanier">Panier</a></li>
+                    <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
+                    <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
+                    <li><a href="ControleurEmployes?action=pageCommandes">Commandes</a></li>
+                    <li><a href="ControleurEmployes?action=pageLivraisons">Livraisons</a></li>
+                    <li><a href="ControleurEmployes?action=pageEnvoiColis">Envoi Colis</a></li>
                    <%
                } else {
                %>
-                   
-                                                        <li><a href="ControleurClients?action=pageInscription">Inscription</a></li>
-						    	<li><a href="ControleurClients?action=pageConnexion">Connexion</a></li>
-							<li><a href="Controleur?action=pageConnexionEmploye">Employé</a></li>
-                                                        <li><a href="Controleur?action=email">Email</a></li>
-              
+                    <li><a href="ControleurClients?action=pageInscription">Inscription</a></li>
+                    <li><a href="ControleurClients?action=pageConnexion">Connexion</a></li>
+                    <li><a href="ControleurEmployes?action=pageConnexionEmploye">Employé</a></li>
 								<div class="clear"></div>
                     <%
                }
             %>
-						    	
-                                                                
-                                                                
 							</ul>
 							<script type="text/javascript" src="js/responsive-nav.js"></script>
 				    </div>							

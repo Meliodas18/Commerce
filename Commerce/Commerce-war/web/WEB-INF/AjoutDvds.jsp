@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Ajouter des dvds !</h1>
-        <form method="POST" action="Controleur">
+        <form method="POST" action="ControleurEmployes">
             <input type="hidden" name="action" value="ajouterDvd"/>
             <h2> DVD </h2>
             <ul>
