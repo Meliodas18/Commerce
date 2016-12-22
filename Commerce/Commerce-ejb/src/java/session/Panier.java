@@ -8,8 +8,12 @@ package session;
 import entity.Client;
 import entity.Commande;
 import entity.Dvd;
+import entity.Editeur;
+import entity.SousCommande;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -30,6 +34,9 @@ public class Panier{
     
     @EJB
     private CommandeFacade commandef;
+    
+    @EJB
+    private SousCommandeFacade sousCommandef;
     
     private HashMap<Dvd,Integer> dvdh;
     private HashMap<Dvd,Integer> dvdToCommand;
@@ -87,13 +94,28 @@ public class Panier{
     //Manque la génération d'une facture pour le client
     public void confirmOrder(Client client) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
         Commande commande = new Commande("En Cours",client);
+        Set<Editeur> editeurs = new HashSet<Editeur>();
+        Set<Dvd> dvds = new HashSet<>();
+        SousCommande sc; //= new SousCommande(commande,editeur);
         for (Dvd dvd : dvdh.keySet()){
             if (dvdf.find(dvd.getId()).getQuantite() < 0){
                 commande.setEtat("En Attente");
+                editeurs.add(dvd.getEditeur());
+                dvds.add(dvd);
             }
         }
-        commande.setDvds(dvdToCommand);
-        commandef.create(commande,emailFournisseur);
+        commande.setDvds(dvdh);
+        commandef.create(commande);
+        for (Editeur editeur : editeurs){
+            sc = new SousCommande(commande,editeur,"En Attente");
+            for (Dvd myDvd : dvds){
+                if (myDvd.getEditeur().equals(editeur)){
+                    sc.addDvds(myDvd, dvdToCommand.get(myDvd));
+                    dvds.remove(myDvd);
+                }
+            }
+            sousCommandef.create(sc); 
+        }
         this.dvdh.clear();
     }
 

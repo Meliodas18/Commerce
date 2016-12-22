@@ -33,6 +33,7 @@ import session.EditeurFacade;
 import session.EmployeFacade;
 import session.Panier;
 import session.RealisateurFacade;
+import session.SousCommandeFacade;
 
 /**
  *
@@ -55,6 +56,9 @@ public class ControleurEmployes extends HttpServlet {
     
     @EJB
     private CommandeFacade commandef;
+    
+    @EJB
+    private SousCommandeFacade sousCommandef;
     
     private String emailEmploye = "aymeric.delecourt@phelma.grenoble-inp.fr";
     
@@ -253,9 +257,9 @@ public class ControleurEmployes extends HttpServlet {
     private void livraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Dvd dvd = new Dvd();
         dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
-        //dvd.setId();
         dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
         commandef.changeState(dvdf.getCommande(dvd),Integer.parseInt(request.getParameter("quantite")),emailEmploye);
+        sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye);
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
 

@@ -6,11 +6,18 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
 
 /**
  *
@@ -30,10 +37,18 @@ public class SousCommande implements Serializable {
     
     @ManyToOne
     private Editeur editeur;
+    
+    @ElementCollection(fetch=FetchType.EAGER)
+    @MapKeyJoinColumn(name = "DVD_ID")
+    @Column(name = "Quantite")
+    @CollectionTable(name = "DVD_SOUSCOMMANDE")
+    protected Map<Dvd,Integer> dvds; 
 
-    public SousCommande(Commande commande, Editeur editeur) {
+    public SousCommande(Commande commande, Editeur editeur, String etat) {
         this.commande = commande;
         this.editeur = editeur;
+        this.dvds = new HashMap<>();
+        this.etat = etat;
     }
     
     public SousCommande(){
@@ -69,6 +84,14 @@ public class SousCommande implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Map<Dvd, Integer> getDvds() {
+        return dvds;
+    }
+
+    public void addDvds(Dvd dvd, int quantite) {
+        this.dvds.put(dvd, quantite);
     }
 
     @Override

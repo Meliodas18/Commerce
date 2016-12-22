@@ -15,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -124,11 +125,21 @@ public class Dvd implements Serializable {
     @ManyToMany(fetch=FetchType.EAGER)
     protected List<Commande> commande;
     
+    @ManyToMany(fetch=FetchType.EAGER)
+    protected List<SousCommande> sousCommande;
+    
+    public List<SousCommande> getSousCommande(){
+        return sousCommande;
+    }
     
     public List<Commande> getCommande() {
         return commande;
     }
 
+    public void setSousCommande(ArrayList<SousCommande> sousCommandes){
+        this.sousCommande = sousCommandes;
+    }
+    
     public void setCommande(ArrayList<Commande> commande) {
         this.commande = commande;
     }

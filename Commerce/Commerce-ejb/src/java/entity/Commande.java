@@ -7,7 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -18,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -41,14 +44,19 @@ public class Commande implements Serializable {
     @CollectionTable(name = "DVD_COMMANDE")
     protected Map<Dvd,Integer> dvds; 
     
+    @OneToMany
+    private Set<SousCommande> sousCommande;
+    
     public Commande(String etat, Client client) {
         this.dvds = new HashMap<>();
         this.etat = etat;
         this.client = client;
+        this.sousCommande = new HashSet<>();
     }
     
     public Commande(){
         this.dvds = new HashMap<>();
+        this.sousCommande = new HashSet<>();
     }
 
     public void setDvds(Map<Dvd,Integer> dvds) {
@@ -85,6 +93,14 @@ public class Commande implements Serializable {
         this.id = id;
     }
 
+    public Set<SousCommande> getSousCommande() {
+        return sousCommande;
+    }
+
+    public void setSousCommande(Set<SousCommande> sousCommande) {
+        this.sousCommande = sousCommande;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -7,6 +7,7 @@ package session;
 
 import entity.Commande;
 import entity.Dvd;
+import entity.SousCommande;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -52,6 +53,15 @@ public class DvdFacade extends AbstractFacade<Dvd> {
         Dvd dvdTemp = this.find(dvd.getId());
         if (dvdTemp != null){
             return dvdTemp.getCommande();
+        } else {
+            return null;
+        }
+    }
+    
+    public List<SousCommande> getSousCommande(Dvd dvd){
+        Dvd dvdTemp = this.find(dvd.getId());
+        if (dvdTemp != null){
+            return dvdTemp.getSousCommande();
         } else {
             return null;
         }

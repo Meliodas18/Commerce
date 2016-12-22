@@ -32,14 +32,7 @@ public class CommandeFacade extends AbstractFacade<Commande> {
     public CommandeFacade() {
         super(Commande.class);
     }
-    
-    public void create(Commande commande, String emailFournisseur){
-        super.create(commande);
-        if (commande.getEtat().equals("En Attente")){
-            sendEmail(emailFournisseur, "[Projet Jboss EJB] Commande de dvds", commande.toString());
-        }
-    }
-    
+        
     //Pour les commandes en attente qui peuvent passer en mode en cours
     public void changeState(List<Commande> commandes, int quantiteRajoutee, String emailEmploye){
         for (Commande com : commandes) {
@@ -49,7 +42,7 @@ public class CommandeFacade extends AbstractFacade<Commande> {
                 //Si la valeur vaut 0, tous les dvds sont déjà là donc rien à faire
                 if (dvdQuantite.get(dvd) != 0 && com.getEtat().equals("En Attente")){
                     if (dvdQuantite.get(dvd) <= quantiteRajoutee){
-                        com.setEtat("En Cours");
+                        com.setEtat("Recue");
                         this.edit(com);
                         quantiteRajoutee -= dvdQuantite.get(dvd);
                         sendEmail(emailEmploye, "[Projet Jboss EJB] Livraison de dvds effectuée", com.toString());
