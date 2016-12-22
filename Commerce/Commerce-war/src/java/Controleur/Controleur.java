@@ -254,39 +254,42 @@ public class Controleur extends HttpServlet {
     private void ajouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Dvd dvd = new Dvd(request.getParameter("titre"), request.getParameter("description"), Double.parseDouble(request.getParameter("prix")), request.getParameter("dateSortie"), Integer.parseInt(request.getParameter("quantite")));
         String[] paramDvd = {"titre","description","prix","dateSortie"};
-        String[] paramAuteur = {"prenom","nom"};
-        String[] paramRealisateur = {"prenomRealisateur","nomRealisateur"};
+        String[] param = {"prenom","nom"};
         String[] paramEditeur = {"nom"};
+        ArrayList<Long> id;
         
         //Si le dvd n'existe pas, on crée le dvd
         if (dvdf.getId(dvd, paramDvd).isEmpty()){
             dvdf.create(dvd);
             
             Auteur auteur = new Auteur(request.getParameter("prenomAuteur"),request.getParameter("nomAuteur"));
-            if (auteurf.getId(auteur, paramAuteur).isEmpty()){
+            id = auteurf.getId(auteur, param);
+            if (id.isEmpty()){
                 auteur.addDvds(dvd);
                 auteurf.create(auteur);
             } else {
-                auteur = auteurf.find(auteurf.getId(auteur, paramAuteur).get(0));
+                auteur = auteurf.find(id.get(0));
                 auteur.addDvds(dvd);
                 auteurf.edit(auteur);
             }
             
             Realisateur realisateur = new Realisateur(request.getParameter("prenomRealisateur"),request.getParameter("nomRealisateur"));
-            if (realisateurf.getId(realisateur, paramAuteur).isEmpty()){
+            id = realisateurf.getId(realisateur, param);
+            if (id.isEmpty()){
                 realisateur.addDvds(dvd);
                 realisateurf.create(realisateur);
             } else {
-                realisateur = realisateurf.find(realisateurf.getId(realisateur, paramRealisateur).get(0));
+                realisateur = realisateurf.find(id.get(0));
                 realisateur.addDvds(dvd);
                 realisateurf.edit(realisateur);
             }
             
             Editeur editeur = new Editeur(request.getParameter("nomEditeur"));
-            if (editeurf.getId(editeur, paramEditeur).isEmpty()){
+            id = editeurf.getId(editeur, paramEditeur);
+            if (id.isEmpty()){
                 editeurf.create(editeur);
             } else {
-                editeur = editeurf.find(editeurf.getId(editeur, paramEditeur).get(0));
+                editeur = editeurf.find(id.get(0));
                 editeurf.edit(editeur);
             }
             dvd.setEditeur(editeur);
@@ -448,7 +451,8 @@ public class Controleur extends HttpServlet {
 
     private void livraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Dvd dvd = new Dvd();
-        dvd.setId(Long.parseLong((request.getParameter("id"))));
+        dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
+        //dvd.setId();
         dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
         commandef.changeState(dvdf.getCommande(dvd),Integer.parseInt(request.getParameter("quantite")),emailEmploye);
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);

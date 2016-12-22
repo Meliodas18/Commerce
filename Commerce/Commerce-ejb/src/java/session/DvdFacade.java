@@ -53,8 +53,7 @@ public class DvdFacade extends AbstractFacade<Dvd> {
     public List<Commande> getCommande(Dvd dvd){
         Dvd dvdTemp = this.find(dvd.getId());
         if (dvdTemp != null){
-            return null;
-            //return dvdTemp.getCommande();
+            return dvdTemp.getCommande();
         } else {
             return null;
         }

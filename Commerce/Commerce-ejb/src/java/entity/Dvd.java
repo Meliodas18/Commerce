@@ -126,7 +126,7 @@ public class Dvd implements Serializable {
         return "Dvd{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", prix=" + prix + ", dateSortie=" + dateSortie + ", quantite=" + quantite + '}';
     }
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER)
     protected List<Commande> commande;
     
     

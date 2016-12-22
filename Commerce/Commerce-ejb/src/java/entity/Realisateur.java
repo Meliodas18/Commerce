@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -89,7 +90,7 @@ public class Realisateur implements Serializable {
         return "ejb.Realisateur[ id=" + id + " ]";
     }
     
-     @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER)
     protected Set<Dvd> dvds;
 
     public Set<Dvd> getDvds() {
