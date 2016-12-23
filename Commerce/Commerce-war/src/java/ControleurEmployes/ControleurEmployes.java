@@ -258,7 +258,6 @@ public class ControleurEmployes extends HttpServlet {
         Dvd dvd = new Dvd();
         dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
         dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
-        commandef.changeState(dvdf.getCommande(dvd),Integer.parseInt(request.getParameter("quantite")),emailEmploye);
         sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye);
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }

@@ -7,8 +7,10 @@ package session;
 
 import entity.Dvd;
 import entity.SousCommande;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +22,9 @@ import static session.EmailSessionBean.sendEmail;
  */
 @Stateless
 public class SousCommandeFacade extends AbstractFacade<SousCommande> {
+    
+    @EJB
+    private CommandeFacade commandef;
 
     @PersistenceContext(unitName = "Commerce-ejbPU")
     private EntityManager em;
@@ -38,7 +43,7 @@ public class SousCommandeFacade extends AbstractFacade<SousCommande> {
         super.create(sc);
     }
     
-    //La souscommande passée en paramètre doit etre la bonne !!!
+    //Les sous-commandes n'ont rien àvoir entre elles potentiellement mais elles ont le même dvd à chaque fois
     public void changeState(List<SousCommande> sousCommandes, int quantiteRajoutee, String emailEmploye){
         
         //Pour chaque SousCommande on essaye de remplir pour dire qu'on a reçu des dvds
@@ -48,8 +53,8 @@ public class SousCommandeFacade extends AbstractFacade<SousCommande> {
             Map<Dvd,Integer> dvdQuantite = sc.getDvds();
 
             //Pour le dvd concerné, on augmente  -- dans la hashmap pour une sous-commande on n'a qu'une seule instance d'un dvd
-            for(Dvd dvd : dvdQuantite.keySet()){
-
+            for (Iterator<Dvd> it = dvdQuantite.keySet().iterator(); it.hasNext();) {
+                Dvd dvd = it.next();
                 //Si on a 0, il n'y a plus rien à faire pour ce dvd, on l'a bien reçu
                 //Il faut prendre que les souscommandes en attente
                 //Faire si c'est le dvd recherché
@@ -57,17 +62,20 @@ public class SousCommandeFacade extends AbstractFacade<SousCommande> {
 
                     //Si la quantité est suffisante, on change l'état, sinon on modifie juste la quantité dont on aura besoin
                     if (dvdQuantite.get(dvd) <= quantiteRajoutee){
-                        sc.setEtat("En Cours");
-                        this.edit(sc);
                         quantiteRajoutee -= dvdQuantite.get(dvd);
-                        sendEmail(emailEmploye, "[Projet Jboss EJB] Livraison de dvds effectuée", sc.toString());
+                        it.remove(); //On retire le dvd des commandes en cours car on vient de le recevoir
+                        this.edit(sc);
                     } else {
                         dvdQuantite.replace(dvd, dvdQuantite.get(dvd) - quantiteRajoutee);
                         this.edit(sc);
                         quantiteRajoutee = 0;
                     }
-                    break;
                 }
+            }
+            if (dvdQuantite.isEmpty()){
+                sc.setEtat("Recue");
+                edit(sc);
+                commandef.changeState(sc.getCommande(), emailEmploye);
             }
         }
     }

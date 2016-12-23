@@ -13,6 +13,7 @@ import entity.SousCommande;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
@@ -74,7 +75,7 @@ public class Panier{
     public void removeDvd(Dvd dvd, int quantity){
         dvdh.replace(dvd,dvdf.find(dvd.getId()).getQuantite() + quantity);
         dvdf.increaseQuantity(quantity,dvdf.find(dvd.getId()));
-        commandef.changeState(dvdf.find(dvd.getId()).getCommande(), quantity, emailEmploye);
+        //commandef.changeState(dvdf.find(dvd.getId()).getCommande(), quantity, emailEmploye);
     }
     
     //Retire tous les dvds du panier mais les rajoute dans la base de données
@@ -108,10 +109,11 @@ public class Panier{
         commandef.create(commande);
         for (Editeur editeur : editeurs){
             sc = new SousCommande(commande,editeur,"En Attente");
-            for (Dvd myDvd : dvds){
+            for (Iterator<Dvd> it = dvds.iterator(); it.hasNext();) {
+                Dvd myDvd = it.next();
                 if (myDvd.getEditeur().equals(editeur)){
                     sc.addDvds(myDvd, dvdToCommand.get(myDvd));
-                    dvds.remove(myDvd);
+                    it.remove();
                 }
             }
             sousCommandef.create(sc); 

@@ -6,9 +6,6 @@
 package session;
 
 import entity.Commande;
-import entity.Dvd;
-import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,26 +31,12 @@ public class CommandeFacade extends AbstractFacade<Commande> {
     }
         
     //Pour les commandes en attente qui peuvent passer en mode en cours
-    public void changeState(List<Commande> commandes, int quantiteRajoutee, String emailEmploye){
-        for (Commande com : commandes) {
-            Map<Dvd,Integer> dvdQuantite = com.getDvds();
-            for(Dvd dvd : dvdQuantite.keySet()){
-                
-                //Si la valeur vaut 0, tous les dvds sont déjà là donc rien à faire
-                if (dvdQuantite.get(dvd) != 0 && com.getEtat().equals("En Attente")){
-                    if (dvdQuantite.get(dvd) <= quantiteRajoutee){
-                        com.setEtat("Recue");
-                        this.edit(com);
-                        quantiteRajoutee -= dvdQuantite.get(dvd);
-                        sendEmail(emailEmploye, "[Projet Jboss EJB] Livraison de dvds effectuée", com.toString());
-                    } else {
-                        dvdQuantite.replace(dvd, dvdQuantite.get(dvd) - quantiteRajoutee);
-                        this.edit(com);
-                        quantiteRajoutee = 0;
-                    }
-                }
-            }
-        }      
+    public void changeState(Commande commande, String emailEmploye){
+        if (commande.getEtat().equals("En Attente")){
+            commande.setEtat("En Cours");
+            edit(commande);
+            sendEmail(emailEmploye, "[Projet Jboss EJB] Commandes n°" + commande.getId(), commande.toString());
+        }
     }
     
 }
