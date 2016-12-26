@@ -15,9 +15,14 @@
         <title>Panier</title>
         <SCRIPT language=javascript>
             function ConfirmMessage() {
-                if (confirm("Voulez-vous confirmer la commande ?")) { 
-                    document.bgColor="silver";
+                if (!confirm("Voulez-vous confirmer la commande ?")) { 
+                    document.location.href="http://localhost:8080/Commerce-war/ControleurClients?action=pagePanier";
+                } else {
+                     document.location.href="http://localhost:8080/Commerce-war/ControleurClients?action=confirmOrder&ok=Terminer la commande";
                 }
+            }
+            function Cancel(){
+                document.location.href="http://localhost:8080/Commerce-war/ControleurClients?action=confirmOrder&ok=Annuler";
             }
         </SCRIPT>
     </head>
@@ -28,10 +33,8 @@
                 out.print(d + ", Quantité : " + contenu.get(d) + "</br>");
            }
         %>
-        <form method="GET" action="ControleurClients">
-            <input type="hidden" name="action" value="confirmOrder"/>
-            <input type="submit" name="ok" value="Terminer la commande" onClick="ConfirmMessage()"/>
-            <input type="submit" name="ok" value="Annuler" />
-        </form>
+        
+        <input onClick="ConfirmMessage()" type="button" value="Terminer la commande"/>
+        <input onClick="Cancel()" type="button" value="Annuler"/>
     </body>
 </html>

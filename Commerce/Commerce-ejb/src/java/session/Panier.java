@@ -90,35 +90,38 @@ public class Panier{
         return this.dvdh;
     }
     
-    @Remove
     //On crée une commande et on ajoute la hashMap des dvds dans la commande avant d'effacer la hashMap
     //Manque la génération d'une facture pour le client
+    //S'il n'y a pas de dvds on ne crée pas de commande vide même si l'utilisateur tente de confirmer la commande à voir avec js
+    @Remove
     public void confirmOrder(Client client) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-        Commande commande = new Commande("En Cours",client);
-        Set<Editeur> editeurs = new HashSet<Editeur>();
-        Set<Dvd> dvds = new HashSet<>();
-        SousCommande sc; //= new SousCommande(commande,editeur);
-        for (Dvd dvd : dvdh.keySet()){
-            if (dvdf.find(dvd.getId()).getQuantite() < 0){
-                commande.setEtat("En Attente");
-                editeurs.add(dvd.getEditeur());
-                dvds.add(dvd);
-            }
-        }
-        commande.setDvds(dvdh);
-        commandef.create(commande);
-        for (Editeur editeur : editeurs){
-            sc = new SousCommande(commande,editeur,"En Attente");
-            for (Iterator<Dvd> it = dvds.iterator(); it.hasNext();) {
-                Dvd myDvd = it.next();
-                if (myDvd.getEditeur().equals(editeur)){
-                    sc.addDvds(myDvd, dvdToCommand.get(myDvd));
-                    it.remove();
+        if (!dvdh.isEmpty()){
+            Commande commande = new Commande("En Cours",client);
+            Set<Editeur> editeurs = new HashSet<>();
+            Set<Dvd> dvds = new HashSet<>();
+            SousCommande sc; //= new SousCommande(commande,editeur);
+            for (Dvd dvd : dvdh.keySet()){
+                if (dvdf.find(dvd.getId()).getQuantite() < 0){
+                    commande.setEtat("En Attente");
+                    editeurs.add(dvd.getEditeur());
+                    dvds.add(dvd);
                 }
             }
-            sousCommandef.create(sc); 
+            commande.setDvds(dvdh);
+            commandef.create(commande);
+            for (Editeur editeur : editeurs){
+                sc = new SousCommande(commande,editeur,"En Attente");
+                for (Iterator<Dvd> it = dvds.iterator(); it.hasNext();) {
+                    Dvd myDvd = it.next();
+                    if (myDvd.getEditeur().equals(editeur)){
+                        sc.addDvds(myDvd, dvdToCommand.get(myDvd));
+                        it.remove();
+                    }
+                }
+                sousCommandef.create(sc); 
+            }
+            this.dvdh.clear();
         }
-        this.dvdh.clear();
     }
 
 }
