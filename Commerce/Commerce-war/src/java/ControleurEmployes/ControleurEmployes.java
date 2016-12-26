@@ -15,6 +15,7 @@ import entity.Realisateur;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -258,8 +259,8 @@ public class ControleurEmployes extends HttpServlet {
         Dvd dvd = new Dvd();
         dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
         dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
-        Long tempId = sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye,dvd);
-        if (tempId.intValue() != -1){
+        List<Long> tempId = sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye,dvd);
+        if (!tempId.isEmpty()){
             sousCommandef.removeSousCommande(tempId);
         }
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);

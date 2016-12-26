@@ -9,6 +9,7 @@ import entity.Commande;
 import entity.Dvd;
 import entity.SousCommande;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,9 @@ public class SousCommandeFacade extends AbstractFacade<SousCommande> {
     
     //Les sous-commandes n'ont rien à voir entre elles potentiellement mais elles ont le même dvd à chaque fois
     //Return -1 ne fait rien, return autre chose, alors il faut supprimer toutes les sous commandes associées à la commande
-    public Long changeState(List<SousCommande> sousCommandes, int quantiteRajoutee, String emailEmploye, Dvd myDvd) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    public List<Long> changeState(List<SousCommande> sousCommandes, int quantiteRajoutee, String emailEmploye, Dvd myDvd) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+        
+        List<Long> result = new ArrayList<>();
         
         //Pour chaque SousCommande on essaye de remplir pour dire qu'on a reçu des dvds
         for (SousCommande sc : sousCommandes) {
@@ -85,24 +88,29 @@ public class SousCommandeFacade extends AbstractFacade<SousCommande> {
                 //Pour la commande, on regarde si on recue toutes les sous-commandes
                 //Si oui, alors on peut changer etat de la commande, sinon on retourne sans rien faire
                 Set<SousCommande> mySet = commandef.find(sc.getCommande().getId()).getSousCommande();
+                boolean canGo = true; //permet de savoir si on va pouvoir dire que la commande est ok
                 for (SousCommande mySc : mySet){
                     if ("En Attente".equals(mySc.getEtat())){
-                        return Integer.toUnsignedLong(-1);
+                       canGo = false; 
                     }
                 }
-                commandef.changeState(sc.getCommande(), emailEmploye);
-                return sc.getCommande().getId();
+                if (canGo){
+                    commandef.changeState(sc.getCommande(), emailEmploye);
+                    result.add(sc.getCommande().getId());
+                }
             }
         }
-        return Integer.toUnsignedLong(-1);
+        return result;
     } 
     
-    public void removeSousCommande(Long idCommande){
-        Commande temp = commandef.find(idCommande);
-        for (SousCommande sc : temp.getSousCommande()){
-            temp.remove(sc);
-            commandef.edit(temp);
-            remove(find(sc.getId()));
+    public void removeSousCommande(List<Long> myList){
+        for(Long idCommande : myList){
+            Commande temp = commandef.find(idCommande);
+            for (SousCommande sc : temp.getSousCommande()){
+                temp.remove(sc);
+                commandef.edit(temp);
+                remove(find(sc.getId()));
+            }
         }
     } 
 }
