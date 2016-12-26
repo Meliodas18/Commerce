@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -44,7 +45,7 @@ public class Commande implements Serializable {
     @CollectionTable(name = "DVD_COMMANDE")
     protected Map<Dvd,Integer> dvds; 
     
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER,mappedBy="commande",orphanRemoval=true)
     private Set<SousCommande> sousCommande;
     
     public Commande(String etat, Client client) {
@@ -101,6 +102,10 @@ public class Commande implements Serializable {
         this.sousCommande = sousCommande;
     }
     
+    public void remove(SousCommande sc){
+        this.sousCommande.remove(sc);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -125,6 +130,5 @@ public class Commande implements Serializable {
     public String toString() {
         return "Commande{" + "id=" + id + ", etat=" + etat + ", client=" + client + ", dvds=" + dvds + '}';
     }
-    
     
 }

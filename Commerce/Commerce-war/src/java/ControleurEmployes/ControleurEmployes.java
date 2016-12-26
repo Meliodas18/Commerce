@@ -254,11 +254,14 @@ public class ControleurEmployes extends HttpServlet {
         getServletContext().getRequestDispatcher("/WEB-INF/Commande.jsp").forward(request, response);
     }
     
-    private void livraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void livraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Dvd dvd = new Dvd();
         dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
         dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
-        sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye);
+        Long tempId = sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye);
+        if (tempId.intValue() != -1){
+            sousCommandef.removeSousCommande(tempId);
+        }
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
 

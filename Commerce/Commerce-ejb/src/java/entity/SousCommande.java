@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -32,7 +33,7 @@ public class SousCommande implements Serializable {
     private Long id;
     private String etat;
     
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     private Commande commande;
     
     @ManyToOne
@@ -77,7 +78,7 @@ public class SousCommande implements Serializable {
     public void setEditeur(Editeur editeur) {
         this.editeur = editeur;
     }
-
+    
     public Long getId() {
         return id;
     }
@@ -118,5 +119,10 @@ public class SousCommande implements Serializable {
     public String toString() {
         return "entity.SousCommande[ id=" + id + " ]";
     }
+    
+    public void removeCommande(){
+        this.commande = null;
+    }
+    
     
 }
