@@ -51,7 +51,7 @@ public class SousCommandeFacade extends AbstractFacade<SousCommande> {
     
     //Les sous-commandes n'ont rien à voir entre elles potentiellement mais elles ont le même dvd à chaque fois
     //Return -1 ne fait rien, return autre chose, alors il faut supprimer toutes les sous commandes associées à la commande
-    public Long changeState(List<SousCommande> sousCommandes, int quantiteRajoutee, String emailEmploye) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    public Long changeState(List<SousCommande> sousCommandes, int quantiteRajoutee, String emailEmploye, Dvd myDvd) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
         
         //Pour chaque SousCommande on essaye de remplir pour dire qu'on a reçu des dvds
         for (SousCommande sc : sousCommandes) {
@@ -65,7 +65,7 @@ public class SousCommandeFacade extends AbstractFacade<SousCommande> {
                 //Si on a 0, il n'y a plus rien à faire pour ce dvd, on l'a bien reçu
                 //Il faut prendre que les souscommandes en attente
                 //Faire si c'est le dvd recherché
-                if (dvdQuantite.get(dvd) != 0 && sc.getEtat().equals("En Attente")){
+                if (dvd.equals(myDvd) && dvdQuantite.get(dvd) != 0 && sc.getEtat().equals("En Attente")){
 
                     //Si la quantité est suffisante, on change l'état, sinon on modifie juste la quantité dont on aura besoin
                     if (dvdQuantite.get(dvd) <= quantiteRajoutee){

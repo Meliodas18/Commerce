@@ -258,7 +258,7 @@ public class ControleurEmployes extends HttpServlet {
         Dvd dvd = new Dvd();
         dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
         dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
-        Long tempId = sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye);
+        Long tempId = sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye,dvd);
         if (tempId.intValue() != -1){
             sousCommandef.removeSousCommande(tempId);
         }
