@@ -33,7 +33,6 @@
                 out.print(d + ", Quantité : " + contenu.get(d) + "</br>");
            }
         %>
-        
         <input onClick="ConfirmMessage()" type="button" value="Terminer la commande"/>
         <input onClick="Cancel()" type="button" value="Annuler"/>
     </body>

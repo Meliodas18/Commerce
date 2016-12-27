@@ -29,11 +29,17 @@
         %>
         
         <h2>Voici les dvds !</h2>
-        <% ArrayList<Dvd> list = (ArrayList<Dvd>) request.getAttribute("listeDvds");
-           if (list != null){ 
-                for (Dvd dvd: list){
-                    out.print("<a href=\"ControleurClients?action=ajouterPanier&id=" + dvd.getId() + "\">" + dvd.toString() + "</a></br>");
+        <form method="GET" action="ControleurClients">
+            <input type="hidden" name="action" value="ajouterPanier"/>
+            <% ArrayList<Dvd> list = (ArrayList<Dvd>) request.getAttribute("listeDvds");
+               if (list != null){ 
+                    for (Dvd dvd: list){
+                        out.print(dvd.toString());%>
+                            <input type="hidden" name="id" value="<%=dvd.getId()%>"/>
+                            <input type="number" name="quantite"/>
+                    <%}
                 }
-            }
-        %>
+            %>
+            <input type="submit" value="Ajouter au Panier"/>
+        </form>
 </html>
