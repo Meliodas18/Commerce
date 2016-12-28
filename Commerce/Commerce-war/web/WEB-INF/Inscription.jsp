@@ -60,8 +60,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </form>
                     </div>
                     
+                    <div class="col-md-6">
+                        <br/><br/><br/>
+                        <img src="images/inscription_dvds.jpg" alt="" />
+                    </div>
+                    
                 </div>
             </div>
         </div>
+        <%@include file="Footer.jsp" %>
     </body>
 </html>
