@@ -1,12 +1,9 @@
 <%-- 
     Document   : Footer
-    Created on : 28 dÃ©c. 2016, 11:16:58
+    Created on : 28 déc. 2016, 11:16:58
     Author     : aymeric
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
     <div class="footer">
         <div class="container">
             <div class="row">
@@ -14,14 +11,14 @@
                     <ul class="footer_box">
                         <h4>Dvds</h4>
                         <li><a href="#">Par Auteur</a></li>
-                        <li><a href="#">Par RÃ©alisateur</a></li>
+                        <li><a href="#">Par Réalisateur</a></li>
                         <li><a href="#">Par Editeur</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
                     <ul class="footer_box">
                         <h4>A Propos</h4>
-                        <li><a href="#">L'Ã©quipe</a></li>
+                        <li><a href="#">L'équipe</a></li>
                         <li><a href="#">Nous Contacter</a></li>
                         <li><a href="#">Nos Sources</a></li>
                     </ul>
@@ -48,9 +45,8 @@
             </div>
             <div class="row footer_bottom">
                 <div class="copy">
-                    <p>Â© 2017 Made by ProjectJ22 : Delecourt & Huang & Maillot</p>
+                    <p>© 2017 Made by ProjectJ22 : Delecourt & Huang & Maillot</p>
                 </div>
             </div>
         </div>
     </div>
-</html>

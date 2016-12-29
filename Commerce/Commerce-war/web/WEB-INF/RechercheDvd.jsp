@@ -14,32 +14,56 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Recherche de dvds</title>
     </head>
-        <h1>Recherche de DVD</h1></br>
-        <form method="POST" action="ControleurClients">
-            <input type="hidden" name="action" value="interactiveResearch"/>   
-            <label> Auteur : </label> <input type="text" name="auteur"/>
-            <input type="submit" value="Rechercher"/>        
-        </form>
-        <% ArrayList<Dvd> arrayDvd = (ArrayList<Dvd>) request.getAttribute("setDvd");
-            if (arrayDvd != null){
-                for (Dvd dvd: arrayDvd){
-                    out.print("<a href=\"ControleurClients?action=ajouterPanier&id=" + dvd.getId() + "\">" + dvd.toString() + "</a></br>");
+        <%@include file="Header/ConnecteClient.jsp" %>
+        <div class="main">
+            <div class="shop_top">
+                <div class="container">
+                    <% ArrayList<Dvd> list = (ArrayList<Dvd>) request.getAttribute("listeDvds");
+                       int i = 0;
+                       out.println("<div class=\"row shop_box-top\">");
+                       if (list != null){ 
+                            for (Dvd dvd: list){
+                                if (i%4 == 0 && i != 0){
+                                    out.println("<div class=\"row\">");
+                                }
+                                i++;
+                    %>
+                                <form method="POST" action="ControleurClients">
+                                    <input type="hidden" name="action" value="ajouterPanier"/>
+                                    <input type="hidden" name="id" value="<%=dvd.getId()%>"/>
+                                
+                                    <div class="col-md-3 shop_box"><a href="single.html"></a>
+                                        <img src="images/pic1.jpg" class="img-responsive" alt=""/>
+                                        <div class="shop_desc">
+                                            <h3><%=dvd.getTitre()%></h3>
+                                            <% if (dvd.getQuantite() <= 0){
+                                                out.println("<h5>En rupture !<h5>");
+                                            } else {
+                                                out.println("<h5>En stock !</h5>");
+                                            }%>
+                                            <span class="actual"><%=dvd.getPrix()%>€</span><br>
+                                            <div class="clear"> </div>
+                                            <ul class="buttons">
+                                                <li class="cart"><button type="submit" class="btn-link">Panier</button></li>
+                                                <li class="shop_btn"><a href="ControleurClients?action=pageDetails">Détails</a></li>
+                                            </ul>
+                                            <div class="clear"> </div>
+                                        </div>
+                                    </div> 
+                                </form>
+                        <%if(i%4 == 0){
+                            out.println("</div>");
+                        }
+                        }
+                        //On rajoute un /div si jamais il y avait moins qu'un multiple de 4 dvds à afficher
+                    if (i%4 != 0){
+                        out.println("</div>");
+                    }
                 }
-            }
-        %>
-        
-        <h2>Voici les dvds !</h2>
-        <form method="GET" action="ControleurClients">
-            <input type="hidden" name="action" value="ajouterPanier"/>
-            <% ArrayList<Dvd> list = (ArrayList<Dvd>) request.getAttribute("listeDvds");
-               if (list != null){ 
-                    for (Dvd dvd: list){
-                        out.print(dvd.toString());%>
-                            <input type="hidden" name="id" value="<%=dvd.getId()%>"/>
-                            <input type="number" name="quantite"/>
-                    <%}
-                }
-            %>
-            <input type="submit" value="Ajouter au Panier"/>
-        </form>
+                %>  
+                </div>
+            </div>
+        </div>
+        <%@include file="Footer.jsp" %>
+    </body>
 </html>

@@ -104,6 +104,9 @@ public class ControleurClients extends HttpServlet {
             case "interactiveResearch":
                 interactiveResearch(request,response);
                 break;
+            case "pageDetails":
+                pageDetails(request,response);
+                break;
             default:
                 break;
         }
@@ -158,7 +161,7 @@ public class ControleurClients extends HttpServlet {
 
 
     private void ajouterPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
-        panierClient.addDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))),Integer.parseInt(request.getParameter("quantite")));
+        panierClient.addDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))),1);
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
 
@@ -249,6 +252,11 @@ public class ControleurClients extends HttpServlet {
             request.setAttribute("setDvd", arrayDvd);
         }
         pageRechercherDvd(request,response);
+    }
+
+    private void pageDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        getServletContext().getRequestDispatcher("/WEB-INF/Details.jsp").forward(request, response);
+        
     }
     
 }

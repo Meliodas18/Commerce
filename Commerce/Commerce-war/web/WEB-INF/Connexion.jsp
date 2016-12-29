@@ -25,7 +25,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="col-md-6">
                         <div class="login-page">
                             <h4 class="title">Nouveau Client</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis</p>
+                            <p> Vous êtes un nouveau client ? En poursuivant, vous pourrez créer votre propre compte en renseignant quelques informations personnelles. N'hésitez pas à rejoindre notre communauté afin de pouvoir avoir accès à tous les privilèges liés à la possession de votre compte ! La nouvelle version de notre site web vous promet une nouvelle expérience unique !</p>
+                            </br>    
                             <div class="button1">
                                 <a href="http://localhost:8080/Commerce-war/ControleurClients?action=pageInscription"><input type="submit" name="Submit" value="Créer un compte"></a>
                             </div>
@@ -62,5 +63,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </div>
             </div>
         </div>
+        <%@include file="Footer.jsp" %>
     </body>
 </html>
