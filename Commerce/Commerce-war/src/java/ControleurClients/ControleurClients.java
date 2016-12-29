@@ -9,9 +9,11 @@ import Controleur.Controleur;
 import entity.Auteur;
 import entity.Client;
 import entity.Dvd;
+import entity.Editeur;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -161,7 +163,7 @@ public class ControleurClients extends HttpServlet {
 
 
     private void ajouterPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
-        panierClient.addDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))),1);
+        panierClient.addDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))),Integer.parseInt(request.getParameter("quantite")));
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
 
@@ -255,6 +257,11 @@ public class ControleurClients extends HttpServlet {
     }
 
     private void pageDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Dvd tempDvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
+        request.setAttribute("dvd",tempDvd);
+        Editeur editeur = tempDvd.getEditeur();
+        Set<Dvd> set = editeur.getDvds();
+        request.setAttribute("set",set);
         getServletContext().getRequestDispatcher("/WEB-INF/Details.jsp").forward(request, response);
         
     }

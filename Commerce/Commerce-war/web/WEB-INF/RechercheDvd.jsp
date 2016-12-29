@@ -37,7 +37,7 @@
                                         <div class="shop_desc">
                                             <h3><%=dvd.getTitre()%></h3>
                                             <% if (dvd.getQuantite() <= 0){
-                                                out.println("<h5>En rupture !<h5>");
+                                                out.println("<h5>En rupture !</h5>");
                                             } else {
                                                 out.println("<h5>En stock !</h5>");
                                             }%>
@@ -45,7 +45,7 @@
                                             <div class="clear"> </div>
                                             <ul class="buttons">
                                                 <li class="cart"><button type="submit" class="btn-link">Panier</button></li>
-                                                <li class="shop_btn"><a href="ControleurClients?action=pageDetails">Détails</a></li>
+                                                <li class="shop_btn"><a href="ControleurClients?action=pageDetails&id=<%=dvd.getId()%>">Détails</a></li>
                                             </ul>
                                             <div class="clear"> </div>
                                         </div>

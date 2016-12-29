@@ -4,6 +4,8 @@
     Author     : aymeric
 --%>
 
+<%@page import="java.util.Set"%>
+<%@page import="entity.Dvd"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -11,7 +13,99 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Details</title>
     </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+        <%@include file="Header/ConnecteClient.jsp" %>
+        <% Dvd dvd = (Dvd)request.getAttribute("dvd");
+           Set<Dvd> set = (Set<Dvd>)request.getAttribute("set");%>
+        <div class="main">
+            <div class="shop_top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9 single_left">
+                            <div class="single_image">
+                                <img class="etalage_source_image" src="images/pic1.jpg" />
+                            </div>
+			    <!-- end product_slider -->
+			    <div class="single_right">
+			      	<h3><%=dvd.getTitre()%></h3>
+			       	<p class="m_10">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse</p>
+			       	<ul class="options">
+                                    <% if (dvd.getQuantite() <= 0){
+                                        out.println("<h4 class=\"m_12\">En rupture !</h4>");
+                                    } else {
+                                        out.println("<h4 class=\"m_12\">" + dvd.getQuantite() + " en stock !</h4>");
+                                    }%>
+                                </ul>
+				<div class="clear"> </div>
+                            </div>
+			</div>
+                        <div class="col-md-3">
+                                <div class="box-info-product">
+                                    <form method="post" action="ControleurClients"/>
+                                        <input type="hidden" value="ajouterPanier" name="action"/>
+                                        <input type="hidden" value="<%=dvd.getId()%>" name="id"/>
+                                        <p class="price2"><%=dvd.getPrix()%> €</p>
+                                        <span>Quantité : </br></br></span>
+                                        <input type="number" min="0" class="inputbox" value="1" name="quantite"/>
+                                        </br></br></br>
+                                        <button type="submit" name="Submit" class="exclusive">
+                                            <span>Ajouter au panier</span>
+                                        </button>
+                                    </form>
+                                </div>
+                          
+			</div>
+                    </div>		
+                    <div class="desc">
+			<h4>Description</h4>
+			<p><%=dvd.getDescription()%></p>
+                    </div>
+                    <div class="row">
+                        <h4 class="m_11">Films du même réalisateur</h4>
+			<div class="col-md-4 product1">
+                            <img src="images/pic1.jpg" class="img-responsive" alt=""/> 
+                            <div class="shop_desc">
+                                <h4>aliquam volutp</h4>
+				<p>Lorem ipsum consectetuer adipiscing </p>
+				<span class="reducedfrom">$66.00</span>
+				<span class="actual">$12.00</span><br>
+				<ul class="buttons">
+                                    <li class="cart"><a href="#">Add To Cart</a></li>
+                                    <li class="shop_btn"><a href="#">Read More</a></li>
+				</ul>
+                                <div class="clear"> </div>
+                            </div>
+			</div>
+                        <div class="col-md-4 product1">
+                            <img src="images/pic1.jpg" class="img-responsive" alt=""/> 
+                            <div class="shop_desc"><a href="single.html"></a>
+                                <h3><a href="single.html"></a><a href="#">aliquam volutp</a></h3>
+                                <p>Lorem ipsum consectetuer adipiscing </p>
+				<span class="reducedfrom">$66.00</span>
+				<span class="actual">$12.00</span><br>
+				<ul class="buttons">
+                                    <li class="cart"><a href="#">Add To Cart</a></li>
+                                    <li class="shop_btn"><a href="#">Read More</a></li>
+				</ul>
+                                <div class="clear"> </div>
+                            </div>
+			</div>
+			<div class="col-md-4">
+                            <img src="images/pic1.jpg" class="img-responsive" alt=""/> 
+                            <div class="shop_desc"><a href="single.html"></a>
+                                <h3><a href="single.html"></a><a href="#">aliquam volutp</a></h3>
+                                <p>Lorem ipsum consectetuer adipiscing </p>
+                                <span class="reducedfrom">$66.00</span>
+                                <span class="actual">$12.00</span><br>
+				<ul class="buttons">
+                                    <li class="cart"><a href="#">Add To Cart</a></li>
+                                    <li class="shop_btn"><a href="#">Read More</a></li>
+				</ul>
+                                <div class="clear"> </div>
+                            </div>
+			</div>
+                    </div>	
+                </div>
+            </div>
+	</div>
+    <%@include file="Footer.jsp" %>
 </html>

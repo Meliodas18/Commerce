@@ -1633,7 +1633,7 @@ h4.title {
 input.inputbox, input.required, div.k2AccountPage input[type="text"] {
 	background: #FFF;
 	outline-color: #00BFF0;
-	border: 1px solid #EEE;
+	border: 1px solid #AAA;
 	color: inherit;
 	padding: 7px 20px;
 	width: 100%;
