@@ -143,7 +143,7 @@ public class Dvd implements Serializable {
         this.commande = commande;
     }
 
-    @ManyToMany(mappedBy="dvds")
+    @ManyToMany(mappedBy="dvds",fetch=FetchType.EAGER)
     protected Set<Auteur> auteurs;
     
 
@@ -170,4 +170,15 @@ public class Dvd implements Serializable {
         this.editeur = editeur;
     }    
     
+    @ManyToOne(fetch=FetchType.EAGER)
+    private Realisateur realisateur;
+
+    public Realisateur getRealisateur() {
+        return realisateur;
+    }
+
+    public void setRealisateur(Realisateur realisateur) {
+        this.realisateur = realisateur;
+    }
+       
 }

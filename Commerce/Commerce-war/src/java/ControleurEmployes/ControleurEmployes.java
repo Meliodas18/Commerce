@@ -206,13 +206,12 @@ public class ControleurEmployes extends HttpServlet {
             Realisateur realisateur = new Realisateur(request.getParameter("prenomRealisateur"),request.getParameter("nomRealisateur"));
             id = realisateurf.getId(realisateur, param);
             if (id.isEmpty()){
-                realisateur.addDvds(dvd);
                 realisateurf.create(realisateur);
             } else {
                 realisateur = realisateurf.find(id.get(0));
-                realisateur.addDvds(dvd);
                 realisateurf.edit(realisateur);
             }
+            dvd.setRealisateur(realisateur);
             
             Editeur editeur = new Editeur(request.getParameter("nomEditeur"));
             id = editeurf.getId(editeur, paramEditeur);

@@ -70,7 +70,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="menu">
                                   <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
                                     <ul class="nav" id="nav">
-                                        <li><a href="Controleur?action=pageAccueil">Accueil</a></li>
+                                        <li><a href="index.jsp">Accueil</a></li>
                                         <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
                                         <li><a href="http://localhost:8080/Commerce-war/ControleurClients?action=pageConnexion">Mon Compte</a></li>
                                         <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>

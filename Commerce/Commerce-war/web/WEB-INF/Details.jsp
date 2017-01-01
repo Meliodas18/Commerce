@@ -26,15 +26,17 @@
                             </div>
 			    <!-- end product_slider -->
 			    <div class="single_right">
-			      	<h3><%=dvd.getTitre()%></h3>
-			       	<p class="m_10">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse</p>
+			      	<h2><%=dvd.getTitre()%></h2>
 			       	<ul class="options">
                                     <% if (dvd.getQuantite() <= 0){
-                                        out.println("<h4 class=\"m_12\">En rupture !</h4>");
+                                        out.println("<li><h4 class=\"m_12\">En rupture !</h4></li>");
                                     } else {
-                                        out.println("<h4 class=\"m_12\">" + dvd.getQuantite() + " en stock !</h4>");
+                                        out.println("<li><h4 class=\"m_12\">" + dvd.getQuantite() + " en stock !</h4></li>");
                                     }%>
                                 </ul>
+                                <h4><b>Auteurs : </b><%=dvd.getAuteurs()%></h4>
+                                <h4><b>Réalisteurs : </b><%=dvd.getRealisateur()%></h4>
+                                <h4><b>Editeur : </b><%=dvd.getEditeur()%></h4>
 				<div class="clear"> </div>
                             </div>
 			</div>
