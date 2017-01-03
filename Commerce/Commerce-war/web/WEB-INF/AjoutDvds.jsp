@@ -11,33 +11,45 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Ajout de dvds</title>
     </head>
+    <%@include file="Header/ConnecteClient.jsp" %>
     <body>
-        <h1>Ajouter des dvds !</h1>
-        <form method="POST" action="ControleurEmployes">
-            <input type="hidden" name="action" value="ajouterDvd"/>
-            <h2> DVD </h2>
-            <ul>
-                <li><label> Titre : </label> <input type="text" name="titre"/></li>
-                <li><label> Description : </label> <input type="text" name="description"/></li>
-                <li><label> Prix : </label> <input type="text" name="prix"/></li>
-                <li><label> Date de sortie : </label> <input type="text" name="dateSortie"/></li>
-                <li><label> Quantité : </label> <input type="text" name="quantite"/></li>
-            </ul>    
-            <h2> Auteur </h2>
-            <ul>
-                <li><label> Nom : </label> <input type="text" name="nomAuteur"/></li>
-                <li><label> Prénom : </label> <input type="text" name="prenomAuteur"/></li>
-            </ul>
-            <h2> Realisateur </h2>
-            <ul>
-                <li><label> Nom : </label> <input type="text" name="nomRealisateur"/></li>
-                <li><label> Prénom : </label> <input type="text" name="prenomRealisateur"/></li>
-            </ul>
-            <h2> Editeur </h2>
-            <ul>
-                <li><label> Nom : </label> <input type="text" name="nomEditeur"/></li>
-            </ul>
-            <input type="submit" value="Ajouter le dvd"/>        
-        </form>
+        </br>
+        <h4 class="title">Ajouter des dvds !</h4>
+        </br>
+        <form method="POST" action="ControleurEmployes?action=ajouterDvd" id="login-form" enctype="multipart/form-data">
+                
+                <h4 class="title"> Image pour le Dvd </h4>
+                <input type="file" name="file" id="file" />
+                </br>
+                <h4 class="title"> DVD </h4>
+                <ul>
+                    <li><label> Titre : </label> <input type="text" name="titre"/></li>
+                    <li><label> Description : </label> <input type="text" name="description"/></li>
+                    <li><label> Prix : </label> <input type="text" name="prix"/></li>
+                    <li><label> Date de sortie : </label> <input type="text" name="dateSortie"/></li>
+                    <li><label> Quantité : </label> <input type="text" name="quantite"/></li>
+                </ul>    
+                </br>
+                <h4 class="title"> Auteur </h4>
+                <ul>
+                    <li><label>Nom : </label> <input type="text" name="nomAuteur"/></li>
+                    <li><label> Prénom : </label> <input type="text" name="prenomAuteur"/></li>
+                </ul>
+                </br>
+                <h4 class="title"> Realisateur </h4>
+                <ul>
+                    <li><label> Nom : </label> <input type="text" name="nomRealisateur"/></li>
+                    <li><label> Prénom : </label> <input type="text" name="prenomRealisateur"/></li>
+                </ul>
+                </br>
+                <h4 class="title"> Editeur </h4>
+                <ul>
+                    <li><label> Nom : </label> <input type="text" name="nomEditeur"/></li>
+                </ul>
+                </br>
+                
+                <center><input type="submit" value="Ajouter le dvd" class="button" /></center>
+            
+        </form> 
     </body>
 </html>

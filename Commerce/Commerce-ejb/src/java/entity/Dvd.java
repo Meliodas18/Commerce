@@ -34,8 +34,9 @@ public class Dvd implements Serializable {
     private Double prix;
     private String dateSortie;
     private int quantite;
+    private String image;
 
-    public Dvd(String titre, String description, Double prix, String dateSortie, int quantite) {
+    public Dvd(String titre, String description, Double prix, String dateSortie, int quantite, String image) {
         this.titre = titre;
         this.description = description;
         this.prix = prix;
@@ -43,8 +44,14 @@ public class Dvd implements Serializable {
         this.quantite = quantite;
         this.auteurs = new HashSet<>();
         this.commande = new ArrayList<>();
+        this.image=image;
+    }
+
+    public String getImage() {
+        return image;
     }
         
+    
     public Dvd(){
     }
     

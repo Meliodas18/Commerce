@@ -12,7 +12,13 @@ import entity.Dvd;
 import entity.Editeur;
 import entity.Employe;
 import entity.Realisateur;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +28,13 @@ import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import session.AuteurFacade;
 import session.CommandeFacade;
 import session.DvdFacade;
@@ -41,6 +49,7 @@ import session.SousCommandeFacade;
  * @author aymeric
  */
 @WebServlet(name = "ControleurEmployes", urlPatterns = {"/ControleurEmployes"})
+@MultipartConfig
 public class ControleurEmployes extends HttpServlet {
 
     @EJB
@@ -182,7 +191,38 @@ public class ControleurEmployes extends HttpServlet {
     
     //Attention aux exceptions -- doivent pas etre lancées ici à priori
     private void ajouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Dvd dvd = new Dvd(request.getParameter("titre"), request.getParameter("description"), Double.parseDouble(request.getParameter("prix")), request.getParameter("dateSortie"), Integer.parseInt(request.getParameter("quantite")));
+         
+     String path = "/home/huang/Commerce/image";
+     Part filePart = request.getPart("file");
+     String fileName = getFileName(filePart);
+
+    OutputStream out = null;
+    InputStream filecontent = null;
+    
+    try {
+        out = new FileOutputStream(new File(path + File.separator
+                + fileName));
+        filecontent = filePart.getInputStream();
+
+        int read = 0;
+        byte[] bytes = new byte[1024];
+
+        while ((read = filecontent.read(bytes)) != -1) {
+            out.write(bytes, 0, read);
+        }
+    } catch (FileNotFoundException fne) {
+       
+    } finally {
+        if (out != null) {
+            out.close();
+        }
+        if (filecontent != null) {
+            filecontent.close();
+        }
+        
+    }
+               
+        Dvd dvd = new Dvd(request.getParameter("titre"), request.getParameter("description"), Double.parseDouble(request.getParameter("prix")), request.getParameter("dateSortie"), Integer.parseInt(request.getParameter("quantite")), path + File.separator+ fileName);
         String[] paramDvd = {"titre","description","prix","dateSortie"};
         String[] param = {"prenom","nom"};
         String[] paramEditeur = {"nom"};
@@ -226,6 +266,17 @@ public class ControleurEmployes extends HttpServlet {
         }
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
 
+    }
+    
+    private String getFileName( Part part) {
+    String partHeader = part.getHeader("content-disposition");
+    for (String content : part.getHeader("content-disposition").split(";")) {
+        if (content.trim().startsWith("filename")) {
+            return content.substring(
+                    content.indexOf('=') + 1).trim().replace("\"", "");
+        }
+    }
+    return null;
     }
 
     private void pageConnexionEmploye(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
