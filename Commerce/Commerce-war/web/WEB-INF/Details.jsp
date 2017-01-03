@@ -34,9 +34,10 @@
                                         out.println("<li><h4 class=\"m_12\">" + dvd.getQuantite() + " en stock !</h4></li>");
                                     }%>
                                 </ul>
-                                <h4><b>Auteurs : </b><%=dvd.getAuteurs()%></h4>
-                                <h4><b>Réalisteurs : </b><%=dvd.getRealisateur()%></h4>
-                                <h4><b>Editeur : </b><%=dvd.getEditeur()%></h4>
+                                <h4><b>Auteurs : </b><a href="ControleurClients?action=pageAuteur&id=<%=dvd.getAuteurs()%>" class="my-class-for-a"><%=dvd.getAuteurs()%></a></h4>
+                                <h4><b>Réalisateur : </b><a href="ControleurClients?action=pageRealisateur&id=<%=dvd.getRealisateur().getId()%>" class="my-class-for-a"><%=dvd.getRealisateur()%></a></h4>
+                                <h4><b>Editeur : </b><a href="ControleurClients?action=pageEditeur&id=<%=dvd.getEditeur().getId()%>" class="my-class-for-a"><%=dvd.getEditeur()%></a></h4>
+                                <h4><b>Date de Sortie : </b><%=dvd.getDateSortie()%></h4>
 				<div class="clear"> </div>
                             </div>
 			</div>
@@ -63,48 +64,21 @@
                     </div>
                     <div class="row">
                         <h4 class="m_11">Films du même réalisateur</h4>
-			<div class="col-md-4 product1">
-                            <img src="images/pic1.jpg" class="img-responsive" alt=""/> 
+                        <% for (Dvd myDvd : set){%>
+                        <div class="col-md-3 shop_box"><a href="single.html"></a>
+                            <img src="images/pic1.jpg" class="img-responsive" alt=""/>
                             <div class="shop_desc">
-                                <h4>aliquam volutp</h4>
-				<p>Lorem ipsum consectetuer adipiscing </p>
-				<span class="reducedfrom">$66.00</span>
-				<span class="actual">$12.00</span><br>
-				<ul class="buttons">
-                                    <li class="cart"><a href="#">Add To Cart</a></li>
-                                    <li class="shop_btn"><a href="#">Read More</a></li>
-				</ul>
+                                <h3><%=myDvd.getTitre()%></h3>
+                                <% if (myDvd.getQuantite() <= 0){
+                                    out.println("<h5>En rupture !</h5>");
+                                } else {
+                                    out.println("<h5>En stock !</h5>");
+                                }%>
+                                <span class="actual"><%=myDvd.getPrix()%> €</span><br>
                                 <div class="clear"> </div>
                             </div>
-			</div>
-                        <div class="col-md-4 product1">
-                            <img src="images/pic1.jpg" class="img-responsive" alt=""/> 
-                            <div class="shop_desc"><a href="single.html"></a>
-                                <h3><a href="single.html"></a><a href="#">aliquam volutp</a></h3>
-                                <p>Lorem ipsum consectetuer adipiscing </p>
-				<span class="reducedfrom">$66.00</span>
-				<span class="actual">$12.00</span><br>
-				<ul class="buttons">
-                                    <li class="cart"><a href="#">Add To Cart</a></li>
-                                    <li class="shop_btn"><a href="#">Read More</a></li>
-				</ul>
-                                <div class="clear"> </div>
-                            </div>
-			</div>
-			<div class="col-md-4">
-                            <img src="images/pic1.jpg" class="img-responsive" alt=""/> 
-                            <div class="shop_desc"><a href="single.html"></a>
-                                <h3><a href="single.html"></a><a href="#">aliquam volutp</a></h3>
-                                <p>Lorem ipsum consectetuer adipiscing </p>
-                                <span class="reducedfrom">$66.00</span>
-                                <span class="actual">$12.00</span><br>
-				<ul class="buttons">
-                                    <li class="cart"><a href="#">Add To Cart</a></li>
-                                    <li class="shop_btn"><a href="#">Read More</a></li>
-				</ul>
-                                <div class="clear"> </div>
-                            </div>
-			</div>
+                        </div> 
+                        <%}%>        
                     </div>	
                 </div>
             </div>
