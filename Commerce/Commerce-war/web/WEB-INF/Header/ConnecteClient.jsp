@@ -1,17 +1,8 @@
-<!--A Design by W3layouts
-Author: W3layout
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 <%-- 
     Document   : NonConnecte
     Created on : 28 déc. 2016, 11:07:15
     Author     : aymeric
 --%>
-<!DOCTYPE html>
-<html>
-    <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Accueil</title>
         <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />

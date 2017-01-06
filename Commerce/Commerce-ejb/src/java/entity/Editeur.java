@@ -28,7 +28,7 @@ public class Editeur implements Serializable {
     private Long id;
     private String nom;
     
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,mappedBy="editeur")
     protected Set<Dvd> dvds;
 
     public Editeur(String nom) {

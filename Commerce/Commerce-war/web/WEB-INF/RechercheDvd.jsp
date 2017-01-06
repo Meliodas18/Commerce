@@ -41,7 +41,7 @@
                                             } else {
                                                 out.println("<h5>En stock !</h5>");
                                             }%>
-                                            <span class="actual"><%=dvd.getPrix()%>€</span><br>
+                                            <span class="actual"><%=dvd.getPrix()%> €</span><br>
                                             <div class="clear"> </div>
                                             <ul class="buttons">
                                                 <li class="cart"><button type="submit" class="btn-link">Panier</button></li>

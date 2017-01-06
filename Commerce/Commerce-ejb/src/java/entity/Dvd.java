@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -30,6 +31,7 @@ public class Dvd implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String titre;
+    @Size(max=2000)
     private String description;
     private Double prix;
     private String dateSortie;

@@ -18,8 +18,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -184,6 +184,16 @@ public class ControleurEmployes extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    /**
+     * Permet de passer d'une chaîne de caractères avec des accents dans le mauvais format en utf-8
+     * @param s String en provenanace de la request en ISo_8859_1
+     * @return La même chaîne de caractère mais en utf-8
+     */
+    private String goodString(String s){
+        byte[] bytes = s.getBytes(StandardCharsets.ISO_8859_1);
+        return new String(bytes, StandardCharsets.UTF_8); 
+    }
+    
     
     private void pageAjouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getServletContext().getRequestDispatcher("/WEB-INF/AjoutDvds.jsp").forward(request, response);
@@ -192,7 +202,7 @@ public class ControleurEmployes extends HttpServlet {
     //Attention aux exceptions -- doivent pas etre lancées ici à priori
     private void ajouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
          
-     String path = "/home/huang/Commerce/image";
+     String path = "/home/aymeric/Commerce/Commerce/Commerce-war/web/images";
      Part filePart = request.getPart("file");
      String fileName = getFileName(filePart);
 
@@ -221,8 +231,8 @@ public class ControleurEmployes extends HttpServlet {
         }
         
     }
-               
-        Dvd dvd = new Dvd(request.getParameter("titre"), request.getParameter("description"), Double.parseDouble(request.getParameter("prix")), request.getParameter("dateSortie"), Integer.parseInt(request.getParameter("quantite")), path + File.separator+ fileName);
+          
+        Dvd dvd = new Dvd(goodString(request.getParameter("titre")), goodString(request.getParameter("description")), Double.parseDouble(request.getParameter("prix")), request.getParameter("dateSortie"), Integer.parseInt(request.getParameter("quantite")), path + File.separator+ fileName);
         String[] paramDvd = {"titre","description","prix","dateSortie"};
         String[] param = {"prenom","nom"};
         String[] paramEditeur = {"nom"};
@@ -232,7 +242,7 @@ public class ControleurEmployes extends HttpServlet {
         if (dvdf.getId(dvd, paramDvd).isEmpty()){
             dvdf.create(dvd);
             
-            Auteur auteur = new Auteur(request.getParameter("prenomAuteur"),request.getParameter("nomAuteur"));
+            Auteur auteur = new Auteur(goodString(request.getParameter("prenomAuteur")),goodString(request.getParameter("nomAuteur")));
             id = auteurf.getId(auteur, param);
             if (id.isEmpty()){
                 auteur.addDvds(dvd);
@@ -243,7 +253,7 @@ public class ControleurEmployes extends HttpServlet {
                 auteurf.edit(auteur);
             }
             
-            Realisateur realisateur = new Realisateur(request.getParameter("prenomRealisateur"),request.getParameter("nomRealisateur"));
+            Realisateur realisateur = new Realisateur(goodString(request.getParameter("prenomRealisateur")),goodString(request.getParameter("nomRealisateur")));
             id = realisateurf.getId(realisateur, param);
             if (id.isEmpty()){
                 realisateurf.create(realisateur);
@@ -253,7 +263,7 @@ public class ControleurEmployes extends HttpServlet {
             }
             dvd.setRealisateur(realisateur);
             
-            Editeur editeur = new Editeur(request.getParameter("nomEditeur"));
+            Editeur editeur = new Editeur(goodString(request.getParameter("nomEditeur")));
             id = editeurf.getId(editeur, paramEditeur);
             if (id.isEmpty()){
                 editeurf.create(editeur);
