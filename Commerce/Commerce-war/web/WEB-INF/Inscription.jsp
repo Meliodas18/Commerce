@@ -16,6 +16,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Inscription</title>
+        <script src="js/verification.js"></script>
     </head>
     <body>
         <%@include file="Header/NonConnecte.jsp" %>
@@ -24,21 +25,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="container">
                     
                     <div class="col-md-6">
-                        <form method="POST" action="ControleurClients">
+                        <form method="POST" action="ControleurClients" onsubmit="return verifForm(this)">
                             <input type="hidden" name="action" value="ajouterClient"/>
                             <div class="register-top-grid">
                                 <h2>Information personnelle</h2>
                                 <div>
                                     <span>Prenom<label>*</label></span>
-                                    <input type="text" name="prenomClient"/> 
+                                    <input type="text" name="prenomClient" onblur="verif(this)"/> 
                                 </div>
                                 <div>
                                     <span>Nom<label>*</label></span>
-                                    <input type="text" name="nomClient"/>
+                                    <input type="text" name="nomClient" onblur="verif(this)"/>
                                 </div>
                                 <div>
                                     <span>Adresse Email<label>*</label></span>
-                                    <input type="text" name="email" class="inputbox" size="100" autocomplete="off"> 
+                                    <input type="text" name="email" class="inputbox" size="100" autocomplete="off" onblur="verif(this)"/> 
                                 </div>
                                 <div class="clear"> </div>
                             </div>
@@ -46,11 +47,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <div class="register-bottom-grid">
                                 <div>
                                     <span>Mot de Passe<label>*</label></span>
-                                    <input type="text" name="passWord"/>
+                                    <input type="text" name="passWord" onblur="verif(this)"/>
                                 </div>
                                 <div>
                                     <span>Confirmation du Mot de Passe<label>*</label></span>
-                                    <input type="text">
+                                    <input type="text" name="ConfirmPass" onblur="verif(this)"/>
                                 </div>
                                 <div class="clear"></div>
                                 <div class="button1">
