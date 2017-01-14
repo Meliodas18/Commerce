@@ -1059,25 +1059,35 @@ li.youtube a span {
 }
 .shop_desc{
 	border:1px solid #E0E0E0;
-	padding:5%;
+	padding:7% 7% 4% 7%;
+        background-color: lavender;
 }
-.shop_desc h3{
+.shop_desc img{
+        margin-left: auto;
+        margin-right: auto;
+}
+.shop_desc h5, h4, h3, h2{
 	margin-bottom:5px;
+        text-align: center;
 }
-.shop_desc h3 a{
+.shop_desc h5, h4, h3, h2 a{
 	color: #333;
 	font-size: 16px;
 	font-weight: 600;
 	text-decoration: none;
+        text-align: center
 }
-.shop_desc h3 a:hover{
+.shop_desc h5, h4, h3, h2 a:hover{
 	color:#666;
+        text-align: center;
 }
 .shop_desc p{
 	color:#555;
 	font-size:0.8125em;
 	line-height:1.8em;
 	margin-bottom:10px;
+        margin-left: auto;
+        margin-right: auto;
 }
 span.reducedfrom {
 	text-decoration: line-through;
@@ -1087,7 +1097,13 @@ span.reducedfrom {
 span.actual {
 	color: #7DB122;
 	font-size: 1em;
-	color:#000
+	color:#000;
+}
+span.actual-center {
+	color: #7DB122;
+	font-size: 1em;
+	color:#000;
+        text-align: center;
 }
 ul.buttons{
 	list-style: none;

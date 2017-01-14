@@ -4,6 +4,7 @@
     Author     : aymeric
 --%>
 
+<%@page import="entity.Categorie"%>
 <%@page import="entity.Editeur"%>
 <%@page import="entity.Realisateur"%>
 <%@page import="entity.Auteur"%>
@@ -22,6 +23,7 @@
            Set<Auteur> auteurs = dvd.getAuteurs();
            Realisateur real = dvd.getRealisateur();
            Editeur edit = dvd.getEditeur();
+           Set<Categorie> categories = dvd.getCategories();
         %>
         <div class="main">
             <div class="shop_top">
@@ -47,6 +49,9 @@
                                 <h4><b>Réalisateur : </b><%=real.getPrenom()%> <%=real.getNom()%></h4>
                                 <h4><b>Editeur : </b><%=edit.getNom()%></h4>
                                 <h4><b>Date de Sortie : </b><%=dvd.getDateSortie()%></h4>
+                                <% for (Categorie cat : categories){%>
+                                <h4><b>Genre : </b><%=cat.getType()%></h4>
+                                <%}%>
 				<div class="clear"> </div>
                             </div>
 			</div>
@@ -85,7 +90,7 @@
                                     } else {
                                         out.println("<h5>En stock !</h5>");
                                     }%>
-                                    <span class="actual"><%=myDvd.getPrix()%> €</span><br>
+                                    <h5><%=myDvd.getPrix()%> €</h5><br>
                                     <div class="clear"> </div>
                                 </div>
                             </a>

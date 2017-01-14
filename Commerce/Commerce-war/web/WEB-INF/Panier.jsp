@@ -18,22 +18,65 @@
                 if (!confirm("Voulez-vous confirmer la commande ?")) { 
                     document.location.href="http://localhost:8080/Commerce-war/ControleurClients?action=pagePanier";
                 } else {
-                     document.location.href="http://localhost:8080/Commerce-war/ControleurClients?action=confirmOrder&ok=Terminer la commande";
+                    document.location.href="http://localhost:8080/Commerce-war/ControleurClients?action=confirmOrder&ok=Terminer la commande";
                 }
             }
             function Cancel(){
                 document.location.href="http://localhost:8080/Commerce-war/ControleurClients?action=confirmOrder&ok=Annuler";
             }
         </SCRIPT>
-    </head>
-    <body>
-        <h1>Contenu du panier !</h1>
-        <% HashMap<Dvd,Integer> contenu = (HashMap<Dvd,Integer>) request.getAttribute("panier");
-           for (Dvd d : contenu.keySet()){
-                out.print(d + ", Quantité : " + contenu.get(d) + "</br>");
+        <link href="css/mycss.css" rel='stylesheet' type='text/css' />
+        <%@include file="Header/ConnecteClient.jsp" %>
+        <div class="main">
+            <div class="shop_top">
+                <div class="container">
+                    <div class="col-md-11">
+                <% HashMap<Dvd,Integer> contenu = (HashMap<Dvd,Integer>) request.getAttribute("panier");
+                   if (contenu.isEmpty()){%>
+                        </br></br></br></br></br></br>
+                        <h2 class="my-line-2">Votre panier est vide</h2>
+                        </br></br></br></br></br></br>
+                    </div>
+                    <%} else {
+                        out.println("<h2 class=\"my-line-2\">Votre panier</h2>");
+                        for (Dvd dvd : contenu.keySet()){
+                            String path = dvd.getImage().substring(49);
+                            int quantite = contenu.get(dvd);
+                    %>
+                    
+                    <div class="col-md-1">
+                        <img src="<%=path%>" class="img-for-cart"/>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="all-for-cart"><%=dvd.getTitre()%></p>
+                        <%if (dvd.getQuantite() - contenu.get(dvd) > -1){ //si la quantite de dvds au moment où on a passé la commande est supérieur à la quantité demandée
+                            out.print("<p class=\"all-for-cart\">En stock !<p>");
+                        } else {
+                            out.print("<p class=\"all-for-cart\">A commander !<p>");
+                        }%>
+                        </br>
+                        <a href="#" class="all-for-cart">Supprimer</a>
+                    </div>
+                    <div class="col-md-5">
+                        </br></br>
+                        <h2><%=dvd.getPrix()%> €</h2>
+                    </div>
+
+                    <div class="col-md-2">
+                        </br></br>
+                        <input type="number" min="0" class="inputbox" value="<%=quantite%>" name="quantite"/>
+                    </div>
+                    <div class="my-line-1">
+                        </br></br></br></br></br>
+                    </div>
+                    
+               <%}
            }
         %>
+                </div>
+            </div>
+        </div>
         <input onClick="ConfirmMessage()" type="button" value="Terminer la commande"/>
         <input onClick="Cancel()" type="button" value="Annuler"/>
-    </body>
+        <%@include file="Footer.jsp" %>
 </html>

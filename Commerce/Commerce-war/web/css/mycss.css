@@ -1,0 +1,17 @@
+.my-line-1{
+    border-bottom: 1px solid #ECECEC;
+    padding-bottom: 20px;
+}
+.my-line-2{
+    border-bottom: 1px solid #ECECEC;
+    padding-bottom: 40px;
+}
+.img-for-cart{
+    padding-top: 17px;
+    width: 75px;
+    height: auto;
+}
+.all-for-cart{
+    padding-top:15px;
+    padding-left: 28px;
+}
