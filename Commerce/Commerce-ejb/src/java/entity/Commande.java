@@ -35,6 +35,8 @@ public class Commande implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String etat;
+    private double montant;
+    private String date;
     
     @ManyToOne
     protected Client client;
@@ -48,16 +50,34 @@ public class Commande implements Serializable {
     @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER,mappedBy="commande",orphanRemoval=true)
     private Set<SousCommande> sousCommande;
     
-    public Commande(String etat, Client client) {
+    public Commande(String etat, Client client, double montant, String date) {
         this.dvds = new HashMap<>();
         this.etat = etat;
         this.client = client;
         this.sousCommande = new HashSet<>();
+        this.montant = montant;
+        this.date = date;
     }
     
     public Commande(){
         this.dvds = new HashMap<>();
         this.sousCommande = new HashSet<>();
+    }
+
+    public double getMontant() {
+        return montant;
+    }
+
+    public void setMontant(double montant) {
+        this.montant = montant;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public void setDvds(Map<Dvd,Integer> dvds) {

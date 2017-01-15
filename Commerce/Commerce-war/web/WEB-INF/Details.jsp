@@ -17,6 +17,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Details</title>
         <%@include file="Header/ConnecteClient.jsp" %>
+        <link href="css/mycss.css" rel='stylesheet' type='text/css' />
         <% Dvd dvd = (Dvd)request.getAttribute("dvd");
            Set<Dvd> set = (Set<Dvd>)request.getAttribute("set");
            String path = dvd.getImage().substring(49);
@@ -31,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-9 single_left">
                             <div class="single_image">
-                                <img class="etalage_source_image" src="<%=path%>" height="380" width="290"/>
+                                <img class="img-for-details" src="<%=path%>"/>
                             </div>
 			    <!-- end product_slider -->
 			    <div class="single_right">

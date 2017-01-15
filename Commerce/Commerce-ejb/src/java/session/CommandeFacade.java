@@ -6,6 +6,8 @@
 package session;
 
 import entity.Commande;
+import java.util.Iterator;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -37,6 +39,39 @@ public class CommandeFacade extends AbstractFacade<Commande> {
             edit(commande);
             sendEmail(emailEmploye, "[Projet Jboss EJB] Commandes n°" + commande.getId(), commande.toString());
         }
+    }
+    
+    public List<Commande> getAttente(){
+        List<Commande> temp = findAll();
+        Iterator<Commande> i = temp.iterator();
+        while (i.hasNext()){
+            if (!i.next().getEtat().equals("En Attente")){
+                i.remove();
+            }
+        }
+        return temp;
+    }
+    
+    public List<Commande> getCours(){
+        List<Commande> temp = findAll();
+        Iterator<Commande> i = temp.iterator();
+        while (i.hasNext()){
+            if (!i.next().getEtat().equals("En Cours")){
+                i.remove();
+            }
+        }
+        return temp;
+    }
+    
+    public List<Commande> getEffectuee(){
+        List<Commande> temp = findAll();
+        Iterator<Commande> i = temp.iterator();
+        while (i.hasNext()){
+            if (!i.next().getEtat().equals("Effectuée")){
+                i.remove();
+            }
+        }
+        return temp;
     }
     
 }

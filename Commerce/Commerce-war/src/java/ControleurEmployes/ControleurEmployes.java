@@ -200,6 +200,7 @@ public class ControleurEmployes extends HttpServlet {
     }
     
     //Attention aux exceptions -- doivent pas etre lancées ici à priori
+    //!!! Changer le path
     private void ajouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
          
      String path = "/home/aymeric/Commerce/Commerce/Commerce-war/web/images";
@@ -311,7 +312,9 @@ public class ControleurEmployes extends HttpServlet {
     
     //Affiche les commandes
     private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("listCommandes",commandef.findAll());
+        request.setAttribute("attente",commandef.getAttente());
+        request.setAttribute("cours",commandef.getCours());
+        request.setAttribute("effectuee",commandef.getEffectuee());
         getServletContext().getRequestDispatcher("/WEB-INF/Commande.jsp").forward(request, response);
     }
     

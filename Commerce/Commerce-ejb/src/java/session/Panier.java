@@ -11,6 +11,9 @@ import entity.Dvd;
 import entity.Editeur;
 import entity.SousCommande;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -108,7 +111,9 @@ public class Panier{
     @Remove
     public void confirmOrder(Client client) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
         if (!dvdh.isEmpty()){
-            Commande commande = new Commande("En Cours",client);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            Date date = new Date();
+            Commande commande = new Commande("En Cours",client,toPay(),dateFormat.format(date));
             Set<Editeur> editeurs = new HashSet<>();
             Set<Dvd> dvds = new HashSet<>();
             SousCommande sc; //= new SousCommande(commande,editeur);

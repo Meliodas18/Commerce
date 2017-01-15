@@ -26,7 +26,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="login-page">
                             <h4 class="title">Nouveau Client</h4>
                             <p> Vous êtes un nouveau client ? En poursuivant, vous pourrez créer votre propre compte en renseignant quelques informations personnelles. N'hésitez pas à rejoindre notre communauté afin de pouvoir avoir accès à tous les privilèges liés à la possession de votre compte ! La nouvelle version de notre site web vous promet une nouvelle expérience unique !</p>
-                            </br>    
+                            </br>    </br> 
                             <div class="button1">
                                 <a href="http://localhost:8080/Commerce-war/ControleurClients?action=pageInscription"><input type="submit" name="Submit" value="Créer un compte"></a>
                             </div>
