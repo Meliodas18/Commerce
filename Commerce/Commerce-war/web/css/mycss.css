@@ -1,9 +1,9 @@
 .my-line-1{
-    border-bottom: 1px solid #ECECEC;
+    border-bottom: 1px solid #BEBEBE;
     padding-bottom: 20px;
 }
 .my-line-2{
-    border-bottom: 1px solid #ECECEC;
+    border-bottom: 1px solid #BEBEBE;
     padding-bottom: 40px;
 }
 .img-for-cart{
@@ -13,5 +13,9 @@
 }
 .all-for-cart{
     padding-top:15px;
-    padding-left: 28px;
+    padding-left:28px;
+}
+.cart-top-8{
+    margin-top: 15px;
+    float:right;
 }

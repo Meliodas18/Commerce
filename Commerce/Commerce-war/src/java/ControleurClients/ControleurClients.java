@@ -109,6 +109,9 @@ public class ControleurClients extends HttpServlet {
             case "pageDetails":
                 pageDetails(request,response);
                 break;
+            case "removeCart":
+                removeCart(request,response,panierClient);
+                break;
             default:
                 break;
         }
@@ -169,6 +172,7 @@ public class ControleurClients extends HttpServlet {
 
     private void pagePanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
         request.setAttribute("panier",panierClient.getDvd());
+        request.setAttribute("toPay",panierClient.toPay());
         getServletContext().getRequestDispatcher("/WEB-INF/Panier.jsp").forward(request, response);
     }
 
@@ -177,7 +181,6 @@ public class ControleurClients extends HttpServlet {
         request.setAttribute("listeDvds", list);
         getServletContext().getRequestDispatcher("/WEB-INF/RechercheDvd.jsp").forward(request, response);
     }
-    
     
     private void ajouterClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         clientf.create(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"),request.getParameter("email")));
@@ -264,6 +267,11 @@ public class ControleurClients extends HttpServlet {
         request.setAttribute("set",set);
         getServletContext().getRequestDispatcher("/WEB-INF/Details.jsp").forward(request, response);
         
+    }
+
+    private void removeCart(HttpServletRequest request, HttpServletResponse response, Panier panier) throws ServletException, IOException {
+        panier.removeDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))),Integer.parseInt(request.getParameter("quantite")));
+        this.pagePanier(request, response, panier);
     }
     
 }

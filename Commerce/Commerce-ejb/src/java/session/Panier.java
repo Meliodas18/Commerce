@@ -73,7 +73,11 @@ public class Panier{
     
     //Remove une quantite :quantity de dvd :dvd
     public void removeDvd(Dvd dvd, int quantity){
-        dvdh.replace(dvd,dvdf.find(dvd.getId()).getQuantite() + quantity);
+        if (dvdh.get(dvd) - quantity == 0){
+            dvdh.remove(dvd);
+        } else {
+            dvdh.replace(dvd,dvdh.get(dvd) - quantity); 
+        }
         dvdf.increaseQuantity(quantity,dvdf.find(dvd.getId()));
         //commandef.changeState(dvdf.find(dvd.getId()).getCommande(), quantity, emailEmploye);
     }
@@ -88,6 +92,14 @@ public class Panier{
     
     public HashMap<Dvd,Integer> getDvd(){
         return this.dvdh;
+    }
+    
+    public double toPay(){
+        double result = 0;
+        for (Dvd dvd : dvdh.keySet()){
+            result += dvd.getPrix() * dvdh.get(dvd);
+        }
+        return result;
     }
     
     //On crée une commande et on ajoute la hashMap des dvds dans la commande avant d'effacer la hashMap

@@ -1631,9 +1631,9 @@ h4.title {
 }
 .button1 input[type="submit"] {
 	background: #000;
-	border: none;
+	border: 1px solid white;
 	color: #FFF;
-	padding: 10px 20px;
+        padding: 10px 20px;
 	cursor: pointer;
 	float: right;
 	font-family: 'Open Sans', sans-serif;
@@ -1689,8 +1689,8 @@ fieldset.input input[type="submit"]:hover {
 	color:#00BFF0;
 }
 .button1 {
-	float: right;
-	margin-top: 8%;
+	float: left;
+	margin-top: 2%;
 }
 /*--register--*/
 .register-top-grid h3, .register-bottom-grid h3 {

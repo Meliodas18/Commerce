@@ -32,6 +32,7 @@
                 <div class="container">
                     <div class="col-md-11">
                 <% HashMap<Dvd,Integer> contenu = (HashMap<Dvd,Integer>) request.getAttribute("panier");
+                   double toPay = (double) request.getAttribute("toPay");
                    if (contenu.isEmpty()){%>
                         </br></br></br></br></br></br>
                         <h2 class="my-line-2">Votre panier est vide</h2>
@@ -55,7 +56,7 @@
                             out.print("<p class=\"all-for-cart\">A commander !<p>");
                         }%>
                         </br>
-                        <a href="#" class="all-for-cart">Supprimer</a>
+                        <a href="ControleurClients?action=removeCart&id=<%=dvd.getId()%>&quantite=<%=quantite%>" class="all-for-cart">Supprimer</a>
                     </div>
                     <div class="col-md-5">
                         </br></br>
@@ -68,15 +69,24 @@
                     </div>
                     <div class="my-line-1">
                         </br></br></br></br></br>
+                    </div>                    
+            <%}%>
+            <!-- Dernière ligne : boutons terminer commande et annuler ainsi que le montant à payer-->
+            <div class="clear"></div>
+                    <div class="col-md-9">
+                        <div class="button1">
+                            <input onClick="Cancel()" type="submit" value="Annuler" class="button"/>
+                            <input onClick="ConfirmMessage()" type="submit" value="Terminer la commande" class="button"/>
+                        </div>
                     </div>
-                    
-               <%}
-           }
+                    <div class="col-md-3">
+                        <h2 class="cart-top-8">Total : <%=toPay%> €</h2>
+                    </div>
+
+            <%}
         %>
                 </div>
             </div>
         </div>
-        <input onClick="ConfirmMessage()" type="button" value="Terminer la commande"/>
-        <input onClick="Cancel()" type="button" value="Annuler"/>
         <%@include file="Footer.jsp" %>
 </html>
