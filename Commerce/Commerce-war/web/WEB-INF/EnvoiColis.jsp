@@ -10,16 +10,29 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Envoi des colis</title>
-    </head>
-    <body>
-        <h1>Colis à envoyer</h1>
-        <form method="POST" action="ControleurEmployes">
-            <input type="hidden" name="action" value="envoiColis"/>
-            <ul>
-                <li><label> ID Commande : </label> <input type="text" name="id"/></li>
-            </ul>
-            <input type="submit" value="Valider le traitement de la commande"/> 
-            <input type="reset"/>
-        </form>
-    </body>
+        <link href="css/mycss.css" rel='stylesheet' type='text/css' />
+        <%@include file="Header/ConnecteClient.jsp" %>
+        <div class="main">
+            <div class="shop_top">
+                <div class="container">
+                    <div class="col-md-12">
+                        <h2 class="my-line-2">Envoi des colis</h2>
+                    </div>
+                    <br/><br/><br/><br/><br/></br>
+                    <form method="POST" action="ControleurEmployes">
+                        <input type="hidden" name="action" value="envoiColis"/>
+                        <div class="to">
+                            <label> ID Commande : </label> <input class="text" type="text" name="id"/>
+                        </div>
+                        </br>
+                        <div class="button1">
+                            <input type="reset" value="Réinitialiser"/>
+                            <input type="submit" value="Valider le traitement de la commande"/> 
+                        </div>
+                        </br></br></br></br></br></br></br>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%@include file="Footer.jsp" %>
 </html>
