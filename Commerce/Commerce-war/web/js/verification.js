@@ -29,7 +29,7 @@ function verif(champ)
 function verifnumb(champ)
 {
     var numb = parseInt(champ.value);
-   if(isNaN(numn) || numb < 1 )
+   if(numb < 1 )
    {
       surligne(champ, true);
       return false;
