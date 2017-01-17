@@ -14,7 +14,7 @@ function surligne(champ, erreur)
 
 function verif(champ)
 {
-   if(champ.value.length < 2 || champ.value.length > 25)
+   if(champ.value.length < 1 || champ.value.length > 25)
    {
       surligne(champ, true);
       return false;
@@ -28,8 +28,8 @@ function verif(champ)
 
 function verifnumb(champ)
 {
-    var age = parseInt(champ.value);
-   if(isNaN(age) || age < 5 || age > 111)
+    var numb = parseInt(champ.value);
+   if(isNaN(numn) || numb < 1 )
    {
       surligne(champ, true);
       return false;
