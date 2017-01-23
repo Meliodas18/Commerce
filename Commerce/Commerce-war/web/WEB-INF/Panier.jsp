@@ -4,6 +4,7 @@
     Author     : aymeric
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="entity.Dvd"%>
 <%@page import="java.util.LinkedList"%>
@@ -56,6 +57,7 @@
                     <div class="col-md-11">
                 <% HashMap<Dvd,Integer> contenu = (HashMap<Dvd,Integer>) request.getAttribute("panier");
                    double toPay = (double) request.getAttribute("toPay");
+                   DecimalFormat df = new DecimalFormat("0.00");
                    if (contenu.isEmpty()){%>
                         </br></br></br></br></br></br>
                         <h2 class="my-line-2">Votre panier est vide</h2>
@@ -83,7 +85,7 @@
                     </div>
                     <div class="col-md-5">
                         </br></br>
-                        <h2><%=dvd.getPrix()%> €</h2>
+                        <h2><%=df.format(dvd.getPrix())%> €</h2>
                     </div>
 
                     <div class="col-md-2">
@@ -156,9 +158,8 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <h2 id="total" class="cart-top-8">Total : <%=toPay%> €</h2>
+                        <h2 id="total" class="cart-top-8">Total : <%=df.format(toPay)%> €</h2>
                     </div>
-
             <%}
         %>
                 </div>

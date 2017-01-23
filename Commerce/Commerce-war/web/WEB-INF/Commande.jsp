@@ -36,7 +36,7 @@
                         <br/><br/>
                         <% List<Commande> attente = (List<Commande>) request.getAttribute("attente");
                         if (attente.isEmpty()){
-                            out.println("<h3> Vous n'avez pas de commandes en attente !</h3>");
+                            out.println("<h3> Vous n'avez pas de commandes en attente !</h3><br/><br/><br/>");
                         } else {
                             out.println("<ul>");
                             for (Commande c : attente){%>
@@ -53,7 +53,7 @@
                         <br/><br/>
                         <% List<Commande> cours = (List<Commande>) request.getAttribute("cours");
                         if (cours.isEmpty()){
-                            out.println("<h3> Vous n'avez pas de commandes en cours !</h3>");
+                            out.println("<h3> Vous n'avez pas de commandes en cours !</h3><br/><br/><br/>");
                         } else {
                             out.println("<ul>");
                             for (Commande c : cours){%>
@@ -70,7 +70,7 @@
                         <br/><br/>
                         <% List<Commande> effectuee = (List<Commande>) request.getAttribute("effectuee");
                         if (effectuee.isEmpty()){
-                            out.println("<h3> Vous n'avez pas de commandes effectuées !</h3>");
+                            out.println("<h3> Vous n'avez pas de commandes effectuées !</h3><br/><br/><br/>");
                         }else {
                             out.println("<ul>");
                             for (Commande c : effectuee){%>

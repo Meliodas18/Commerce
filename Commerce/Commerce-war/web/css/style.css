@@ -1268,11 +1268,11 @@ p.m_8{
 	border-color:#E25050;
 }
 .text {
-	width:50%;
+	width:100%;
 	float:left;
 }
 .text input[type="text"], .text textarea {
-	width:100%;
+	width:97.5%;
 	font-size: 0.85em;
 	margin: 10px 0;
 	border: none;
