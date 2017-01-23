@@ -38,15 +38,15 @@ public class ControleurClients extends HttpServlet {
 
     @EJB
     private ClientFacade clientf;
-    
+
     @EJB
     private AuteurFacade auteurf;
-    
+
     @EJB
     private DvdFacade dvdf;
-    
+
     private Client clientConnect = new Client();
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -58,13 +58,12 @@ public class ControleurClients extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        
-        
+
         //Récupération du panier
-        Panier panierClient = (Panier)request.getSession().getAttribute("panier");
+        Panier panierClient = (Panier) request.getSession().getAttribute("panier");
 
         //Si le panier n'existe pas -- on le crée
-        if (panierClient == null){
+        if (panierClient == null) {
             try {
                 InitialContext ic = new InitialContext();
                 panierClient = (Panier) ic.lookup("java:global/Commerce/Commerce-ejb/Panier");
@@ -73,11 +72,11 @@ public class ControleurClients extends HttpServlet {
             }
             request.getSession().setAttribute("panier", panierClient);
         }
-                
+
         String action = request.getParameter("action");
         switch (action) {
             case "pageRechercherDvd":
-                pageRechercherDvd(request,response);
+                pageRechercherDvd(request, response);
                 break;
             case "ajouterPanier":
                 ajouterPanier(request, response, panierClient);
@@ -85,32 +84,38 @@ public class ControleurClients extends HttpServlet {
             case "pagePanier":
                 pagePanier(request, response, panierClient);
                 break;
+            case "actualiserPanier":
+                actualiserPanier(request, response, panierClient);
+                break;
+            case "actualiserPanierDecrease":
+                actualiserPanierDecrease(request, response, panierClient);
+                break;
             case "ajouterClient":
                 ajouterClient(request, response);
                 break;
             case "pageInscription":
-                pageInscription(request,response);
+                pageInscription(request, response);
                 break;
             case "pageConnexion":
-                pageConnexion(request,response);
+                pageConnexion(request, response);
                 break;
             case "connexion":
-                connexion(request,response);
+                connexion(request, response);
                 break;
             case "confirmOrder":
-                confirmOrder(request,response,panierClient);
+                confirmOrder(request, response, panierClient);
                 break;
             case "deconnexion":
-                deconnexion(request,response,panierClient);
+                deconnexion(request, response, panierClient);
                 break;
             case "interactiveResearch":
-                interactiveResearch(request,response);
+                interactiveResearch(request, response);
                 break;
             case "pageDetails":
-                pageDetails(request,response);
+                pageDetails(request, response);
                 break;
             case "removeCart":
-                removeCart(request,response,panierClient);
+                removeCart(request, response, panierClient);
                 break;
             default:
                 break;
@@ -164,15 +169,38 @@ public class ControleurClients extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-
     private void ajouterPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
-        panierClient.addDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))),Integer.parseInt(request.getParameter("quantite")));
+        panierClient.addDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))), Integer.parseInt(request.getParameter("quantite")));
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
 
+    private void actualiserPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+        Dvd dvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
+
+            panierClient.addDvd(dvd, 1);
+        
+
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+        response.getWriter().write("<message>" + panierClient.toPay() + "</message>");
+
+    }
+    
+    private void actualiserPanierDecrease(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+        Dvd dvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
+
+           panierClient.removeDvd(dvd, 1);
+        
+
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+        response.getWriter().write("<message>" + panierClient.toPay() + "</message>");
+
+    }
+
     private void pagePanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
-        request.setAttribute("panier",panierClient.getDvd());
-        request.setAttribute("toPay",panierClient.toPay());
+        request.setAttribute("panier", panierClient.getDvd());
+        request.setAttribute("toPay", panierClient.toPay());
         getServletContext().getRequestDispatcher("/WEB-INF/Panier.jsp").forward(request, response);
     }
 
@@ -181,14 +209,14 @@ public class ControleurClients extends HttpServlet {
         request.setAttribute("listeDvds", list);
         getServletContext().getRequestDispatcher("/WEB-INF/RechercheDvd.jsp").forward(request, response);
     }
-    
+
     private void ajouterClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        clientf.create(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"),request.getParameter("email")));
+        clientf.create(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"), request.getParameter("email")));
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
 
     private void pageInscription(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       getServletContext().getRequestDispatcher("/WEB-INF/Inscription.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/Inscription.jsp").forward(request, response);
     }
 
     private void pageConnexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -196,23 +224,23 @@ public class ControleurClients extends HttpServlet {
     }
 
     private void connexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        
-        String[] parametres = {"email","motDePasse"};
-        ArrayList<Long> findId = clientf.getId(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"),request.getParameter("email")), parametres);
-        if (findId.isEmpty()){
+
+        String[] parametres = {"email", "motDePasse"};
+        ArrayList<Long> findId = clientf.getId(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"), request.getParameter("email")), parametres);
+        if (findId.isEmpty()) {
             request.setAttribute("erreur", true);
             getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
         } else {
-            request.getSession().setAttribute("mode","client");
+            request.getSession().setAttribute("mode", "client");
             clientConnect.setEmail(request.getParameter("email"));
             clientConnect.setMotDePasse(request.getParameter("passWord"));
             clientConnect = clientf.find(clientf.getId(clientConnect, parametres).get(0));
-            getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request,response);
+            getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
         }
     }
 
     private void confirmOrder(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        if (request.getParameter("ok").equals("Annuler")){
+        if (request.getParameter("ok").equals("Annuler")) {
             panierClient.removeAll();
         } else {
             panierClient.confirmOrder(clientConnect);
@@ -228,50 +256,49 @@ public class ControleurClients extends HttpServlet {
 
     //Fonction de recherche
     private void interactiveResearch(HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException, IOException {
-        
+
         //Déclaration des paramètres et récupération des données de recherche
         String[] values = request.getParameter("auteur").split(" ");
-        String[] parametres = {"prenom","nom"};
+        String[] parametres = {"prenom", "nom"};
         ArrayList<Long> array = new ArrayList<>();
         ArrayList<Dvd> arrayDvd = new ArrayList<>();
-        
-        
+
         /*Recherche en fonction de l'auteur
         Si un mot on regarde les deux cas : c'est le nom ou c'est le prénom
         Sinon, il faut tester les différentes combinaisons possibles
-        */
-        if (values.length >= 2){
-            for (int i = 0 ; i < values.length; i++){
-                array.addAll(auteurf.getIdForResearch(new Auteur(values[i],values[(i+1)%values.length]), parametres));
+         */
+        if (values.length >= 2) {
+            for (int i = 0; i < values.length; i++) {
+                array.addAll(auteurf.getIdForResearch(new Auteur(values[i], values[(i + 1) % values.length]), parametres));
             }
-        } else if (values.length == 1 && !values[0].equals("")){
-            array.addAll(auteurf.getIdForResearch(new Auteur(values[0],""),parametres));
-            array.addAll(auteurf.getIdForResearch(new Auteur("",values[0]),parametres));    
+        } else if (values.length == 1 && !values[0].equals("")) {
+            array.addAll(auteurf.getIdForResearch(new Auteur(values[0], ""), parametres));
+            array.addAll(auteurf.getIdForResearch(new Auteur("", values[0]), parametres));
         }
-        
+
         //Si on a trouvé des correspondances pour la recherche
-        if (!array.isEmpty()){
-            for (Long id : array){
+        if (!array.isEmpty()) {
+            for (Long id : array) {
                 arrayDvd.addAll(auteurf.find(id).getDvds());
             }
             request.setAttribute("setDvd", arrayDvd);
         }
-        pageRechercherDvd(request,response);
+        pageRechercherDvd(request, response);
     }
 
     private void pageDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Dvd tempDvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
-        request.setAttribute("dvd",tempDvd);
+        request.setAttribute("dvd", tempDvd);
         Editeur editeur = tempDvd.getEditeur();
         Set<Dvd> set = editeur.getDvds();
-        request.setAttribute("set",set);
+        request.setAttribute("set", set);
         getServletContext().getRequestDispatcher("/WEB-INF/Details.jsp").forward(request, response);
-        
+
     }
 
     private void removeCart(HttpServletRequest request, HttpServletResponse response, Panier panier) throws ServletException, IOException {
-        panier.removeDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))),Integer.parseInt(request.getParameter("quantite")));
+        panier.removeDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))), Integer.parseInt(request.getParameter("quantite")));
         this.pagePanier(request, response, panier);
     }
-    
+
 }

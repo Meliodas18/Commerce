@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Panier</title>
+        <script src="js/jquery.min.js"></script>
         <SCRIPT language=javascript>
             function ConfirmMessage() {
                 if (!confirm("Voulez-vous confirmer la commande ?")) { 
@@ -24,6 +25,28 @@
             function Cancel(){
                 document.location.href="http://localhost:8080/Commerce-war/ControleurClients?action=confirmOrder&ok=Annuler";
             }
+            function getXMLHttpRequest() {
+
+                    var xhr = null;
+                    if (window.XMLHttpRequest || window.ActiveXObject) {
+                        if (window.ActiveXObject) {
+                            try {
+                                xhr = new ActiveXObject("Msxml2.XMLHTTP");
+                            } catch(e) {
+                                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                            }
+                        } else {
+                            xhr = new XMLHttpRequest(); 
+                        }
+                    } else {
+                        alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+                        return null;
+                    }
+                    return xhr;
+                }
+                
+      
+           
         </SCRIPT>
         <link href="css/mycss.css" rel='stylesheet' type='text/css' />
         <%@include file="Header/ConnecteClient.jsp" %>
@@ -65,8 +88,61 @@
 
                     <div class="col-md-2">
                         </br></br>
-                        <input type="number" min="0" class="inputbox" value="<%=quantite%>" name="quantite"/>
+                        <input type="number" id="<%=dvd.getId()%>" min="0" class="inputbox"  value="<%=quantite%>" name="quantite"/>
                     </div>
+                    <script>
+                                  
+    
+                                    function request(callback, bool, id) {
+                                       
+                                    var xhr = getXMLHttpRequest();
+                                    if(bool){
+                                         xhr.onreadystatechange = function() {
+                                            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+                                                    callback(xhr.responseXML);
+                                            }
+                                    };
+                                            
+                                                       xhr.open("GET", "ControleurClients?action=actualiserPanier&id="+id, true);
+                                                       xhr.send(null);
+                                    }else{
+                                         xhr.onreadystatechange = function() {
+                                            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+                                                    callback(xhr.responseXML);
+                                            }
+                                    };
+                                            
+                                                       xhr.open("GET", "ControleurClients?action=actualiserPanierDecrease&id="+id, true);
+                                                       xhr.send(null);
+                                        
+                                    }
+                                   
+                                    };
+
+                                function readData(sData) {
+                                       var messageTag = sData.getElementsByTagName("message")[0];
+                                        message = messageTag.childNodes[0].nodeValue;
+                                        mdiv = document.getElementById("total");
+                                        mdiv.innerHTML = "Total : "+ message + " €";
+                                        
+                                         
+                                };
+                        
+                                $(function() {
+                                   $('#<%=dvd.getId()%>').change( function() {
+                                    var direction = this.defaultValue - this.value;
+                                    this.defaultValue = this.value;
+                                    var id = <%=dvd.getId()%>;
+                                    alert(direction);
+                                    if(direction < 0)
+                                    request(readData,true,id);
+                                    else request(readData,false,id);
+
+
+
+                                   });
+                                   });
+                    </script>
                     <div class="my-line-1">
                         </br></br></br></br></br>
                     </div>                    
@@ -80,7 +156,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <h2 class="cart-top-8">Total : <%=toPay%> €</h2>
+                        <h2 id="total" class="cart-top-8">Total : <%=toPay%> €</h2>
                     </div>
 
             <%}
@@ -88,5 +164,7 @@
                 </div>
             </div>
         </div>
+    
+       
         <%@include file="Footer.jsp" %>
 </html>

@@ -67,4 +67,13 @@ public class DvdFacade extends AbstractFacade<Dvd> {
         }
     }
     
+    public int getQuantite(Dvd dvd){
+        Dvd dvdTemp = this.find(dvd.getId());
+        if (dvdTemp != null){
+            return dvdTemp.getQuantite();
+        } else {
+            return -1;
+        }
+    }
+    
 }
