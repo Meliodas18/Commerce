@@ -9,10 +9,12 @@ import Controleur.Controleur;
 import entity.Auteur;
 import entity.Client;
 import entity.Dvd;
-import entity.Editeur;
 import java.io.IOException;
+import static java.lang.Integer.min;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -288,12 +290,37 @@ public class ControleurClients extends HttpServlet {
 
     private void pageDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Dvd tempDvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
+        Set<Dvd> mySet = getThreeDvd(tempDvd);
+        mySet.remove(tempDvd);
+        request.setAttribute("set", mySet);
         request.setAttribute("dvd", tempDvd);
-        Editeur editeur = tempDvd.getEditeur();
-        Set<Dvd> set = editeur.getDvds();
-        request.setAttribute("set", set);
         getServletContext().getRequestDispatcher("/WEB-INF/Details.jsp").forward(request, response);
-
+    }
+    
+    /**
+     * Fonction qui est chargée de trouver des dvds similaires au dvd passé en paramètre
+     * @param dvd, dvd en cours de lecture de la part du client et à partir duquel il faut choisir des dvds similaires
+     * @return un set de dvd
+     */
+    private Set<Dvd> getThreeDvd(Dvd dvd){
+        Set<Dvd> dvds = new HashSet<>();
+        dvds.addAll(dvd.getRealisateur().getDvds());
+        if (dvds.size() > 4){ //5 car il peu y avoir le dvd passé en paramètre et il en faut au moins 4
+            return dvds;
+        }
+        dvds.addAll(dvd.getEditeur().getDvds());
+        if (dvds.size() > 4){
+            return dvds;
+        }
+        for (Auteur a : dvd.getAuteurs()){
+            dvds.addAll(a.getDvds());
+            if (dvds.size() > 4){
+                return dvds;
+            }
+        }
+        List<Dvd> tempList = dvdf.findAll();
+        dvds.addAll(tempList.subList(0, min(4,tempList.size())));
+        return dvds;
     }
 
     private void removeCart(HttpServletRequest request, HttpServletResponse response, Panier panier) throws ServletException, IOException {

@@ -37,13 +37,14 @@
 			    <!-- end product_slider -->
 			    <div class="single_right">
 			      	<h2><%=dvd.getTitre()%></h2>
+                                <br/><br/><br/>
 			       	<ul class="options">
                                     <% if (dvd.getQuantite() <= 0){
                                         out.println("<li><h4 class=\"m_12\">En rupture !</h4></li>");
                                     } else {
                                         out.println("<li><h4 class=\"m_12\">" + dvd.getQuantite() + " en stock !</h4></li>");
                                     }%>
-                                </ul>
+                                </ul><br/>
                                 <% for (Auteur aut : auteurs){%>
                                 <h4><b>Auteurs : </b><%=aut.getPrenom()%> <%=aut.getNom()%></h4>
                                 <%}%>
@@ -73,13 +74,13 @@
                           
 			</div>
                     </div>	
-                    </br></br>
+                    </br>
                     <div class="desc">
-			<h4>Description</h4>
+			<h4>Description</h4><br/>
 			<p><%=dvd.getDescription()%></p>
                     </div>
-                    <div class="row">
-                        <h4 class="m_11">Films du même réalisateur</h4>
+                    <div class="row"><br/>
+                        <h4 class="m_11">Films qui peuvent vous intéresser !</h4><br/>
                         <% for (Dvd myDvd : set){%>
                         <div class="col-md-3 shop_box">
                             <a href="ControleurClients?action=pageDetails&id=<%=myDvd.getId()%>" class="my-class-for-a">
