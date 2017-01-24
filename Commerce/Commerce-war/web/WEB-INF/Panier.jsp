@@ -135,7 +135,6 @@
                                     var direction = this.defaultValue - this.value;
                                     this.defaultValue = this.value;
                                     var id = <%=dvd.getId()%>;
-                                    alert(direction);
                                     if(direction < 0)
                                     request(readData,true,id);
                                     else request(readData,false,id);
