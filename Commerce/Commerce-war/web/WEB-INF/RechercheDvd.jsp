@@ -114,12 +114,12 @@
                         <div id="pp9">
                         </div>
                         <div id="pp10" class="to" style="display:none">
-                            <h3 class="h3-for-recherche">Entrer le titre : </h3><input type="text" name="titre"/><br/>
+                            <h3 class="h3-for-recherche">Entrez le titre : </h3><input type="text" name="titre"/><br/>
                         </div>
                         <div id="pp11">
                         </div>
                         <div id="pp12" class="to"  style="display:none">
-                            <h3 class="h3-for-recherche">Entrer l'année : </h3><input type="text" name="annee"/><br/>
+                            <h3 class="h3-for-recherche">Entrez l'année : </h3><input type="text" name="annee"/><br/>
                         </div>
                     </div>
                     <div id="Page2">

@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import session.AuteurFacade;
 import session.ClientFacade;
 import session.DvdFacade;
+import static session.EmailSessionBean.sendEmail;
 import session.Panier;
 
 /**
@@ -57,6 +58,9 @@ public class ControleurClients extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.lang.NoSuchMethodException
+     * @throws java.lang.IllegalAccessException
+     * @throws java.lang.reflect.InvocationTargetException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -118,6 +122,12 @@ public class ControleurClients extends HttpServlet {
                 break;
             case "removeCart":
                 removeCart(request, response, panierClient);
+                break;
+            case "pageForgetPassword":
+                pageForgetPassword(request,response);
+                break;
+            case "forgetPassword":
+                forgetPassword(request,response);
                 break;
             default:
                 break;
@@ -326,6 +336,24 @@ public class ControleurClients extends HttpServlet {
     private void removeCart(HttpServletRequest request, HttpServletResponse response, Panier panier) throws ServletException, IOException {
         panier.removeDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))), Integer.parseInt(request.getParameter("quantite")));
         this.pagePanier(request, response, panier);
+    }
+
+    private void pageForgetPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("email","vrai");
+        getServletContext().getRequestDispatcher("/WEB-INF/PasswordOublie.jsp").forward(request, response);
+    }
+
+    private void forgetPassword(HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException, IOException {
+        Client tempClient = new Client();
+        tempClient.setEmail(request.getParameter("email"));
+        String[] tempParam = {"email"};
+        if (clientf.getId(tempClient, tempParam).isEmpty()){
+            request.setAttribute("email", "faux");
+            getServletContext().getRequestDispatcher("/WEB-INF/PasswordOublie.jsp").forward(request, response);
+        }else{
+            sendEmail(tempClient.getEmail(), "[Projet Jboss EJB] Votre mot de passe", "Bonjour,\nVoici votre mot de passe : " + tempClient.getMotDePasse() + ".\nCordialement,\nL'équipe Projet EJB");
+            getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
+        }
     }
 
 }

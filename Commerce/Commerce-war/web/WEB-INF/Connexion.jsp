@@ -50,7 +50,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         </p>
                                         <div class="remember">
                                             <p id="login-form-remember">
-                                                <label for="modlgn_remember"><a href="#">Mot de passe oublié ?</a></label>
+                                                <label for="modlgn_remember"><a href="ControleurClients?action=pageForgetPassword">Mot de passe oublié ?</a></label>
                                             </p>
                                             <input type="submit" name="Submit" class="button" value="Connexion"><div class="clear"></div>
                                         </div>
