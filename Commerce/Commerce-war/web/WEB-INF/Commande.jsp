@@ -40,7 +40,7 @@
                         } else {
                             out.println("<ul>");
                             for (Commande c : attente){%>
-                                <li><p>Commande n°<%=c.getId()%>, montant de <%=c.getMontant()%> €, passée le <%=c.getDate().substring(0,11)%> à <%=c.getDate().substring(11)%></p></li>
+                            <li><p><a href="pdf/attente<%=c.getId()%>.pdf">Commande n°<%=c.getId()%></a>, montant de <%=c.getMontant()%> €, passée le <%=c.getDate().substring(0,11)%> à <%=c.getDate().substring(11)%></p></li>
                             <%}
                         }
                         out.println("</ul>");
@@ -57,7 +57,7 @@
                         } else {
                             out.println("<ul>");
                             for (Commande c : cours){%>
-                                <li><p>Commande n°<%=c.getId()%>, montant de <%=c.getMontant()%> €, passée le <%=c.getDate().substring(0,11)%> à <%=c.getDate().substring(11)%></p></li>
+                            <li><p><a href="pdf/cours<%=c.getId()%>.pdf">Commande n°<%=c.getId()%></a>, montant de <%=c.getMontant()%> €, passée le <%=c.getDate().substring(0,11)%> à <%=c.getDate().substring(11)%></p></li>
                             <%}
                         }
                         out.println("</ul>");

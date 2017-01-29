@@ -43,6 +43,26 @@ import session.EmployeFacade;
 import session.Panier;
 import session.RealisateurFacade;
 import session.SousCommandeFacade;
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.ListItem;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileOutputStream;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  *
@@ -86,7 +106,7 @@ public class ControleurEmployes extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+            throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DocumentException {
         response.setContentType("text/html;charset=UTF-8");
         
         //Récupération du panier
@@ -153,6 +173,8 @@ public class ControleurEmployes extends HttpServlet {
             processRequest(request, response);
         } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(ControleurEmployes.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(ControleurEmployes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -170,6 +192,8 @@ public class ControleurEmployes extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(ControleurEmployes.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
             Logger.getLogger(ControleurEmployes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -311,10 +335,104 @@ public class ControleurEmployes extends HttpServlet {
     }
     
     //Affiche les commandes
-    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DocumentException {
         request.setAttribute("attente",commandef.getAttente());
         request.setAttribute("cours",commandef.getCours());
         request.setAttribute("effectuee",commandef.getEffectuee());
+        
+        List<Commande> attente = commandef.getAttente();
+        List<Commande> cours = commandef.getCours();
+        List<Commande> effectue = commandef.getEffectuee();
+        if(!attente.isEmpty()){
+          for(Commande c : attente ){
+            Document document = new Document();
+                PdfWriter.getInstance(document, new FileOutputStream("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf"));
+
+                document.open();
+                
+                Paragraph text = new Paragraph();
+                text.add("En attente : Commande n°"+c.getId().toString()); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                Set listKeys=c.getDvds().keySet();
+                Iterator it = listKeys.iterator();
+                    while (it.hasNext()){
+                       Object cle = it.next(); 
+                       Dvd dvd = (Dvd) cle;
+                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre()));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie()));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Quantité: "+dvd.getQuantite()));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Description: "+dvd.getDescription()));
+                    }
+                    
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                
+                text.add(new Paragraph(c.getDate()));
+                
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant())));
+                document.add(text);
+
+                document.close();
+        }  
+        }
+        
+        if(!cours.isEmpty()){
+          for(Commande c : cours ){
+            Document document1 = new Document();
+                PdfWriter.getInstance(document1, new FileOutputStream("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf"));
+
+                document1.open();
+                Paragraph text = new Paragraph();
+                text.add("En cours : Commande n°"+c.getId().toString()); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                
+                text.add(new Paragraph(" "));
+                
+                Set listKeys=c.getDvds().keySet();
+                Iterator it = listKeys.iterator();
+                    while (it.hasNext()){
+                       Object cle = it.next(); 
+                       Dvd dvd = (Dvd) cle;
+                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre()));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie()));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Quantité: "+dvd.getQuantite()));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Description: "+dvd.getDescription()));
+                    }
+                    
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                
+                text.add(new Paragraph(c.getDate()));
+                
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant())));
+                document1.add(text);
+
+                document1.close();
+        }  
+        }
+        
+        if(!effectue.isEmpty()){
+            for(Commande c : effectue ){
+                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf").delete();
+                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf").delete();
+                
+            }
+        }
+        
+        
+        
+        
+        
         getServletContext().getRequestDispatcher("/WEB-INF/Commande.jsp").forward(request, response);
     }
     
