@@ -87,8 +87,11 @@ public class Panier{
     
     //Retire tous les dvds du panier mais les rajoute dans la base de données
     public void removeAll(){
-        for (Dvd dvd : dvdh.keySet()){
-            removeDvd(dvd,dvdh.get(dvd));
+        Set<Dvd> tempSet = dvdh.keySet();
+        Iterator<Dvd> it = tempSet.iterator();
+        while(it.hasNext()){
+            Dvd dvd = it.next();
+            dvdf.increaseQuantity(dvdh.get(dvd),dvdf.find(dvd.getId()));//on replace dans la bd
         }
         dvdh.clear();
     }

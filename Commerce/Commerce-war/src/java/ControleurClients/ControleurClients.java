@@ -262,6 +262,7 @@ public class ControleurClients extends HttpServlet {
     }
 
     private void deconnexion(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+        panierClient.removeAll();
         request.getSession().invalidate();
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }

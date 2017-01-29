@@ -1251,7 +1251,7 @@ p.m_8{
 	float:left;
 	width:50%;
 }
-.to input[type="text"] {
+.to input[type="text"],input[type="password"] {
 	padding: 10px;
 	width:95%;
 	font-size: 0.85em;
@@ -1264,7 +1264,7 @@ p.m_8{
 	outline: none;
 	border:1px solid #DFE0E2;
 }
-.to input[type="text"]:hover, .text input[type="text"], .text textarea:hover{
+.to input[type="text"]:hover,input[type="text"]:hover,.text input[type="text"],.text input[type="password"], .text textarea:hover{
 	border-color:#E25050;
 }
 .text {

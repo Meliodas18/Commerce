@@ -23,21 +23,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="main">
             <div class="shop_top">
                 <div class="container">
-                    
                     <div class="col-md-6">
                         <form method="POST" action="ControleurClients" onsubmit="return verifForm(this)">
                             <input type="hidden" name="action" value="ajouterClient"/>
                             <div class="register-top-grid">
                                 <h2>Information personnelle</h2>
-                                <div>
+                                <div class="to">
                                     <span>Prenom<label>*</label></span>
                                     <input type="text" name="prenomClient" onblur="verif(this)"/> 
                                 </div>
-                                <div>
+                                <div class="to">
                                     <span>Nom<label>*</label></span>
                                     <input type="text" name="nomClient" onblur="verif(this)"/>
                                 </div>
-                                <div>
+                                <div class="to">
                                     <span>Adresse Email<label>*</label></span>
                                     <input type="text" name="email" class="inputbox" size="100" autocomplete="off" onblur="verif(this)"/> 
                                 </div>
@@ -45,13 +44,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </div>
                             <div class="clear"> </div>
                             <div class="register-bottom-grid">
-                                <div>
+                                <div class="to">
                                     <span>Mot de Passe<label>*</label></span>
-                                    <input type="text" name="passWord" onblur="verif(this)"/>
+                                    <input type="password" name="passWord" onblur="verif(this)"/>
                                 </div>
-                                <div>
+                                <div class="to">
                                     <span>Confirmation du Mot de Passe<label>*</label></span>
-                                    <input type="text" name="ConfirmPass" onblur="verif(this)"/>
+                                    <input type="password" name="ConfirmPass" onblur="verif(this)"/>
                                 </div>
                                 <div class="clear"></div>
                                 <div class="button1">
@@ -60,12 +59,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </div>
                         </form>
                     </div>
-                    
                     <div class="col-md-6">
                         <br/><br/><br/>
                         <img src="images/inscription_dvds.jpg" alt="" />
                     </div>
-                    
                 </div>
             </div>
         </div>

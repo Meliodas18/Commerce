@@ -64,7 +64,7 @@
                                         <input type="hidden" value="<%=dvd.getId()%>" name="id"/>
                                         <p class="price2"><%=dvd.getPrix()%> €</p>
                                         <span>Quantité : </br></br></span>
-                                        <input type="number" min="0" class="inputbox" value="1" name="quantite"/>
+                                        <input type="number" min="1" class="inputbox" value="1" name="quantite"/>
                                         </br></br></br>
                                         <button type="submit" name="Submit" class="exclusive">
                                             <span>Ajouter au panier</span>

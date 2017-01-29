@@ -28,7 +28,7 @@
                             <label> Date de sortie : </label> <input type="text" name="dateSortie" onblur="verif(this)"/>
                         </div>
                         <div class="text">
-                            <label> Description : </label><textarea name="description" onblur="verif(this)">Message:</textarea>
+                            <label> Description : </label><textarea name="description" onblur="verif(this)"></textarea>
                         </div>
                         <div class="to">
                             <label> Prix : </label> <input type="text" name="prix" onblur="verifnumb(this)"/>
