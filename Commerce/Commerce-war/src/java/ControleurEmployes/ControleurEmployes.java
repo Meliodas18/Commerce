@@ -14,7 +14,6 @@ import entity.Employe;
 import entity.Realisateur;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,27 +42,16 @@ import session.EmployeFacade;
 import session.Panier;
 import session.RealisateurFacade;
 import session.SousCommandeFacade;
-import com.itextpdf.text.Anchor;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.ListItem;
+/*import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Section;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfWriter;*/
+import java.awt.Font;
+import java.awt.Image;
 
 import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -107,7 +95,7 @@ public class ControleurEmployes extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DocumentException {
+            throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
         response.setContentType("text/html;charset=UTF-8");
         
         //Récupération du panier
@@ -174,9 +162,9 @@ public class ControleurEmployes extends HttpServlet {
             processRequest(request, response);
         } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(ControleurEmployes.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DocumentException ex) {
+        }/* catch (DocumentException ex) {
             Logger.getLogger(ControleurEmployes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
 
     /**
@@ -194,9 +182,9 @@ public class ControleurEmployes extends HttpServlet {
             processRequest(request, response);
         } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(ControleurEmployes.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DocumentException ex) {
+        }/* catch (DocumentException ex) {
             Logger.getLogger(ControleurEmployes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
 
     /**
@@ -336,12 +324,12 @@ public class ControleurEmployes extends HttpServlet {
     }
     
     //Affiche les commandes
-    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DocumentException {
+    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         request.setAttribute("attente",commandef.getAttente());
         request.setAttribute("cours",commandef.getCours());
         request.setAttribute("effectuee",commandef.getEffectuee());
         
-        List<Commande> attente = commandef.getAttente();
+        /*List<Commande> attente = commandef.getAttente();
         List<Commande> cours = commandef.getCours();
         List<Commande> effectue = commandef.getEffectuee();
         if(!attente.isEmpty()){
@@ -446,7 +434,7 @@ public class ControleurEmployes extends HttpServlet {
                 
             }
         }
-        
+        */
         
         
         
