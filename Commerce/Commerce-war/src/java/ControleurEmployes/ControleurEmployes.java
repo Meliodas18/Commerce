@@ -51,6 +51,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -349,9 +350,10 @@ public class ControleurEmployes extends HttpServlet {
                 PdfWriter.getInstance(document, new FileOutputStream("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf"));
 
                 document.open();
-                
                 Paragraph text = new Paragraph();
-                text.add("En attente : Commande n°"+c.getId().toString()); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("En attente : Commande n°"+c.getId().toString(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD))); 
                 text.add(new Paragraph(" "));
                 text.add(new Paragraph(" "));
                 Set listKeys=c.getDvds().keySet();
@@ -359,22 +361,29 @@ public class ControleurEmployes extends HttpServlet {
                     while (it.hasNext()){
                        Object cle = it.next(); 
                        Dvd dvd = (Dvd) cle;
-                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre()));
+                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
                        text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie()));
+                       Image dvdimage = Image.getInstance(dvd.getImage());
+                       
+                       text.add(dvdimage);
                        text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Quantité: "+dvd.getQuantite()));
+                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
                        text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Description: "+dvd.getDescription()));
+                       text.add(new Paragraph("Quantité: "+dvd.getQuantite(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Description: "+dvd.getDescription(), new Font(Font.FontFamily.TIMES_ROMAN,12,Font.ITALIC)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph(" "));
                     }
                     
                 text.add(new Paragraph(" "));
                 text.add(new Paragraph(" "));
                 
-                text.add(new Paragraph(c.getDate()));
+                text.add(new Paragraph(c.getDate(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
                 
                 text.add(new Paragraph(" "));
-                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant())));
+                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant()), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
                 document.add(text);
 
                 document.close();
@@ -388,7 +397,9 @@ public class ControleurEmployes extends HttpServlet {
 
                 document1.open();
                 Paragraph text = new Paragraph();
-                text.add("En cours : Commande n°"+c.getId().toString()); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("En cours : Commande n°"+c.getId().toString(), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD))); 
                 text.add(new Paragraph(" "));
                 text.add(new Paragraph(" "));
                 
@@ -399,22 +410,29 @@ public class ControleurEmployes extends HttpServlet {
                     while (it.hasNext()){
                        Object cle = it.next(); 
                        Dvd dvd = (Dvd) cle;
-                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre()));
+                       Image dvdimage = Image.getInstance(dvd.getImage());
+                       
+                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
                        text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie()));
+                       text.add(dvdimage);
                        text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Quantité: "+dvd.getQuantite()));
+                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
                        text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Description: "+dvd.getDescription()));
+                       text.add(new Paragraph("Quantité: "+dvd.getQuantite(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Description: "+dvd.getDescription(), new Font(Font.FontFamily.TIMES_ROMAN,12,Font.ITALIC)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph(" "));
                     }
                     
                 text.add(new Paragraph(" "));
                 text.add(new Paragraph(" "));
                 
-                text.add(new Paragraph(c.getDate()));
+                text.add(new Paragraph(c.getDate(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
                 
                 text.add(new Paragraph(" "));
-                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant())));
+                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant()), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
                 document1.add(text);
 
                 document1.close();

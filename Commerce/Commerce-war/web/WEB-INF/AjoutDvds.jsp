@@ -37,10 +37,10 @@
                             <label> Quantité : </label> <input type="text" name="quantite" onblur="verifnumb(this)"/>
                         </div>
                         <div class="to">
-                            <label> Catégories : </label> <input type="text" name="categories" onblur="verifnumb(this)"/>
+                            <label> Catégories : </label> <input type="text" name="categories" onblur="verif(this)"/>
                         </div>
                         <div class="to">
-                            <label> Affiche du film : </label></br><input type="file" name="file" id="file"/>
+                            <label> Affiche du film : </label></br><input type="file" name="file" id="file" value="" onchange="verif_extension(file.value)"/>
                         </div>
                         </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
                         <h4 class="title"> Auteurs </h4>
