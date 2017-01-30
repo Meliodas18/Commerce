@@ -190,14 +190,14 @@ public class Dvd implements Serializable {
         this.realisateur = realisateur;
     }
     
-    @ManyToMany(fetch=FetchType.EAGER,mappedBy="dvds")
-    private Set<Categorie> categories;
+    @ManyToOne(fetch=FetchType.EAGER)
+    private Categorie categorie;
 
-    public Set<Categorie> getCategories() {
-        return categories;
+    public Categorie getCategories() {
+        return categorie;
     }
 
-    public void setCategories(Set<Categorie> categories) {
-        this.categories = categories;
+    public void setCategories(Categorie categorie) {
+        this.categorie = categorie;
     }
 }

@@ -15,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -223,16 +222,30 @@ public class ControleurClients extends HttpServlet {
         getServletContext().getRequestDispatcher("/WEB-INF/RechercheDvd.jsp").forward(request, response);
     }
 
-    private void ajouterClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        clientf.create(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"), request.getParameter("email")));
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
+    private void ajouterClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Client tempClient = new Client();
+        tempClient.setEmail(request.getParameter("email"));
+        String[] myParam = {"email"};
+        if (clientf.getId(tempClient, myParam).isEmpty()){
+            request.setAttribute("etat","vrai");
+            clientf.create(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"), request.getParameter("email")));
+            this.connexion(request, response);
+        } else {
+            request.setAttribute("etat","faux");
+            getServletContext().getRequestDispatcher("/WEB-INF/Inscription.jsp").forward(request, response);
+        }
+        
+        
+        
     }
 
     private void pageInscription(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("etat","vrai");
         getServletContext().getRequestDispatcher("/WEB-INF/Inscription.jsp").forward(request, response);
     }
 
     private void pageConnexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("etat","vrai");
         getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
     }
 

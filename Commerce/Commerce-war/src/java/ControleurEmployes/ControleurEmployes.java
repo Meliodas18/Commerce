@@ -7,6 +7,7 @@ package ControleurEmployes;
 
 import Controleur.Controleur;
 import entity.Auteur;
+import entity.Categorie;
 import entity.Commande;
 import entity.Dvd;
 import entity.Editeur;
@@ -45,13 +46,10 @@ import session.SousCommandeFacade;
 /*import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;*/
-import java.awt.Font;
-import java.awt.Image;
 
 import java.io.FileOutputStream;
-import java.util.Iterator;
 import java.util.Set;
-import org.w3c.dom.Document;
+import session.CategorieFacade;
 
 /**
  *
@@ -78,6 +76,9 @@ public class ControleurEmployes extends HttpServlet {
     
     @EJB
     private SousCommandeFacade sousCommandef;
+    
+    @EJB
+    private CategorieFacade categorief;
     
     private String emailEmploye = "aymeric.delecourt@phelma.grenoble-inp.fr";
     
@@ -209,6 +210,8 @@ public class ControleurEmployes extends HttpServlet {
     
     
     private void pageAjouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Categorie> tempList = categorief.findAll();
+        request.setAttribute("Cat",tempList);
         getServletContext().getRequestDispatcher("/WEB-INF/AjoutDvds.jsp").forward(request, response);
     }
     
@@ -216,35 +219,35 @@ public class ControleurEmployes extends HttpServlet {
     //!!! Changer le path
     private void ajouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
          
-     String path = "/home/aymeric/Commerce/Commerce/Commerce-war/web/images";
-     Part filePart = request.getPart("file");
-     String fileName = getFileName(filePart);
+        String path = "/home/aymeric/Commerce/Commerce/Commerce-war/web/images";
+        Part filePart = request.getPart("file");
+        String fileName = getFileName(filePart);
 
-    OutputStream out = null;
-    InputStream filecontent = null;
+        OutputStream out = null;
+        InputStream filecontent = null;
     
-    try {
-        out = new FileOutputStream(new File(path + File.separator
-                + fileName));
-        filecontent = filePart.getInputStream();
+        try {
+            out = new FileOutputStream(new File(path + File.separator
+                    + fileName));
+            filecontent = filePart.getInputStream();
 
-        int read = 0;
-        byte[] bytes = new byte[1024];
+            int read = 0;
+            byte[] bytes = new byte[1024];
 
-        while ((read = filecontent.read(bytes)) != -1) {
-            out.write(bytes, 0, read);
+            while ((read = filecontent.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+        } catch (FileNotFoundException fne) {
+
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+            if (filecontent != null) {
+                filecontent.close();
+            }
+
         }
-    } catch (FileNotFoundException fne) {
-       
-    } finally {
-        if (out != null) {
-            out.close();
-        }
-        if (filecontent != null) {
-            filecontent.close();
-        }
-        
-    }
           
         Dvd dvd = new Dvd(goodString(request.getParameter("titre")), goodString(request.getParameter("description")), Double.parseDouble(request.getParameter("prix")), request.getParameter("dateSortie"), Integer.parseInt(request.getParameter("quantite")), path + File.separator+ fileName);
         String[] paramDvd = {"titre","description","prix","dateSortie"};
@@ -286,6 +289,12 @@ public class ControleurEmployes extends HttpServlet {
                 editeurf.edit(editeur);
             }
             dvd.setEditeur(editeur);
+            
+            Categorie tempCat = new Categorie();
+            tempCat.setType(request.getParameter("categorie"));
+            String[] myParam = {"type"};
+            Categorie categorie = categorief.find(categorief.getId(tempCat, myParam));
+            dvd.setCategories(categorie);
             dvdf.edit(dvd);
         }
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);

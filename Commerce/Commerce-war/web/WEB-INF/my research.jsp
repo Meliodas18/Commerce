@@ -11,3 +11,9 @@
                 }
             }
         %>
+<div class="to">
+                            <label> Prix : </label> <input type="text" name="prix"/>
+                        </div>
+                        <div class="to">
+                            <label> Quantité : </label> <input type="text" name="quantite"/>
+                        </div>

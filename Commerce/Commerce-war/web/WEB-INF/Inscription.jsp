@@ -17,8 +17,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Inscription</title>
         <script src="js/verification.js"></script>
-    </head>
-    <body>
         <%@include file="Header/NonConnecte.jsp" %>
         <div class="main">
             <div class="shop_top">
@@ -36,11 +34,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <span>Nom<label>*</label></span>
                                     <input type="text" name="nomClient" onblur="verif(this)"/>
                                 </div>
-                                <div class="to">
+                                <div class="to1">
                                     <span>Adresse Email<label>*</label></span>
-                                    <input type="text" name="email" class="inputbox" size="100" autocomplete="off" onblur="verif(this)"/> 
+                                    <input type="email" name="email" size="100" autocomplete="off" onblur="verif(this)"/> 
                                 </div>
-                                <div class="clear"> </div>
                             </div>
                             <div class="clear"> </div>
                             <div class="register-bottom-grid">
@@ -52,6 +49,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <span>Confirmation du Mot de Passe<label>*</label></span>
                                     <input type="password" name="ConfirmPass" onblur="verif(this)"/>
                                 </div>
+                                <%if (((String)request.getAttribute("etat")).equals("faux")){
+                                out.println("<font color=\"red\">Cet email est déjà utilisé !</font><br/>");;
+                                }%>
                                 <div class="clear"></div>
                                 <div class="button1">
                                     <input type="submit" name="Submit" class="button" value="S'inscrire"><div class="clear"></div>

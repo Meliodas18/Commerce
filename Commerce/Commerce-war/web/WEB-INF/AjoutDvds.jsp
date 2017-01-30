@@ -3,6 +3,8 @@
     Created on : 12 nov. 2016, 22:23:32
     Author     : aymeric
 --%>
+<%@page import="entity.Categorie"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,7 +20,7 @@
                     <div class="col-md-12">
                         <h2 class="my-line-2">Ajoutez un dvd !</h2>
                     </div>
-                    <form method="POST" action="ControleurEmployes?action=ajouterDvd" id="login-form" enctype="multipart/form-data" onsubmit="return verifFormDvd(this)">
+                    <form method="GET" action="ControleurEmployes?action=ajouterDvd" id="login-form" enctype="multipart/form-data" onsubmit="return verifFormDvd(this)">
                         <br/><br/><br/><br/><br/>
                         <h4 class="title">Caractéristiques du dvd</h4>
                         <div class="to">
@@ -30,15 +32,20 @@
                         <div class="text">
                             <label> Description : </label><textarea name="description" onblur="verif(this)"></textarea>
                         </div>
-                        <div class="to">
-                            <label> Prix : </label> <input type="text" name="prix" onblur="verifnumb(this)"/>
-                        </div>
-                        <div class="to">
-                            <label> Quantité : </label> <input type="text" name="quantite" onblur="verifnumb(this)"/>
-                        </div>
-                        <div class="to">
-                            <label> Catégories : </label> <input type="text" name="categories" onblur="verif(this)"/>
-                        </div>
+                        <div class="col-md-6">
+                            <div class="box-info-product1">
+                                <ul class="prosuct-qty">
+                                    <label>Catégories:</label>
+                                    <select name="categorie">
+                                        <%List<Categorie> myList = (List<Categorie>)request.getAttribute("Cat");
+                                        for (Categorie c : myList){
+                                            out.println("<option>" + c.getType() + "</option>");
+                                        }
+                                        %>
+                                    </select>
+                                </ul>
+			   </div>
+			</div>
                         <div class="to">
                             <label> Affiche du film : </label></br><input type="file" name="file" id="file" value="" onchange="verif_extension(file.value)"/>
                         </div>

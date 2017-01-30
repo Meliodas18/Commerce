@@ -1251,6 +1251,23 @@ p.m_8{
 	float:left;
 	width:50%;
 }
+.to1{
+	float:left;
+	width:100%;
+}
+.to1 input[type="email"]{
+        padding: 10px;
+	width:195%;
+	font-size: 0.85em;
+	font-family: 'Open Sans', sans-serif;
+	margin: 19px 0;
+	border: none;
+	color: #888;
+	background:#F8F8F8;
+	float: left;
+	outline: none;
+	border:1px solid #DFE0E2;
+}
 .to input[type="text"],input[type="password"] {
 	padding: 10px;
 	width:95%;
@@ -1265,7 +1282,10 @@ p.m_8{
 	border:1px solid #DFE0E2;
 }
 .to input[type="text"]:hover,input[type="text"]:hover,.text input[type="text"],.text input[type="password"], .text textarea:hover{
-	border-color:#E25050;
+    border-color:#E25050;
+}
+.to1 text input[type="email"]{
+    border-color:#E25050;
 }
 .text {
 	width:100%;
@@ -1489,6 +1509,10 @@ ul.product-colors{
 	border-bottom: 1px solid #B0AFAF;
 	padding:7%;
 }
+.box-info-product1{
+	background: #FFF;
+	border: none;
+}
 p.price2{
 	color:#333;
 	font-size:2em;
@@ -1500,11 +1524,20 @@ p.price2{
 	padding:0;
 }
 .prosuct-qty select {
+	padding: 9px;
+	width:98%;
+	font-size: 0.85em;
 	font-family: 'Open Sans', sans-serif;
-	border: 1px solid #EEE;
-	padding: 5% 41%;
-	font-size: 1em;
+	margin: 19px 0;
+	border: none;
+	color: #888;
+	background:#F8F8F8;
+	float: left;
 	outline: none;
+	border:1px solid #DFE0E2;
+}
+.prosuct-qty select:hover{
+    border-color:#E25050;
 }
 .prosuct-qty option {
 	border: 1px solid #EEE;
@@ -1550,6 +1583,49 @@ p.price2{
 	text-align: center;
 }
 .box-info-product .exclusive:hover {
+	background: #303030;
+	background-position: 0 0;
+}
+.box-info-product1 .exclusive {
+	border:none;
+	outline: none;
+	position: relative;
+	display: block;
+	background:#E25050;
+}
+.box-info-product1 .exclusive span {
+	font-weight: 700;
+	font-size: 20px;
+	line-height: 22px;
+	padding: 12px 36px 14px 60px;
+	color: #FFF;
+	display: block !important;
+}
+.box-info-product1 .exclusive:after {
+	border-left: 1px solid #fff;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 51px;
+	content: "";
+	width: 1px;
+	z-index: 2;
+}
+.box-info-product1 .exclusive:before {
+	background: url(../images/img-sprite.png)no-repeat -401px -308px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	color: #FFF;
+	font-size: 25px;
+	line-height: 47px;
+	content: "";
+	z-index: 2;
+	width: 51px;
+	text-align: center;
+}
+.box-info-product1.exclusive:hover {
 	background: #303030;
 	background-position: 0 0;
 }
@@ -1859,6 +1935,9 @@ fieldset.input input[type="submit"]:hover {
 	font-size: 17px;
 	padding: 12px 11px 14px 63px;
  }
+ .box-info-product1 .exclusive span {
+	font-size: 17px;
+ }
 }	
 @media (max-width:800px){
 .menu {
@@ -1938,6 +2017,9 @@ fieldset.input input[type="submit"]:hover {
   }
   .box-info-product {
 	padding: 20px;
+	margin-bottom: 20px;
+  }
+  .box-info-product1 {
 	margin-bottom: 20px;
   }
   .prosuct-qty select {
