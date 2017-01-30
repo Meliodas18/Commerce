@@ -27,9 +27,9 @@ function verif(champ)
 
 function verifnumb(champ)
 {
-    if ((parseFloat(champ) == parseInt(champ)) && !isNaN(value)) {
-
-        if (parseInt(champ) < 1)
+    var numb = parseInt(champ.value,10);
+    
+        if (numb < 1 || isNaN(numb))
         {
             surligne(champ, true);
             return false;
@@ -38,19 +38,22 @@ function verifnumb(champ)
             surligne(champ, false);
             return true;
         }
-    } else {
-        surligne(champ, true);
-        return false;
-    }
-}
-
-function is_int(value) {
-    if ((parseFloat(value) == parseInt(value)) && !isNaN(value)) {
-        return true;
-    } else {
-        return false;
-    }
-}
+ }
+ 
+ function verifnumbprix(champ)
+{
+    var numb = parseFloat(champ.value);
+  
+        if (numb <= 0 || isNaN(numb))
+        {
+            surligne(champ, true);
+            return false;
+        } else
+        {
+            surligne(champ, false);
+            return true;
+        }
+ }
 
 function verifForm(f)
 {
@@ -74,7 +77,7 @@ function verifFormDvd(f)
 {
     var titre = verif(f.titre);
     var description = verif(f.description);
-    var prix = verifnumb(f.prix);
+    var prix = verifnumbprix(f.prix);
     var dateSortie = verif(f.dateSortie);
     var quantite = verifnumb(f.quantite);
     var prenomAuteur = verif(f.prenomAuteur);

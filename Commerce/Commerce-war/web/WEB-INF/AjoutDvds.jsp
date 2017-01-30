@@ -29,9 +29,16 @@
                         <div class="to">
                             <label> Date de sortie : </label> <input type="text" name="dateSortie" onblur="verif(this)"/>
                         </div>
+                        <div class="to">
+                            <label> Prix : </label> <input type="text" name="prix"  onblur="verifnumbprix(this)"/>
+                        </div>
+                        <div class="to">
+                            <label> Quantité : </label> <input type="text" name="quantite"  onblur="verifnumb(this)"/>
+                        </div>
                         <div class="text">
                             <label> Description : </label><textarea name="description" onblur="verif(this)"></textarea>
                         </div>
+                        
                         <div class="col-md-6">
                             <div class="box-info-product1">
                                 <ul class="prosuct-qty">
