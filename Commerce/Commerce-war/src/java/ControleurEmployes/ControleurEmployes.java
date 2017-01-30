@@ -443,28 +443,45 @@ public class ControleurEmployes extends HttpServlet {
     }
     
     private void livraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Dvd dvd = new Dvd();
-        dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
-        dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
-        List<Long> tempId = sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye,dvd);
-        if (!tempId.isEmpty()){
-            sousCommandef.removeSousCommande(tempId);
+        Dvd dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
+        if (dvd == null){
+            request.setAttribute("etat","faux");
+        } else {
+            request.setAttribute("etat","possible");
+            dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
+            List<Long> tempId = sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye,dvd);
+            if (!tempId.isEmpty()){
+                sousCommandef.removeSousCommande(tempId);
+            }
         }
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
-    }
-
-    private void pageLivraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getServletContext().getRequestDispatcher("/WEB-INF/Livraisons.jsp").forward(request, response);
     }
 
-    private void envoiColis(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Commande commande = commandef.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
-        commande.setEtat("Effectuée");
-        commandef.edit(commande);
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
+    private void pageLivraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("etat","possible");
+        getServletContext().getRequestDispatcher("/WEB-INF/Livraisons.jsp").forward(request, response);
     }
 
+    //Il faut vérifier que la commande n'est pas en attente !
+    private void envoiColis(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Commande commande = commandef.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
+        if (commande == null){
+            request.setAttribute("etat","faux");
+        } else {
+            if (commande.getEtat().equals("En Attente")){
+                request.setAttribute("etat", "impossible");
+            } else {
+                commande.setEtat("Effectuée");
+                commandef.edit(commande);
+                request.setAttribute("etat", "possible");
+            }
+        }
+        getServletContext().getRequestDispatcher("/WEB-INF/EnvoiColis.jsp").forward(request, response);
+    }
+
+    //Etat possible car on ne veut rien afficher comme erreur dans la page - voir envoiColis
     private void pageEnvoiColis(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("etat", "possible");
         getServletContext().getRequestDispatcher("/WEB-INF/EnvoiColis.jsp").forward(request, response);
     }
     

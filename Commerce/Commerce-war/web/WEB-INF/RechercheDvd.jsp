@@ -91,36 +91,44 @@
                             </div>
                         </div>
                         <br/><br/>
-                        <div id="pp1" style="display:none">
-                        </div>
-                        <div id="pp2" class="to">
-                            <h3 class="h3-for-recherche">Entrez l'auteur : </h3><input type="text" name="auteur"/><br/>
-                        </div>
-                        <div id="pp3">
-                        </div>
-                        <div id="pp4" class="to" style="display:none">
-                            <h3 class="h3-for-recherche">Entrez le réalisateur : </h3><input type="text" name="realisateur"/><br/>
-                        </div>
-                        <div id="pp5">
-                        </div>
-                        <div id="pp6" class="to"  style="display:none">
-                            <h3 class="h3-for-recherche">Choisissez les catégories : </h3><input type="text" name="categories"/><br/>
-                        </div>
-                        <div id="pp7">
-                        </div>
-                        <div id="pp8" class="to"  style="display:none">
-                            <h3 class="h3-for-recherche">Entrez les éditeurs: </h3><input type="text" name="editeur"/><br/>
-                        </div>
-                        <div id="pp9">
-                        </div>
-                        <div id="pp10" class="to" style="display:none">
-                            <h3 class="h3-for-recherche">Entrez le titre : </h3><input type="text" name="titre"/><br/>
-                        </div>
-                        <div id="pp11">
-                        </div>
-                        <div id="pp12" class="to"  style="display:none">
-                            <h3 class="h3-for-recherche">Entrez l'année : </h3><input type="text" name="annee"/><br/>
-                        </div>
+                        <form method="POST" action="ControleurClients">
+                            <input type="hidden" name="action" value="interactiveResearch"/>
+                            <div id="pp1" style="display:none">
+                            </div>
+                            <div id="pp2" class="to">
+                                <h3 class="h3-for-recherche">Entrez l'auteur : </h3><input type="text" name="auteur"/><br/>
+                            </div>
+                            <div id="pp3">
+                            </div>
+                            <div id="pp4" class="to" style="display:none">
+                                <h3 class="h3-for-recherche">Entrez le réalisateur : </h3><input type="text" name="realisateur"/><br/>
+                            </div>
+                            <div id="pp5">
+                            </div>
+                            <div id="pp6" class="to"  style="display:none">
+                                <h3 class="h3-for-recherche">Choisissez les catégories : </h3><input type="text" name="categories"/><br/>
+                            </div>
+                            <div id="pp7">
+                            </div>
+                            <div id="pp8" class="to"  style="display:none">
+                                <h3 class="h3-for-recherche">Entrez les éditeurs: </h3><input type="text" name="editeur"/><br/>
+                            </div>
+                            <div id="pp9">
+                            </div>
+                            <div id="pp10" class="to" style="display:none">
+                                <h3 class="h3-for-recherche">Entrez le titre : </h3><input type="text" name="titre"/><br/>
+                            </div>
+                            <div id="pp11">
+                            </div>
+                            <div id="pp12" class="to"  style="display:none">
+                                <h3 class="h3-for-recherche">Entrez l'année : </h3><input type="text" name="annee"/><br/>
+                            </div>
+                            <br/><br/><br/><br/>
+                            <div class="button1">
+                                <input type="submit" value="Rechercher">
+                            </div>
+                            <br/><br/><br/><br/>
+                        </form>
                     </div>
                     <div id="Page2">
                         <a href="#" onclick="return show('Page1', 'Page2');">Editer</a>

@@ -81,7 +81,7 @@
                             out.print("<p class=\"all-for-cart\">A commander !<p>");
                         }%>
                         </br>
-                        <a href="ControleurClients?action=removeCart&id=<%=dvd.getId()%>&quantite=<%=quantite%>" class="all-for-cart">Supprimer</a>
+                        <a href="ControleurClients?action=removeCart&id=<%=dvd.getId()%>" class="all-for-cart">Supprimer</a>
                     </div>
                     <div class="col-md-5">
                         </br></br>

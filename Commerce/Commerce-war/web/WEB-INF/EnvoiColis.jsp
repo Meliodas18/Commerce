@@ -21,6 +21,11 @@
                     <br/><br/><br/><br/><br/></br>
                     <form method="POST" action="ControleurEmployes">
                         <input type="hidden" name="action" value="envoiColis"/>
+                        <%if (((String)request.getAttribute("etat")).equals("impossible")){
+                        out.println("<font color=\"red\">Cette commande ne peut-être envoyée : elle est dans l'état \"En Attente\" !</font>");    
+                        } else if (((String)request.getAttribute("etat")).equals("faux")){
+                        out.println("<font color=\"red\">Le numéro ne correspond à aucune commande !</font>");    
+                        }%>
                         <div class="to">
                             <label> ID Commande : </label> <input class="text" type="text" name="id"/>
                         </div>

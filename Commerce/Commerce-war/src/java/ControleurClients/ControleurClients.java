@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -266,10 +267,12 @@ public class ControleurClients extends HttpServlet {
         request.getSession().invalidate();
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
-
+    
     //Fonction de recherche
     private void interactiveResearch(HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException, IOException {
-
+        
+        
+        
         //Déclaration des paramètres et récupération des données de recherche
         String[] values = request.getParameter("auteur").split(" ");
         String[] parametres = {"prenom", "nom"};
@@ -335,7 +338,7 @@ public class ControleurClients extends HttpServlet {
     }
 
     private void removeCart(HttpServletRequest request, HttpServletResponse response, Panier panier) throws ServletException, IOException {
-        panier.removeDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))), Integer.parseInt(request.getParameter("quantite")));
+        panier.removeDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))));
         this.pagePanier(request, response, panier);
     }
 

@@ -73,6 +73,11 @@ public class Panier{
     }
     
     //Pour toutes les fonctions, prendre la valeur de dvd dans la base pour etre à jour
+    //Supprime le dvd du panier
+    public void removeDvd(Dvd dvd){
+        removeDvd(dvd,dvdh.get(dvd));
+    }
+    
     
     //Remove une quantite :quantity de dvd :dvd
     public void removeDvd(Dvd dvd, int quantity){
