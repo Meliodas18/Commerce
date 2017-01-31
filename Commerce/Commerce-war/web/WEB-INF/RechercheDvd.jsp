@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-md-4">
                             <div id="p5">
-                                <h3><a href="#" onclick="return show2('p6','p5','pp6','pp5');">Par catégories</a></h3>
+                                <h3><a href="#" onclick="return show2('p6','p5','pp6','pp5');">Par catégorie</a></h3>
                             </div>
                             <div id="p6" style="display:none">
                                 <h3><a href="#" onclick="return show2('p5','p6','pp5','pp6');" class="toMe">Par catégories</a></h3>
@@ -106,7 +106,7 @@
                             <div id="pp5">
                             </div>
                             <div id="pp6" class="to"  style="display:none">
-                                <h3 class="h3-for-recherche">Choisissez les catégories : </h3><input type="text" name="categories"/><br/>
+                                <h3 class="h3-for-recherche">Choisissez la catégorie : </h3><input type="text" name="categories"/><br/>
                             </div>
                             <div id="pp7">
                             </div>

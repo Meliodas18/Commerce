@@ -24,7 +24,7 @@
            Set<Auteur> auteurs = dvd.getAuteurs();
            Realisateur real = dvd.getRealisateur();
            Editeur edit = dvd.getEditeur();
-           Set<Categorie> categories = dvd.getCategories();
+           Categorie cat = dvd.getCategories();
         %>
         <div class="main">
             <div class="shop_top">
@@ -49,10 +49,10 @@
                                 <h4><b>Auteurs : </b><%=aut.getPrenom()%> <%=aut.getNom()%></h4>
                                 <%}%>
                                 <h4><b>Réalisateur : </b><%=real.getPrenom()%> <%=real.getNom()%></h4>
-                                <h4><b>Editeur : </b><%=edit.getNom()%></h4>
                                 <h4><b>Date de Sortie : </b><%=dvd.getDateSortie()%></h4>
-                                <% for (Categorie cat : categories){%>
-                                <h4><b>Genre : </b><%=cat.getType()%></h4>
+                                <%if (cat != null){%>
+                                <h4><b>Catégorie : </b><%=cat.getType()%></h4>
+                                <h4><b>Editeur : </b><%=edit.getNom()%></h4>
                                 <%}%>
 				<div class="clear"> </div>
                             </div>

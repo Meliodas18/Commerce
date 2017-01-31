@@ -20,7 +20,7 @@
                     <div class="col-md-12">
                         <h2 class="my-line-2">Ajoutez un dvd !</h2>
                     </div>
-                    <form method="GET" action="ControleurEmployes?action=ajouterDvd" id="login-form" enctype="multipart/form-data" onsubmit="return verifFormDvd(this)">
+                    <form method="POST" action="ControleurEmployes?action=ajouterDvd" id="login-form" enctype="multipart/form-data" onsubmit="return verifFormDvd(this)">
                         <br/><br/><br/><br/><br/>
                         <h4 class="title">Caractéristiques du dvd</h4>
                         <div class="to">
@@ -42,7 +42,7 @@
                         <div class="col-md-6">
                             <div class="box-info-product1">
                                 <ul class="prosuct-qty">
-                                    <label>Catégories:</label>
+                                    <label>Catégorie :</label>
                                     <select name="categorie">
                                         <%List<Categorie> myList = (List<Categorie>)request.getAttribute("Cat");
                                         for (Categorie c : myList){

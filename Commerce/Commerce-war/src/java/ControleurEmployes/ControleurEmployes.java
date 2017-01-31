@@ -219,7 +219,7 @@ public class ControleurEmployes extends HttpServlet {
     //!!! Changer le path
     private void ajouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
          
-        String path = "/home/aymeric/Commerce/Commerce/Commerce-war/web/images";
+        String path = System.getProperty("user.dir") + "../../../Commerce/Commerce/Commerce-war/web/images";
         Part filePart = request.getPart("file");
         String fileName = getFileName(filePart);
 
@@ -293,7 +293,7 @@ public class ControleurEmployes extends HttpServlet {
             Categorie tempCat = new Categorie();
             tempCat.setType(request.getParameter("categorie"));
             String[] myParam = {"type"};
-            Categorie categorie = categorief.find(categorief.getId(tempCat, myParam));
+            Categorie categorie = categorief.find(categorief.getId(tempCat, myParam).get(0));
             dvd.setCategories(categorie);
             dvdf.edit(dvd);
         }

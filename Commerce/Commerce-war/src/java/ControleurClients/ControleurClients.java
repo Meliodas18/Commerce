@@ -254,7 +254,7 @@ public class ControleurClients extends HttpServlet {
         String[] parametres = {"email", "motDePasse"};
         ArrayList<Long> findId = clientf.getId(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"), request.getParameter("email")), parametres);
         if (findId.isEmpty()) {
-            request.setAttribute("erreur", true);
+            request.setAttribute("etat","faux");
             getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
         } else {
             request.getSession().setAttribute("mode", "client");
@@ -284,18 +284,18 @@ public class ControleurClients extends HttpServlet {
     //Fonction de recherche
     private void interactiveResearch(HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException, IOException {
         
-        
-        
         //Déclaration des paramètres et récupération des données de recherche
         String[] values = request.getParameter("auteur").split(" ");
         String[] parametres = {"prenom", "nom"};
         ArrayList<Long> array = new ArrayList<>();
-        ArrayList<Dvd> arrayDvd = new ArrayList<>();
+        List<Dvd> allDvd = dvdf.findAll();
+        List<Dvd> arrayDvd = new ArrayList<>();
+        
 
         /*Recherche en fonction de l'auteur
         Si un mot on regarde les deux cas : c'est le nom ou c'est le prénom
         Sinon, il faut tester les différentes combinaisons possibles
-         */
+         *//*
         if (values.length >= 2) {
             for (int i = 0; i < values.length; i++) {
                 array.addAll(auteurf.getIdForResearch(new Auteur(values[i], values[(i + 1) % values.length]), parametres));
@@ -311,7 +311,21 @@ public class ControleurClients extends HttpServlet {
                 arrayDvd.addAll(auteurf.find(id).getDvds());
             }
             request.setAttribute("setDvd", arrayDvd);
+        }*/
+
+        //On obtient un array -- on doit maintenant vérifier critère par critère
+        for (Dvd dvd : allDvd){
+            if (!dvd.getTitre().equals(request.getParameter("titre"))){
+                continue;
+            }
+            String one = request.getParameter("auteur").split(" ")[0];
+            String two = request.getParameter("auteur").split(" ")[1];
+            /*if (!dvd.getTitre().equals(titre)){
+                continue;
+            }
+            arrayDvd.add(dvd);*/
         }
+        request.setAttribute("setDvd", arrayDvd);
         pageRechercherDvd(request, response);
     }
 

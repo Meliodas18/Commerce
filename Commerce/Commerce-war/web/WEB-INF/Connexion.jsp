@@ -37,6 +37,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="login-title">
                             <h4 class="title">Déjà Client ?</h4>
                             <div id="loginbox" class="loginbox">
+                                <%if (((String)request.getAttribute("etat")).equals("faux")){
+                                out.println("<br/><font color=\"red\">Email ou mot de passe invalide !</font><br/>");  
+                                }%>
                                 <form method="post" action="ControleurClients" name="login" id="login-form">
                                     <input type="hidden" name="action" value="connexion"/>
                                     <fieldset class="input">
@@ -44,7 +47,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             <label for="modlgn_username">Email</label>
                                             <input id="modlgn_username" type="text" name="email" class="inputbox" size="18" autocomplete="off">
                                         </p>
-                                        <p id="login-form-password">
+                                        <p id="login-form-username">
                                             <label for="modlgn_passwd">Mot de Passe</label>
                                             <input id="modlgn_passwd" type="password" name="passWord" class="inputbox" size="18" autocomplete="off">
                                         </p>
