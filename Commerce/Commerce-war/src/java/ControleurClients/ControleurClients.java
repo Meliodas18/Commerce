@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import session.AuteurFacade;
 import session.ClientFacade;
+import session.CommandeFacade;
 import session.DvdFacade;
 import static session.EmailSessionBean.sendEmail;
 import session.Panier;
@@ -47,6 +48,9 @@ public class ControleurClients extends HttpServlet {
 
     @EJB
     private DvdFacade dvdf;
+    
+    @EJB
+    private CommandeFacade commandef;
 
     private Client clientConnect = new Client();
 
@@ -128,6 +132,9 @@ public class ControleurClients extends HttpServlet {
                 break;
             case "forgetPassword":
                 forgetPassword(request,response);
+                break;
+            case "pageCommandes":
+                pageCommandes(request,response);
                 break;
             default:
                 break;
@@ -385,6 +392,125 @@ public class ControleurClients extends HttpServlet {
             sendEmail(tempClient.getEmail(), "[Projet Jboss EJB] Votre mot de passe", "Bonjour,\nVoici votre mot de passe : " + tempClient.getMotDePasse() + ".\nCordialement,\nL'équipe Projet EJB");
             getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
         }
+    }
+    
+    //Affiche les commandes
+    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        request.setAttribute("attente",commandef.getAttente(clientConnect));
+        request.setAttribute("cours",commandef.getCours(clientConnect));
+        request.setAttribute("effectuee",commandef.getEffectuee(clientConnect));
+        
+        /*List<Commande> attente = commandef.getAttente();
+        List<Commande> cours = commandef.getCours();
+        List<Commande> effectue = commandef.getEffectuee();
+        if(!attente.isEmpty()){
+          for(Commande c : attente ){
+            Document document = new Document();
+                PdfWriter.getInstance(document, new FileOutputStream("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf"));
+
+                document.open();
+                Paragraph text = new Paragraph();
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("En attente : Commande n°"+c.getId().toString(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                Set listKeys=c.getDvds().keySet();
+                Iterator it = listKeys.iterator();
+                    while (it.hasNext()){
+                       Object cle = it.next(); 
+                       Dvd dvd = (Dvd) cle;
+                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
+                       text.add(new Paragraph(" "));
+                       Image dvdimage = Image.getInstance(dvd.getImage());
+                       
+                       text.add(dvdimage);
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Quantité: "+dvd.getQuantite(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Description: "+dvd.getDescription(), new Font(Font.FontFamily.TIMES_ROMAN,12,Font.ITALIC)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph(" "));
+                    }
+                    
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                
+                text.add(new Paragraph(c.getDate(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant()), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
+                document.add(text);
+
+                document.close();
+        }  
+        }
+        
+        if(!cours.isEmpty()){
+          for(Commande c : cours ){
+            Document document1 = new Document();
+                PdfWriter.getInstance(document1, new FileOutputStream("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf"));
+
+                document1.open();
+                Paragraph text = new Paragraph();
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("En cours : Commande n°"+c.getId().toString(), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                
+                text.add(new Paragraph(" "));
+                
+                Set listKeys=c.getDvds().keySet();
+                Iterator it = listKeys.iterator();
+                    while (it.hasNext()){
+                       Object cle = it.next(); 
+                       Dvd dvd = (Dvd) cle;
+                       Image dvdimage = Image.getInstance(dvd.getImage());
+                       
+                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
+                       text.add(new Paragraph(" "));
+                       text.add(dvdimage);
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Quantité: "+dvd.getQuantite(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph("Description: "+dvd.getDescription(), new Font(Font.FontFamily.TIMES_ROMAN,12,Font.ITALIC)));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph(" "));
+                       text.add(new Paragraph(" "));
+                    }
+                    
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                
+                text.add(new Paragraph(c.getDate(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant()), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
+                document1.add(text);
+
+                document1.close();
+        }  
+        }
+        
+        if(!effectue.isEmpty()){
+            for(Commande c : effectue ){
+                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf").delete();
+                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf").delete();
+                
+            }
+        }
+        */
+        
+        
+        
+        
+        getServletContext().getRequestDispatcher("/WEB-INF/Commande.jsp").forward(request, response);
     }
 
 }

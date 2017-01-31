@@ -23,22 +23,21 @@
                     <form method="POST" action="ControleurEmployes?action=ajouterDvd" id="login-form" enctype="multipart/form-data" onsubmit="return verifFormDvd(this)">
                         <br/><br/><br/><br/><br/>
                         <h4 class="title">Caractéristiques du dvd</h4>
+                        <%if (((String)request.getAttribute("prix")).equals("faux")){%>
+                        <font color="red">Le format du prix est invalide ! Exemple de prix : 10.00</font><br/>    
+                        <%}%>
                         <div class="to">
                             <label> Titre : </label> <input type="text" name="titre" onblur="verif(this)"/>
                         </div>
                         <div class="to">
                             <label> Date de sortie : </label> <input type="text" name="dateSortie" onblur="verif(this)"/>
                         </div>
-                        <div class="to">
-                            <label> Prix : </label> <input type="text" name="prix"  onblur="verifnumbprix(this)"/>
-                        </div>
-                        <div class="to">
-                            <label> Quantité : </label> <input type="text" name="quantite"  onblur="verifnumb(this)"/>
-                        </div>
                         <div class="text">
                             <label> Description : </label><textarea name="description" onblur="verif(this)"></textarea>
                         </div>
-                        
+                        <div class="to">
+                            <label> Prix : </label> <input type="text" name="prix"  onblur="verifnumbprix(this)"/>
+                        </div>
                         <div class="col-md-6">
                             <div class="box-info-product1">
                                 <ul class="prosuct-qty">
@@ -51,8 +50,11 @@
                                         %>
                                     </select>
                                 </ul>
-			   </div>
-			</div>
+                            </div>
+                        </div>
+                        <div class="to">
+                            <label> Quantité : </label> <input type="text" name="quantite"  onblur="verifnumb(this)"/>
+                        </div>
                         <div class="to">
                             <label> Affiche du film : </label></br><input type="file" name="file" id="file" value="" onchange="verif_extension(file.value)"/>
                         </div>

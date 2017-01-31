@@ -5,6 +5,7 @@
  */
 package session;
 
+import entity.Client;
 import entity.Commande;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +69,42 @@ public class CommandeFacade extends AbstractFacade<Commande> {
         Iterator<Commande> i = temp.iterator();
         while (i.hasNext()){
             if (!i.next().getEtat().equals("Effectuée")){
+                i.remove();
+            }
+        }
+        return temp;
+    }
+    
+    public List<Commande> getAttente(Client c){
+        List<Commande> temp = findAll();
+        Iterator<Commande> i = temp.iterator();
+        while (i.hasNext()){
+            Commande tempCom = i.next();
+            if (!tempCom.getEtat().equals("En Attente") || !tempCom.getClient().equals(c)){
+                i.remove();
+            }
+        }
+        return temp;
+    }
+    
+    public List<Commande> getCours(Client c){
+        List<Commande> temp = findAll();
+        Iterator<Commande> i = temp.iterator();
+        while (i.hasNext()){
+            Commande tempCom = i.next();
+            if (!tempCom.getEtat().equals("En Cours") || !tempCom.getClient().equals(c)){
+                i.remove();
+            }
+        }
+        return temp;
+    }
+    
+    public List<Commande> getEffectuee(Client c){
+        List<Commande> temp = findAll();
+        Iterator<Commande> i = temp.iterator();
+        while (i.hasNext()){
+            Commande tempCom = i.next();
+            if (!tempCom.getEtat().equals("Effectuée") || !tempCom.getClient().equals(c)){
                 i.remove();
             }
         }

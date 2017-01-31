@@ -78,7 +78,7 @@
                     <li><a href="ControleurClients?action=pagePanier">Panier</a></li>
                     <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
                     <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
-                    <li><a href="ControleurEmployes?action=pageCommandes">Commandes</a></li>
+                    <li><a href="ControleurClients?action=pageCommandes">Commandes</a></li>
                     <li><a href="ControleurEmployes?action=pageLivraisons">Livraisons</a></li>
                     <li><a href="ControleurEmployes?action=pageEnvoiColis">Envoi Colis</a></li>
                <%

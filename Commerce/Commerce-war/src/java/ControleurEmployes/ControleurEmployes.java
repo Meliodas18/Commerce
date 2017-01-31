@@ -48,7 +48,6 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;*/
 
 import java.io.FileOutputStream;
-import java.util.Set;
 import session.CategorieFacade;
 
 /**
@@ -212,6 +211,7 @@ public class ControleurEmployes extends HttpServlet {
     private void pageAjouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Categorie> tempList = categorief.findAll();
         request.setAttribute("Cat",tempList);
+        request.setAttribute("prix","vrai");
         getServletContext().getRequestDispatcher("/WEB-INF/AjoutDvds.jsp").forward(request, response);
     }
     
@@ -219,6 +219,14 @@ public class ControleurEmployes extends HttpServlet {
     //!!! Changer le path
     private void ajouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
          
+        String s = request.getParameter("prix");
+        String[] tempPrix = s.split("[.]");
+        if (tempPrix.length == 2 && tempPrix[1].length() > 2){
+            List<Categorie> tempList = categorief.findAll();
+            request.setAttribute("Cat",tempList);
+            request.setAttribute("prix","faux");
+            getServletContext().getRequestDispatcher("/WEB-INF/AjoutDvds.jsp").forward(request, response);
+        }
         String path = System.getProperty("user.dir") + "../../../Commerce/Commerce/Commerce-war/web/images";
         Part filePart = request.getPart("file");
         String fileName = getFileName(filePart);
