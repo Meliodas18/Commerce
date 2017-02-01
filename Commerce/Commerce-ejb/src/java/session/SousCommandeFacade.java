@@ -27,6 +27,9 @@ import javax.persistence.PersistenceContext;
 public class SousCommandeFacade extends AbstractFacade<SousCommande> {
     
     @EJB
+    private DvdFacade dvdf;
+    
+    @EJB
     private CommandeFacade commandef;
 
     @PersistenceContext(unitName = "Commerce-ejbPU")
@@ -102,6 +105,23 @@ public class SousCommandeFacade extends AbstractFacade<SousCommande> {
         }
         return result;
     } 
+    
+    //utilisé en pratique
+    public void changeState(SousCommande sc, String emailEmploye){
+        sc.setEtat("Reçue");
+        edit(sc);
+        Map<Dvd,Integer> myMap = sc.getDvds();
+        for (Dvd dvd : myMap.keySet()){
+            dvdf.increaseQuantity(myMap.get(dvd), dvd);
+        }
+        Set<SousCommande> mySet = sc.getCommande().getSousCommande();
+        for (SousCommande souscom : mySet){
+            if (souscom.getEtat().equals("En Attente")){
+                return;
+            }
+        }
+        commandef.changeState(sc.getCommande(), emailEmploye);
+    }
     
     public void removeSousCommande(List<Long> myList){
         for(Long idCommande : myList){

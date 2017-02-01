@@ -66,7 +66,7 @@
                     <%} else {
                         out.println("<h2 class=\"my-line-2\">Votre panier</h2>");
                         for (Dvd dvd : contenu.keySet()){
-                            String path = dvd.getImage().substring(49);
+                            String path = dvd.getImage().substring(91);
                             int quantite = contenu.get(dvd);
                     %>
                     

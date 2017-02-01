@@ -13,6 +13,7 @@ import entity.Dvd;
 import entity.Editeur;
 import entity.Employe;
 import entity.Realisateur;
+import entity.SousCommande;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -459,22 +460,21 @@ public class ControleurEmployes extends HttpServlet {
     }
     
     private void livraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Dvd dvd = dvdf.find(Long.parseLong((request.getParameter("id"))));
-        if (dvd == null){
+        SousCommande sc = sousCommandef.find(Long.parseLong((request.getParameter("id"))));
+        if (sc == null){
             request.setAttribute("etat","faux");
+        }
+        else if (!sc.getEtat().equals("En Attente")){
+            request.setAttribute("etat","impossible");
         } else {
             request.setAttribute("etat","possible");
-            dvdf.increaseQuantity(Integer.parseInt(request.getParameter("quantite")),dvd);
-            List<Long> tempId = sousCommandef.changeState(dvd.getSousCommande(),Integer.parseInt(request.getParameter("quantite")), emailEmploye,dvd);
-            if (!tempId.isEmpty()){
-                sousCommandef.removeSousCommande(tempId);
-            }
+            sousCommandef.changeState(sc,emailEmploye);
         }
         getServletContext().getRequestDispatcher("/WEB-INF/Livraisons.jsp").forward(request, response);
     }
 
     private void pageLivraisons(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("etat","possible");
+        request.setAttribute("etat","autre");
         getServletContext().getRequestDispatcher("/WEB-INF/Livraisons.jsp").forward(request, response);
     }
 

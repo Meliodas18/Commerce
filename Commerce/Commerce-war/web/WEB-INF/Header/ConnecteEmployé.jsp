@@ -62,15 +62,15 @@
                         <div class="menu">
                             <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
                                 <ul class="nav" id="nav">
-                                    <li><a href="ControleurEmployes?action=pageAjouterDvd">Ajouter des dvds</a></li>
-                                    <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
+                                    <li><a href="index.jsp">Accueil</a></li>
+                                    <li><a href="ControleurEmployes?action=pageAjouterDvd">Gestion des dvds</a></li>
                                     <li><a href="ControleurEmployes?action=pageCommandes">Commandes</a></li>
-                                    <li><a href="ControleurEmployes?action=pageLivraisons">Livraisons</a></li>
-                                    <li><a href="ControleurEmployes?action=pageEnvoiColis">Envoi Colis</a></li>
+                                    <li><a href="ControleurEmployes?action=pageLivraisons">Livraison</a></li>
+                                    <li><a href="ControleurEmployes?action=pageEnvoiColis">Envoi</a></li>
+                                    <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
                                 </ul>
                                 <script type="text/javascript" src="js/responsive-nav.js"></script>
                         </div>							
-                        <div class="clear"></div>
                     </div>
                     
 	            <div class="header_right">

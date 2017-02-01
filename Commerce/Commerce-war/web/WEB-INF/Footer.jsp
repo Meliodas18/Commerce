@@ -45,7 +45,7 @@
             </div>
             <div class="row footer_bottom">
                 <div class="copy">
-                    <p>© 2017 Made by ProjectJ22 : Delecourt & Huang & Maillot</p>
+                    <p>© 2017 Made by ProjectJ2E : Delecourt & Huang & Maillot</p>
                 </div>
             </div>
         </div>

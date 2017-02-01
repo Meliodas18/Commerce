@@ -21,14 +21,21 @@
                     <br/><br/><br/><br/><br/></br>
                     <form method="POST" action="ControleurEmployes">
                         <input type="hidden" name="action" value="livraisons"/>
+                        <%if (((String)request.getAttribute("etat")).equals("impossible")){
+                        out.println("<font color=\"red\">Cette sous-commande ne peut-être envoyée : elle est dans l'état \"Reçue\" !</font>");    
+                        } else if (((String)request.getAttribute("etat")).equals("faux")){
+                        out.println("<font color=\"red\">Le numéro ne correspond à aucune sous-commande !</font>");    
+                        } else if (((String)request.getAttribute("etat")).equals("possible")){
+                        out.println("<font color=\"green\">La livraison a été enregistrée !</font>");    
+                        }
+                        %>
                         <div class="to">
-                            <label> ID Dvd : </label> <input type="text" name="id"/>
+                            <label> ID Sous-Commande : </label> <input class="text" type="text" name="id"/>
                         </div>
-                        <div class="to">
-                            <label> Quantité : </label> <input type="text" name="quantite"/>
-                        </div>
+                        </br>
                         <div class="button1">
-                            <input type="submit" value="Ajouter aux stocks"/>  
+                            <input type="reset" value="Réinitialiser"/>
+                            <input type="submit" value="Valider"/> 
                         </div>
                         <br/><br/><br/><br/><br/><br/><br/><br/><br/>
                     </form>

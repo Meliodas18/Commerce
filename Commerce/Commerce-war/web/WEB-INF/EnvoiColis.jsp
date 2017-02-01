@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Envoi des colis</title>
         <link href="css/mycss.css" rel='stylesheet' type='text/css' />
-        <%@include file="Header/ConnecteClient.jsp" %>
+        <%@include file="Header/ConnecteEmployé.jsp" %>
         <div class="main">
             <div class="shop_top">
                 <div class="container">
@@ -34,7 +34,7 @@
                             <input type="reset" value="Réinitialiser"/>
                             <input type="submit" value="Valider le traitement de la commande"/> 
                         </div>
-                        </br></br></br></br></br></br></br>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
                     </form>
                 </div>
             </div>
