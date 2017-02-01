@@ -23,16 +23,12 @@ public class Employe implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String email;
-    private String nom;
-    private String prenom;
     private String motDePasse;
     
      public Employe(){
     }
     
     public Employe(String nom, String prenom, String motDePasse, String email) {
-        this.nom = nom;
-        this.prenom = prenom;
         this.motDePasse = motDePasse;
         this.email = email;
     }
@@ -49,28 +45,12 @@ public class Employe implements Serializable {
         return email;
     }
 
-    public String getNom() {
-        return nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
     public String getMotDePasse() {
         return motDePasse;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
     }
 
     public void setMotDePasse(String motDePasse) {

@@ -227,7 +227,7 @@ public class ControleurEmployes extends HttpServlet {
             request.setAttribute("prix","faux");
             getServletContext().getRequestDispatcher("/WEB-INF/AjoutDvds.jsp").forward(request, response);
         }
-        String path = System.getProperty("user.dir") + "../../../Commerce/Commerce/Commerce-war/web/images";
+        String path = System.getProperty("user.dir") + "/../../../Commerce/Commerce/Commerce-war/web/images";
         Part filePart = request.getPart("file");
         String fileName = getFileName(filePart);
 
@@ -270,13 +270,12 @@ public class ControleurEmployes extends HttpServlet {
             Auteur auteur = new Auteur(goodString(request.getParameter("prenomAuteur")),goodString(request.getParameter("nomAuteur")));
             id = auteurf.getId(auteur, param);
             if (id.isEmpty()){
-                auteur.addDvds(dvd);
                 auteurf.create(auteur);
             } else {
                 auteur = auteurf.find(id.get(0));
-                auteur.addDvds(dvd);
                 auteurf.edit(auteur);
             }
+            dvd.setAuteur(auteur);
             
             Realisateur realisateur = new Realisateur(goodString(request.getParameter("prenomRealisateur")),goodString(request.getParameter("nomRealisateur")));
             id = realisateurf.getId(realisateur, param);
@@ -288,7 +287,7 @@ public class ControleurEmployes extends HttpServlet {
             }
             dvd.setRealisateur(realisateur);
             
-            Editeur editeur = new Editeur(goodString(request.getParameter("nomEditeur")));
+            Editeur editeur = new Editeur(goodString(request.getParameter("nomEditeur")),goodString(request.getParameter("emailEditeur")));
             id = editeurf.getId(editeur, paramEditeur);
             if (id.isEmpty()){
                 editeurf.create(editeur);

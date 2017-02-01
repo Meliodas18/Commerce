@@ -20,8 +20,8 @@
         <link href="css/mycss.css" rel='stylesheet' type='text/css' />
         <% Dvd dvd = (Dvd)request.getAttribute("dvd");
            Set<Dvd> set = (Set<Dvd>)request.getAttribute("set");
-           String path = dvd.getImage().substring(49);
-           Set<Auteur> auteurs = dvd.getAuteurs();
+           String path = dvd.getImage().substring(91);
+           Auteur auteur = dvd.getAuteur();
            Realisateur real = dvd.getRealisateur();
            Editeur edit = dvd.getEditeur();
            Categorie cat = dvd.getCategories();
@@ -45,9 +45,7 @@
                                         out.println("<li><h4 class=\"m_12\">" + dvd.getQuantite() + " en stock !</h4></li>");
                                     }%>
                                 </ul><br/>
-                                <% for (Auteur aut : auteurs){%>
-                                <h4><b>Auteurs : </b><%=aut.getPrenom()%> <%=aut.getNom()%></h4>
-                                <%}%>
+                                <h4><b>Auteur : </b><%=auteur.getPrenom()%> <%=auteur.getNom()%></h4>
                                 <h4><b>Réalisateur : </b><%=real.getPrenom()%> <%=real.getNom()%></h4>
                                 <h4><b>Date de Sortie : </b><%=dvd.getDateSortie()%></h4>
                                 <%if (cat != null){%>

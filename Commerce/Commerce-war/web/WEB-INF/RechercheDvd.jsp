@@ -96,12 +96,23 @@
                             <div id="pp1" style="display:none">
                             </div>
                             <div id="pp2" class="to">
-                                <h3 class="h3-for-recherche">Entrez l'auteur : </h3><input type="text" name="auteur"/><br/>
+                                <h3 class="h3-for-recherche">Entrez l'auteur : </h3>
+                                <div class="col-md-4">
+                                    <input type="text" name="auteurP"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="auteurN"/>
+                                </div>
                             </div>
                             <div id="pp3">
                             </div>
                             <div id="pp4" class="to" style="display:none">
-                                <h3 class="h3-for-recherche">Entrez le réalisateur : </h3><input type="text" name="realisateur"/><br/>
+                                <h3 class="h3-for-recherche">Entrez le réalisateur : </h3><div class="col-md-4">
+                                    <input type="text" name="realisateurP"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="realisateurN"/>
+                                </div>
                             </div>
                             <div id="pp5">
                             </div>
@@ -139,7 +150,7 @@
                        out.println("<div class=\"row shop_box-top\">");
                        if (list != null){ 
                             for (Dvd dvd: list){
-                                String path = dvd.getImage().substring(49);
+                                String path = dvd.getImage().substring(91);
                                 if (i%4 == 0 && i != 0){
                                     out.println("<div class=\"row\">");
                                 }

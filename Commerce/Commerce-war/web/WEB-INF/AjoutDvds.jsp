@@ -33,7 +33,7 @@
                             <label> Date de sortie : </label> <input type="text" name="dateSortie" onblur="verif(this)"/>
                         </div>
                         <div class="text">
-                            <label> Description : </label><textarea name="description" onblur="verif(this)"></textarea>
+                            <label> Description : </label><textarea name="description"></textarea>
                         </div>
                         <div class="to">
                             <label> Prix : </label> <input type="text" name="prix"  onblur="verifnumbprix(this)"/>
@@ -78,6 +78,10 @@
                         <h4 class="title"> Editeur </h4>
                         <div class="to">
                             <label> Nom : </label> <input type="text" name="nomEditeur" onblur="verif(this)"/>
+                        </div>
+                        <div class="to">
+                            <label>Adresse Email : </label>
+                            <input type="text" name="emailEditeur" size="100" autocomplete="off" onblur="verif(this)"/> 
                         </div>
                         </br></br></br></br></br></br>
                         <div class="button1">

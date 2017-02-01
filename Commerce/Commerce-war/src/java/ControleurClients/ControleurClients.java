@@ -292,45 +292,25 @@ public class ControleurClients extends HttpServlet {
     private void interactiveResearch(HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException, IOException {
         
         //Déclaration des paramètres et récupération des données de recherche
-        String[] values = request.getParameter("auteur").split(" ");
         String[] parametres = {"prenom", "nom"};
-        ArrayList<Long> array = new ArrayList<>();
         List<Dvd> allDvd = dvdf.findAll();
         List<Dvd> arrayDvd = new ArrayList<>();
         
-
-        /*Recherche en fonction de l'auteur
-        Si un mot on regarde les deux cas : c'est le nom ou c'est le prénom
-        Sinon, il faut tester les différentes combinaisons possibles
-         *//*
-        if (values.length >= 2) {
-            for (int i = 0; i < values.length; i++) {
-                array.addAll(auteurf.getIdForResearch(new Auteur(values[i], values[(i + 1) % values.length]), parametres));
-            }
-        } else if (values.length == 1 && !values[0].equals("")) {
-            array.addAll(auteurf.getIdForResearch(new Auteur(values[0], ""), parametres));
-            array.addAll(auteurf.getIdForResearch(new Auteur("", values[0]), parametres));
-        }
-
-        //Si on a trouvé des correspondances pour la recherche
-        if (!array.isEmpty()) {
-            for (Long id : array) {
-                arrayDvd.addAll(auteurf.find(id).getDvds());
-            }
-            request.setAttribute("setDvd", arrayDvd);
-        }*/
-
         //On obtient un array -- on doit maintenant vérifier critère par critère
         for (Dvd dvd : allDvd){
-            if (!dvd.getTitre().equals(request.getParameter("titre"))){
+            String temp1 = request.getParameter("titre");
+            if (!temp1.equals("") && !dvd.getTitre().equals(temp1)){
                 continue;
             }
-            String one = request.getParameter("auteur").split(" ")[0];
-            String two = request.getParameter("auteur").split(" ")[1];
-            /*if (!dvd.getTitre().equals(titre)){
+            temp1 = request.getParameter("realisateurN");
+            if (!temp1.equals("") && !dvd.getRealisateur().getNom().equals(temp1)){
                 continue;
             }
-            arrayDvd.add(dvd);*/
+            temp1 = request.getParameter("realisateurP");
+            if (!temp1.equals("") && !dvd.getRealisateur().getPrenom().equals(temp1)){
+                continue;
+            }
+            arrayDvd.add(dvd);
         }
         request.setAttribute("setDvd", arrayDvd);
         pageRechercherDvd(request, response);
@@ -360,11 +340,9 @@ public class ControleurClients extends HttpServlet {
         if (dvds.size() > 4){
             return dvds;
         }
-        for (Auteur a : dvd.getAuteurs()){
-            dvds.addAll(a.getDvds());
-            if (dvds.size() > 4){
-                return dvds;
-            }
+        dvds.addAll(dvd.getAuteur().getDvds());
+        if (dvds.size() > 4){
+            return dvds;
         }
         List<Dvd> tempList = dvdf.findAll();
         dvds.addAll(tempList.subList(0, min(4,tempList.size())));
@@ -389,8 +367,9 @@ public class ControleurClients extends HttpServlet {
             request.setAttribute("email", "faux");
             getServletContext().getRequestDispatcher("/WEB-INF/PasswordOublie.jsp").forward(request, response);
         }else{
+            tempClient = clientf.find(clientf.getId(tempClient, tempParam).get(0));
             sendEmail(tempClient.getEmail(), "[Projet Jboss EJB] Votre mot de passe", "Bonjour,\nVoici votre mot de passe : " + tempClient.getMotDePasse() + ".\nCordialement,\nL'équipe Projet EJB");
-            getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
+            pageConnexion(request,response);
         }
     }
     

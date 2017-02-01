@@ -27,11 +27,12 @@ public class Editeur implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nom;
+    private String email;
     
     @OneToMany(fetch = FetchType.EAGER,mappedBy="editeur")
     protected Set<Dvd> dvds;
 
-    public Editeur(String nom) {
+    public Editeur(String nom, String email) {
         this.nom = nom;
         this.dvds = new HashSet<>();
     }
@@ -43,6 +44,14 @@ public class Editeur implements Serializable {
         return nom;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     public Set<Dvd> getDvds() {
         return dvds;
     }

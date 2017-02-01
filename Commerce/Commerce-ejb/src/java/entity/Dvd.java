@@ -44,7 +44,6 @@ public class Dvd implements Serializable {
         this.prix = prix;
         this.dateSortie = dateSortie;
         this.quantite = quantite;
-        this.auteurs = new HashSet<>();
         this.commande = new ArrayList<>();
         this.image=image;
     }
@@ -152,20 +151,16 @@ public class Dvd implements Serializable {
         this.commande = commande;
     }
 
-    @ManyToMany(mappedBy="dvds",fetch=FetchType.EAGER)
-    protected Set<Auteur> auteurs;
+    @ManyToOne(fetch=FetchType.EAGER)
+    protected Auteur auteur;
     
 
-    public Set<Auteur> getAuteurs() {
-        return auteurs;
+    public Auteur getAuteur() {
+        return auteur;
     }
 
-    public void setAuteurs(Set<Auteur> auteurs) {
-        this.auteurs = auteurs;
-    }
-    
-    public void addAuteurs(Auteur auteur) {
-        this.auteurs.add(auteur);
+    public void setAuteur(Auteur auteur) {
+        this.auteur = auteur;
     }
     
     @ManyToOne

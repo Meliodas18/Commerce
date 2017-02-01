@@ -13,7 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -89,7 +89,7 @@ public class Auteur implements Serializable {
         return "ejb.Auteur[ id=" + id + " ]";
     }
     
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="auteur",fetch = FetchType.EAGER)
     protected Set<Dvd> dvds;
 
     public Set<Dvd> getDvds() {
