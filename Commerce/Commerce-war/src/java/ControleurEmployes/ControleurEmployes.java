@@ -321,6 +321,7 @@ public class ControleurEmployes extends HttpServlet {
     }
 
     private void pageConnexionEmploye(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("etat","possible");
         getServletContext().getRequestDispatcher("/WEB-INF/ConnexionEmploye.jsp").forward(request, response);
     }
     
@@ -329,7 +330,7 @@ public class ControleurEmployes extends HttpServlet {
         String[] parametres = {"email","motDePasse"};
         ArrayList<Long> findId = employef.getId(new Employe(request.getParameter("nomEmploye"), request.getParameter("prenomEmploye"), request.getParameter("passWord"),request.getParameter("email")), parametres);
         if (findId.isEmpty()){
-            request.setAttribute("erreur", true);
+           request.setAttribute("etat","faux");
             getServletContext().getRequestDispatcher("/WEB-INF/ConnexionEmploye.jsp").forward(request, response);
         } else {
             HttpSession session = request.getSession();

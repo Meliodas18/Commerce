@@ -80,13 +80,11 @@
                             <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
                                 <ul class="nav" id="nav">
                                     <li><a href="index.jsp">Accueil</a></li>
-                                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageAjouterDvd')" >Ajouter des dvds</a></li>
-                                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pagePanier')" >Panier</a></li>
-                                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','deconnexion')" >Deconnexion</a></li>
+                                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageAjouterDvd')" >Gestion des dvds</a></li>
                                     <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageCommandes')">Commandes</a></li>
                                     <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageLivraisons')">Livraisons</a></li>
-                                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageEnvoiColis')">Envoi Colis</a></li>
-                   
+                                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageEnvoiColis')">Envoi</a></li>
+                                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','deconnexion')" >Deconnexion</a></li>
                                 </ul>
                                 <script type="text/javascript" src="js/responsive-nav.js"></script>
                         </div>							

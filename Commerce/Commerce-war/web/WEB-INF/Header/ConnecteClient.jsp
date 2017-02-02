@@ -79,10 +79,8 @@
                             <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
                                 <ul class="nav" id="nav">
                                     <li><a href="index.jsp">Accueil</a></li>
-                                    
                                     <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageRechercherDvd')" >Rechercher des dvds</a></li>
-                                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageCommandes')">Mes Commandes</a></li>
-
+                                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageCommandes')">Mes Commandes</a></li>
                                     <li><a href='#' onclick="makePostRequest('ControleurClients','action','deconnexion')" >Deconnexion</a></li>      
                                 </ul>
                                 <script type="text/javascript" src="js/responsive-nav.js"></script>

@@ -12,6 +12,7 @@
         <title>Livraisons</title>
         <link href="css/mycss.css" rel='stylesheet' type='text/css' />
         <%@include file="Header/ConnecteEmployé.jsp" %>
+        <script src="js/verification.js"></script>
         <div class="main">
             <div class="shop_top">
                 <div class="container">
@@ -19,7 +20,7 @@
                         <h2 class="my-line-2">Livraisons</h2>
                     </div>
                     <br/><br/><br/><br/><br/></br>
-                    <form method="POST" action="ControleurEmployes">
+                    <form method="POST" action="ControleurEmployes" onsubmit="return verifFormDvd(this)">
                         <input type="hidden" name="action" value="livraisons"/>
                         <%if (((String)request.getAttribute("etat")).equals("impossible")){
                         out.println("<font color=\"red\">Cette sous-commande ne peut-être envoyée : elle est dans l'état \"Reçue\" !</font>");    
@@ -30,7 +31,7 @@
                         }
                         %>
                         <div class="to">
-                            <label> ID Sous-Commande : </label> <input class="text" type="text" name="id"/>
+                            <label> ID Sous-Commande : </label> <input class="text" type="text" name="id" onblur="verifnumb(this)"/>
                         </div>
                         </br>
                         <div class="button1">

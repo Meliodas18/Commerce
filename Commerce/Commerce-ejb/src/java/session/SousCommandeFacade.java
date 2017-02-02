@@ -47,6 +47,7 @@ public class SousCommandeFacade extends AbstractFacade<SousCommande> {
     @Override
     public void create(SousCommande sc){
         super.create(sc);
+        
     }
     
     public void flush(){

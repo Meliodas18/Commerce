@@ -11,6 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Envoi des colis</title>
         <link href="css/mycss.css" rel='stylesheet' type='text/css' />
+        <script src="js/verification.js"></script>
         <%@include file="Header/ConnecteEmployé.jsp" %>
         <div class="main">
             <div class="shop_top">
@@ -19,7 +20,7 @@
                         <h2 class="my-line-2">Envoi des colis</h2>
                     </div>
                     <br/><br/><br/><br/><br/></br>
-                    <form method="POST" action="ControleurEmployes">
+                    <form method="POST" action="ControleurEmployes" onsubmit="return verifFormDvd(this)">
                         <input type="hidden" name="action" value="envoiColis"/>
                         <%if (((String)request.getAttribute("etat")).equals("impossible")){
                         out.println("<font color=\"red\">Cette commande ne peut-être envoyée : elle est dans l'état \"En Attente\" !</font>");    
@@ -27,7 +28,7 @@
                         out.println("<font color=\"red\">Le numéro ne correspond à aucune commande !</font>");    
                         }%>
                         <div class="to">
-                            <label> ID Commande : </label> <input class="text" type="text" name="id"/>
+                            <label> ID Commande : </label> <input class="text" type="text" name="id" onblur="verifnumb(this)"/>
                         </div>
                         </br>
                         <div class="button1">

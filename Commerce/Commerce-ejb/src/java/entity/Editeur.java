@@ -34,6 +34,7 @@ public class Editeur implements Serializable {
 
     public Editeur(String nom, String email) {
         this.nom = nom;
+        this.email = email;
         this.dvds = new HashSet<>();
     }
     

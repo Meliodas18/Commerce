@@ -24,6 +24,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.ejb.Remove;
 import javax.ejb.StatefulTimeout;
+import static session.EmailSessionBean.sendEmail;
 
 /**
  *
@@ -44,8 +45,6 @@ public class Panier{
     
     private HashMap<Dvd,Integer> dvdh;
     private HashMap<Dvd,Integer> dvdToCommand;
-    private String emailFournisseur = "aymeric.delecourt@phelma.grenoble-inp.fr";
-    private String emailEmploye = "aymeric.delecourt@phelma.grenoble-inp.fr";
     
     @PostConstruct
     private void initializeBean(){
@@ -143,7 +142,8 @@ public class Panier{
                         it.remove();
                     }
                 }
-                sousCommandef.create(sc); 
+                sousCommandef.create(sc);
+                sendEmail(sc.getEditeur().getEmail(), "[Projet Jboss EJB] Sous-Commandes n°" + sc.getId(), "Bonjour,\nVoici la commande a géré :\n" + sc.toString() +"\nCordialement,\nL'équipe Projet EJB");
             }
             this.dvdh.clear();
         }
