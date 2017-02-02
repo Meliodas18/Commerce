@@ -4,6 +4,7 @@
     Author     : aymeric
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="entity.Dvd"%>
@@ -141,51 +142,47 @@
                             <br/><br/><br/><br/>
                         </form>
                     </div>
+                    
                     <div id="Page2">
                         <a href="#" onclick="return show('Page1', 'Page2');">Editer</a>
                     </div>
-                    <br/><br/>                    
+                    
+                    <div class="my-line-1">
+                        </br>
+                    </div>                   
                     <% ArrayList<Dvd> list = (ArrayList<Dvd>) request.getAttribute("listeDvds");
-                       int i = 0;
-                       out.println("<div class=\"row shop_box-top\">");
-                       if (list != null){ 
-                            for (Dvd dvd: list){
-                                String path = dvd.getImage().substring(91);
-                                if (i%4 == 0 && i != 0){
-                                    out.println("<div class=\"row\">");
-                                }
-                                i++;
+                       DecimalFormat df = new DecimalFormat("0.00");
+                       for (Dvd dvd : list){
+                       String path = dvd.getImage().substring(91);
+                       
                     %>
-                    <div class="col-md-3 shop_box">
-                        <div class="shop_desc">
-                            <a href="ControleurClients?action=pageDetails&id=<%=dvd.getId()%>"/>
-                                <img src="<%=path%>" class="img-responsive" alt="" width="120" height="200"/>
-                                <br/>
-                                <div class="overflow">
-                                    <h4><%=dvd.getTitre()%></h4>
-                                </div>
-                                <% if (dvd.getQuantite() <= 0){
-                                    out.println("<h5>En rupture !</h5>");
-                                } else {
-                                    out.println("<h5>En stock !</h5>");
-                                }%>
-                                <h5><%=dvd.getPrix()%> €</h5>
-                            </a>
-                        </div>
+                    <div class="col-md-1">
+                        <img src="<%=path%>" class="img-for-cart"/>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="all-for-cart-2"><%=dvd.getTitre()%></p><br/>
+                        <%if (dvd.getQuantite() > -1){ //si la quantite de dvds au moment où on a passé la commande est supérieur à la quantité demandée
+                            out.print("<font class=\"font-for-cart\" color=\"red\">En stock !</font>");
+                        } else {
+                            out.print("<font class=\"font-for-cart\" color=\"red\">A commander !</font>");
+                        }%>
+                        <br/>
+                        <a class="a-for-cart"><%=dvd.getCategories().getType()%></a>
+                    </div>
+                    <div class="col-md-5">
+                        </br></br>
+                        <h2><%=df.format(dvd.getPrix())%> €</h2>
+                    </div>
+                    <div class="col-md-2">
+                        </br></br>
+                        <a href="ControleurClients?action=pageDetails&id=<%=dvd.getId()%>">En savoir plus !</a>
+                    </div>
+                    <div class="my-line-1">
+                        </br></br></br></br></br>
                     </div> 
-                    <%if(i%4 == 0){
-                        out.println("</div>");
-                    }
-                    }
-                        //On rajoute un /div si jamais il y avait moins qu'un multiple de 4 dvds à afficher
-                    if (i%4 != 0){
-                        out.println("</div>");
-                    }
-                }
-                %>
+                    <%}%>
                 </div>
             </div>
         </div>
         <%@include file="Footer.jsp" %>
-    </body>
 </html>

@@ -69,16 +69,15 @@
                             String path = dvd.getImage().substring(91);
                             int quantite = contenu.get(dvd);
                     %>
-                    
                     <div class="col-md-1">
                         <img src="<%=path%>" class="img-for-cart"/>
                     </div>
                     <div class="col-md-4">
-                        <p class="all-for-cart"><%=dvd.getTitre()%></p>
-                        <%if (dvd.getQuantite() - contenu.get(dvd) > -1){ //si la quantite de dvds au moment où on a passé la commande est supérieur à la quantité demandée
-                            out.print("<p class=\"all-for-cart\">En stock !<p>");
+                        <p class="all-for-cart-2"><%=dvd.getTitre()%></p><br/>
+                        <%if (dvd.getQuantite() > -1){ //si la quantite de dvds au moment où on a passé la commande est supérieur à la quantité demandée
+                            out.print("<font class=\"font-for-cart\" color=\"red\">En stock !</font>");
                         } else {
-                            out.print("<p class=\"all-for-cart\">A commander !<p>");
+                            out.print("<font class=\"font-for-cart\" color=\"red\">A commander !</font>");
                         }%>
                         </br>
                         <a href="ControleurClients?action=removeCart&id=<%=dvd.getId()%>" class="all-for-cart">Supprimer</a>

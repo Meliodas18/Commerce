@@ -15,6 +15,22 @@
     padding-top:15px;
     padding-left:28px;
 }
+.all-for-cart-2{
+    padding-top:15px;
+    padding-left:28px;
+    font-size :large;
+    overflow:hidden;
+    text-overflow: ellipsis;
+}
+.a-for-cart{
+    color:black;
+    text-decoration: none;
+    margin-left : 28px;
+}
+.font-for-cart{
+    text-decoration: none;
+    margin-left : 28px;
+}
 .cart-top-8{
     margin-top: 15px;
     float:right;

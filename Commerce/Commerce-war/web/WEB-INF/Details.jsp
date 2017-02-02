@@ -36,7 +36,7 @@
                             </div>
 			    <!-- end product_slider -->
 			    <div class="single_right">
-			      	<h2><%=dvd.getTitre()%></h2>
+			      	<h2 class="overflow"><%=dvd.getTitre()%></h2>
                                 <br/><br/><br/>
 			       	<ul class="options">
                                     <% if (dvd.getQuantite() <= 0){
