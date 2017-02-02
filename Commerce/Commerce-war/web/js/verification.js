@@ -25,6 +25,19 @@ function verif(champ)
     }
 }
 
+function verifdes(champ)
+{
+    if (champ.value.length < 1)
+    {
+        surligne(champ, true);
+        return false;
+    } else
+    {
+        surligne(champ, false);
+        return true;
+    }
+}
+
 function verifnumb(champ)
 {
     var numb = parseInt(champ.value,10);
@@ -76,7 +89,7 @@ function verifForm(f)
 function verifFormDvd(f)
 {
     var titre = verif(f.titre);
-    var description = verif(f.description);
+    var description = verifdes(f.description);
     var prix = verifnumbprix(f.prix);
     var dateSortie = verif(f.dateSortie);
     var quantite = verifnumb(f.quantite);

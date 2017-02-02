@@ -48,6 +48,20 @@
                     });
                 });
         </script>
+        <script>
+                        
+            function makePostRequest(url, name, value) {
+                            
+                var form = document.getElementById("test");
+                form.innerHTML= "<form action="+url+" method='post' id='form'>"+"<input type='hidden' name='"+name +"' value='" +value+"' />"  +"</form>";
+                document.getElementById("form").submit();
+                        
+            }
+    
+
+
+
+    </script>
     </head>
 <body>
     <div class="header">
@@ -58,13 +72,18 @@
                         <div class="logo">
                             <a href="index.jsp"><img src="images/logo.png" alt=""/></a>
                         </div>
+                        <div id="test">
+                            <form method="post" ></form>
+                        </div>
                         <div class="menu">
                             <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
                                 <ul class="nav" id="nav">
                                     <li><a href="index.jsp">Accueil</a></li>
-                                    <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
-                                    <li><a href="http://localhost:8080/Commerce-war/ControleurClients?action=pageCommandes">Mes Commandes</a></li>
-                                    <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
+                                    
+                                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageRechercherDvd')" >Rechercher des dvds</a></li>
+                                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageCommandes')">Mes Commandes</a></li>
+
+                                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','deconnexion')" >Deconnexion</a></li>      
                                 </ul>
                                 <script type="text/javascript" src="js/responsive-nav.js"></script>
                         </div>							

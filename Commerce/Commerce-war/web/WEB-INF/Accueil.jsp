@@ -53,8 +53,28 @@
             $("#flagSwitcher").click(function() {
                 $(".dropdown img.flag").toggleClass("flagvisibility");
             });
+            
+            
         });
+        
+        
+        
      </script>
+     <script>
+                        
+            function makePostRequest(url, name, value) {
+                            
+                var form = document.getElementById("test");
+                form.innerHTML= "<form action="+url+" method='post' id='form'>"+"<input type='hidden' name='"+name +"' value='" +value+"' />"  +"</form>";
+                document.getElementById("form").submit();
+                        
+            }
+    
+
+
+
+    </script>
+     
     </head>
     <body>
         
@@ -70,35 +90,38 @@
 					 <div class="menu">
 						  <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
 						    <ul class="nav" id="nav">
-                                                        
+                                                        <div id="test">
+                                                            <form method="post" ></form>
+                                                        </div>
                                                         <% HttpSession sess = request.getSession();
                if ((String)(sess.getAttribute("mode")) == "client"){ %>
-                    <li><a href="ControleurEmployes?action=pageAjouterDvd">Ajouter des dvds</a></li>
-                    <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
-                    <li><a href="ControleurClients?action=pagePanier">Panier</a></li>
-                    <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
-                    <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
-                    <li><a href="ControleurClients?action=pageCommandes">Commandes</a></li>
-                    <li><a href="ControleurEmployes?action=pageLivraisons">Livraisons</a></li>
-                    <li><a href="ControleurEmployes?action=pageEnvoiColis">Envoi Colis</a></li>
-               <%
+                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageAjouterDvd')" >Ajouter des dvds</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageRechercherDvd')" >Rechercher des dvds</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pagePanier')" >Panier</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','deconnexion')" >Deconnexion</a></li>
+                    <li><a href='#' onclick="makePostRequest('Controleur','action','SupprimerClient')" >Supprimer Client</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageCommandes')">Commandes</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageLivraisons')">Livraisons</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageEnvoiColis')">Envoi Colis</a></li>
+                   <%
                } else if((String)(sess.getAttribute("mode")) == "employe"){
                 %>
-                    <li><a href="ControleurEmployes?action=pageAjouterDvd">Ajouter des dvds</a></li>
-                    <li><a href="ControleurClients?action=pageRechercherDvd">Rechercher des dvds</a></li>
-                    <li><a href="ControleurClients?action=pagePanier">Panier</a></li>
-                    <li><a href="ControleurClients?action=deconnexion">Deconnexion</a></li>
-                    <li><a href="Controleur?action=SupprimerClient">Supprimer Client</a></li>
-                    <li><a href="ControleurEmployes?action=pageCommandes">Commandes</a></li>
-                    <li><a href="ControleurEmployes?action=pageLivraisons">Livraisons</a></li>
-                    <li><a href="ControleurEmployes?action=pageEnvoiColis">Envoi Colis</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageAjouterDvd')" >Ajouter des dvds</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageRechercherDvd')" >Rechercher des dvds</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pagePanier')" >Panier</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','deconnexion')" >Deconnexion</a></li>
+                    <li><a href='#' onclick="makePostRequest('Controleur','action','SupprimerClient')" >Supprimer Client</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageCommandes')">Commandes</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageLivraisons')">Livraisons</a></li>
+                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageEnvoiColis')">Envoi Colis</a></li>
                    <%
                } else {
                %>
-                    <li><a href="ControleurClients?action=pageInscription">Inscription</a></li>
-                    <li><a href="ControleurClients?action=pageConnexion">Connexion</a></li>
-                    <li><a href="ControleurEmployes?action=pageConnexionEmploye">Employé</a></li>
-								<div class="clear"></div>
+                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageInscription')">Inscription</a></li>
+                    <li><a  href="#" onclick="makePostRequest('ControleurClients','action','pageConnexion')">Connexion</a></li>
+                    <li><a  href="#" onclick="makePostRequest('ControleurClients','action','pageConnexionEmploye')">Employé</a></li>
+                    
+                    					<div class="clear"></div>
                     <%
                }
             %>

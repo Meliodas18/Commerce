@@ -90,7 +90,7 @@
 
                     <div class="col-md-2">
                         </br></br>
-                        <input type="number" id="<%=dvd.getId()%>" min="0" class="inputbox"  value="<%=quantite%>" name="quantite"/>
+                        <input type="number" id="<%=dvd.getId()%>" min="1" class="inputbox"  value="<%=quantite%>" name="quantite"/>
                     </div>
                     <script>
                                   
