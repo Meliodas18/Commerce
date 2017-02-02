@@ -62,3 +62,7 @@
 .barreDown{
     border-bottom: 1px solid #BEBEBE;
 }
+.overflow{
+    overflow:hidden;
+    text-overflow: ellipsis; 
+}
