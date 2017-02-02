@@ -11,9 +11,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="js/verification.js"></script>
-        <title>Ajout de dvds</title>
+        <title>Gestion des dvds</title>
         <link href="css/mycss.css" rel='stylesheet' type='text/css' />
-        <%@include file="Header/ConnecteClient.jsp" %>
+        <%@include file="Header/ConnecteEmployé.jsp" %>
         <div class="main">
             <div class="shop_top">
                 <div class="container">

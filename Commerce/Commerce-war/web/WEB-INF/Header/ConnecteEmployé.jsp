@@ -72,13 +72,6 @@
                                 <script type="text/javascript" src="js/responsive-nav.js"></script>
                         </div>							
                     </div>
-                    
-	            <div class="header_right">
-	    		<ul class="icon1 sub-icon1 profile_img">
-                            <li><a class="active-icon c1" href="ControleurClients?action=pagePanier"></a></li>
-			</ul>
-		        <div class="clear"></div>
-                    </div>
                 </div>
             </div>
         </div>

@@ -160,8 +160,10 @@
                         <div class="shop_desc">
                             <a href="ControleurClients?action=pageDetails&id=<%=dvd.getId()%>"/>
                                 <img src="<%=path%>" class="img-responsive" alt="" width="120" height="200"/>
-                                </br>
-                                <h4><%=dvd.getTitre()%></h4>
+                                <br/>
+                                <div class="overflow">
+                                    <h4><%=dvd.getTitre()%></h4>
+                                </div>
                                 <% if (dvd.getQuantite() <= 0){
                                     out.println("<h5>En rupture !</h5>");
                                 } else {

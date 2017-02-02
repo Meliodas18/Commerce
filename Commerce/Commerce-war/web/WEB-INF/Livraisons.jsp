@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Livraisons</title>
         <link href="css/mycss.css" rel='stylesheet' type='text/css' />
-        <%@include file="Header/ConnecteClient.jsp" %>
+        <%@include file="Header/ConnecteEmployé.jsp" %>
         <div class="main">
             <div class="shop_top">
                 <div class="container">

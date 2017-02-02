@@ -21,7 +21,13 @@
         </script>
         <title>Mes Commandes</title>
         <link href="css/mycss.css" rel='stylesheet' type='text/css' />
-        <%@include file="Header/ConnecteClient.jsp" %>
+        <%HttpSession sess = request.getSession();
+            if ((String)(sess.getAttribute("mode")) == "client"){%>
+                <%@include file="Header/ConnecteClient.jsp" %>
+        <%} else {%>
+                <%@include file="Header/ConnecteEmployé.jsp" %>
+        <%}
+        %>
         <div class="main">
             <div class="shop_top">
                 <div class="container">
@@ -45,6 +51,7 @@
                         }
                         out.println("</ul>");
                         %>
+                        <br/><br/><br/><br/>
                     </div>
                     <div id="Page2" style="display:none">
                         <p><a href="#" class="a-for-commandes" onclick="return show('Page1', 'Page2','Page3');">En Attente</a>

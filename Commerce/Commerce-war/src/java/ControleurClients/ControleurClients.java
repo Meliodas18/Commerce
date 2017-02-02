@@ -6,7 +6,6 @@
 package ControleurClients;
 
 import Controleur.Controleur;
-import entity.Auteur;
 import entity.Client;
 import entity.Dvd;
 import java.io.IOException;
