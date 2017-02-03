@@ -35,11 +35,11 @@
                         <h2 class="my-line-2">Commandes</h2>
                     </div>
                     <br/><br/><br/><br/><br/>
-                    <div id="Page1">
-                        <p><a href="#" class="a-for-commandes" onclick="return show('Page1', 'Page2','Page3');">En Attente</a>
+                    <p><a href="#" class="a-for-commandes" onclick="return show('Page1', 'Page2','Page3');">En Attente</a>
                            <a href="#" class="a-for-commandes" onclick="return show('Page2', 'Page1','Page3');">En Cours</a>
                            <a href="#" class="a-for-commandes" onclick="return show('Page3', 'Page1','Page2');">Effectuées</a></p>
-                        <br/><br/>
+                    <br/><br/>
+                    <div id="Page1">
                         <% List<Commande> attente = (List<Commande>) request.getAttribute("attente");
                         if (attente.isEmpty()){
                             out.println("<h3> Vous n'avez pas de commandes en attente !</h3><br/><br/><br/>");
@@ -54,10 +54,6 @@
                         <br/><br/><br/><br/>
                     </div>
                     <div id="Page2" style="display:none">
-                        <p><a href="#" class="a-for-commandes" onclick="return show('Page1', 'Page2','Page3');">En Attente</a>
-                           <a href="#" class="a-for-commandes" onclick="return show('Page2', 'Page1','Page3');">En Cours</a>
-                           <a href="#" class="a-for-commandes" onclick="return show('Page3', 'Page1','Page2');">Effectuées</a></p>
-                        <br/><br/>
                         <% List<Commande> cours = (List<Commande>) request.getAttribute("cours");
                         if (cours.isEmpty()){
                             out.println("<h3> Vous n'avez pas de commandes en cours !</h3><br/><br/><br/>");
@@ -71,10 +67,6 @@
                         %>
                     </div>
                     <div id="Page3" style="display:none">
-                        <p><a href="#" class="a-for-commandes" onclick="return show('Page1', 'Page2','Page3');">En Attente</a>
-                           <a href="#" class="a-for-commandes" onclick="return show('Page2', 'Page1','Page3');">En Cours</a>
-                           <a href="#" class="a-for-commandes" onclick="return show('Page3', 'Page1','Page2');">Effectuées</a></p>
-                        <br/><br/>
                         <% List<Commande> effectuee = (List<Commande>) request.getAttribute("effectuee");
                         if (effectuee.isEmpty()){
                             out.println("<h3> Vous n'avez pas de commandes effectuées !</h3><br/><br/><br/>");

@@ -85,14 +85,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <form method="post" ></form>
                         </div>
                         <div class="menu">
-                                  <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
-                                    <ul class="nav" id="nav">
-
-                                        <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageConnexion')">Clients</a></li>
-                                        <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageConnexionEmploye')">Employés</a></li>
-
-                                    </ul>
-                                    <script type="text/javascript" src="js/responsive-nav.js"></script>
+                            <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
+                                <ul class="nav" id="nav">
+                                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageConnexion')">Clients</a></li>
+                                    <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageConnexionEmploye')">Employés</a></li>
+                                </ul>
+                                <script type="text/javascript" src="js/responsive-nav.js"></script>
                         </div>							
                     <div class="clear"></div>
                     </div>
