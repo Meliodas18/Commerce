@@ -6,13 +6,21 @@
 package ControleurClients;
 
 import Controleur.Controleur;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import entity.Client;
+import entity.Commande;
 import entity.Dvd;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import static java.lang.Integer.min;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -25,6 +33,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import session.AuteurFacade;
 import session.ClientFacade;
 import session.CommandeFacade;
@@ -66,7 +76,7 @@ public class ControleurClients extends HttpServlet {
      * @throws java.lang.reflect.InvocationTargetException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+            throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DocumentException {
 
         //Récupération du panier
         Panier panierClient = (Panier) request.getSession().getAttribute("panier");
@@ -156,6 +166,8 @@ public class ControleurClients extends HttpServlet {
             processRequest(request, response);
         } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -173,6 +185,8 @@ public class ControleurClients extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
             Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -225,6 +239,9 @@ public class ControleurClients extends HttpServlet {
     private void pageRechercherDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<Dvd> list = (ArrayList<Dvd>) dvdf.findAll();
         request.setAttribute("listeDvds", list);
+        if (request.getAttribute("setDvd") == null){
+            request.setAttribute("setDvd", new ArrayList<>());
+        }
         getServletContext().getRequestDispatcher("/WEB-INF/RechercheDvd.jsp").forward(request, response);
     }
 
@@ -240,9 +257,6 @@ public class ControleurClients extends HttpServlet {
             request.setAttribute("etat","faux");
             getServletContext().getRequestDispatcher("/WEB-INF/Inscription.jsp").forward(request, response);
         }
-        
-        
-        
     }
 
     private void pageInscription(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -373,18 +387,18 @@ public class ControleurClients extends HttpServlet {
     }
     
     //Affiche les commandes
-    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DocumentException{
         request.setAttribute("attente",commandef.getAttente(clientConnect));
         request.setAttribute("cours",commandef.getCours(clientConnect));
         request.setAttribute("effectuee",commandef.getEffectuee(clientConnect));
         
-        /*List<Commande> attente = commandef.getAttente();
+        List<Commande> attente = commandef.getAttente();
         List<Commande> cours = commandef.getCours();
         List<Commande> effectue = commandef.getEffectuee();
         if(!attente.isEmpty()){
           for(Commande c : attente ){
             Document document = new Document();
-                PdfWriter.getInstance(document, new FileOutputStream("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf"));
+                PdfWriter.getInstance(document, new FileOutputStream("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf"));
 
                 document.open();
                 Paragraph text = new Paragraph();
@@ -400,9 +414,9 @@ public class ControleurClients extends HttpServlet {
                        Dvd dvd = (Dvd) cle;
                        text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
                        text.add(new Paragraph(" "));
-                       Image dvdimage = Image.getInstance(dvd.getImage());
+                       //Image dvdimage = Image.getInstance(dvd.getImage());
                        
-                       text.add(dvdimage);
+                       //text.add(dvdimage);
                        text.add(new Paragraph(" "));
                        text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
                        text.add(new Paragraph(" "));
@@ -430,7 +444,7 @@ public class ControleurClients extends HttpServlet {
         if(!cours.isEmpty()){
           for(Commande c : cours ){
             Document document1 = new Document();
-                PdfWriter.getInstance(document1, new FileOutputStream("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf"));
+                PdfWriter.getInstance(document1, new FileOutputStream("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf"));
 
                 document1.open();
                 Paragraph text = new Paragraph();
@@ -447,11 +461,11 @@ public class ControleurClients extends HttpServlet {
                     while (it.hasNext()){
                        Object cle = it.next(); 
                        Dvd dvd = (Dvd) cle;
-                       Image dvdimage = Image.getInstance(dvd.getImage());
+                       //Image dvdimage = Image.getInstance(dvd.getImage());
                        
                        text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
                        text.add(new Paragraph(" "));
-                       text.add(dvdimage);
+                       //text.add(dvdimage);
                        text.add(new Paragraph(" "));
                        text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
                        text.add(new Paragraph(" "));
@@ -478,12 +492,12 @@ public class ControleurClients extends HttpServlet {
         
         if(!effectue.isEmpty()){
             for(Commande c : effectue ){
-                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf").delete();
-                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf").delete();
+                new File("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf").delete();
+                new File("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf").delete();
                 
             }
         }
-        */
+        
         
         
         
