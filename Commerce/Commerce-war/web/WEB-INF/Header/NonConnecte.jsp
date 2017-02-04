@@ -20,6 +20,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
         <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
         <script src="js/jquery.min.js"></script>
+        <script src="js/verification.js"></script>
         <!--<script src="js/jquery.easydropdown.js"></script>-->
         <!--start slider -->
         <link rel="stylesheet" href="css/fwslider.css" media="all">
