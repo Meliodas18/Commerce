@@ -35,6 +35,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import java.util.Map;
+import java.util.Map.Entry;
 import session.AuteurFacade;
 import session.ClientFacade;
 import session.CommandeFacade;
@@ -63,18 +69,107 @@ public class ControleurClients extends HttpServlet {
 
     private Client clientConnect = new Client();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     * @throws java.lang.NoSuchMethodException
-     * @throws java.lang.IllegalAccessException
-     * @throws java.lang.reflect.InvocationTargetException
-     */
+    private void actualiserPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+        Dvd dvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
+
+            panierClient.addDvd(dvd, 1);
+
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+        response.getWriter().write("<message>" + panierClient.toPay() + "</message>");
+
+    }
+    
+    private void actualiserPanierDecrease(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+        Dvd dvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
+
+           panierClient.removeDvd(dvd, 1);
+
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+        response.getWriter().write("<message>" + panierClient.toPay() + "</message>");
+
+    }
+
+    private void ajouterClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Client tempClient = new Client();
+        tempClient.setEmail(request.getParameter("email"));
+        String[] myParam = {"email"};
+        if (clientf.getId(tempClient, myParam).isEmpty()){
+            request.setAttribute("etat","vrai");
+            clientf.create(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"), request.getParameter("email")));
+            this.connexion(request, response);
+        } else {
+            request.setAttribute("etat","faux");
+            getServletContext().getRequestDispatcher("/WEB-INF/Inscription.jsp").forward(request, response);
+        }
+    }
+
+    private void ajouterPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+        panierClient.addDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))), Integer.parseInt(request.getParameter("quantite")));
+        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
+    }
+
+    private void confirmOrder(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        if (request.getParameter("ok").equals("Annuler")) {
+            panierClient.removeAll();
+        } else {
+            panierClient.confirmOrder(clientConnect);
+            request.getSession().removeAttribute("panier"); //On retire le panier de la request car il n'existe plus
+        }
+        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
+    }
+    private void connexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        String[] parametres = {"email", "motDePasse"};
+        ArrayList<Long> findId = clientf.getId(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"), request.getParameter("email")), parametres);
+        if (findId.isEmpty()) {
+            request.setAttribute("etat","faux");
+            getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
+        } else {
+            request.getSession().setAttribute("mode", "client");
+            clientConnect.setEmail(request.getParameter("email"));
+            clientConnect.setMotDePasse(request.getParameter("passWord"));
+            clientConnect = clientf.find(clientf.getId(clientConnect, parametres).get(0));
+            getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
+        }
+    }
+
+    private void deconnexion(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+        panierClient.removeAll();
+        request.getSession().invalidate();
+        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            processRequest(request, response);
+        } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            processRequest(request, response);
+        } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DocumentException {
 
@@ -150,155 +245,18 @@ public class ControleurClients extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DocumentException ex) {
-            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DocumentException ex) {
-            Logger.getLogger(ControleurClients.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
-    private void ajouterPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
-        panierClient.addDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))), Integer.parseInt(request.getParameter("quantite")));
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
-    }
-
-    private void actualiserPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
-        Dvd dvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
-
-            panierClient.addDvd(dvd, 1);
-        
-
-        response.setContentType("text/xml");
-        response.setHeader("Cache-Control", "no-cache");
-        response.getWriter().write("<message>" + panierClient.toPay() + "</message>");
-
-    }
-    
-    private void actualiserPanierDecrease(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
-        Dvd dvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
-
-           panierClient.removeDvd(dvd, 1);
-        
-
-        response.setContentType("text/xml");
-        response.setHeader("Cache-Control", "no-cache");
-        response.getWriter().write("<message>" + panierClient.toPay() + "</message>");
-
-    }
-
-    private void pagePanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
-        request.setAttribute("panier", panierClient.getDvd());
-        request.setAttribute("toPay", panierClient.toPay());
-        getServletContext().getRequestDispatcher("/WEB-INF/Panier.jsp").forward(request, response);
-    }
-
-    private void pageRechercherDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Dvd> list = (ArrayList<Dvd>) dvdf.findAll();
-        request.setAttribute("listeDvds", list);
-        if (request.getAttribute("setDvd") == null){
-            request.setAttribute("setDvd", new ArrayList<>());
-        }
-        getServletContext().getRequestDispatcher("/WEB-INF/RechercheDvd.jsp").forward(request, response);
-    }
-
-    private void ajouterClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private void forgetPassword(HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException, IOException {
         Client tempClient = new Client();
         tempClient.setEmail(request.getParameter("email"));
-        String[] myParam = {"email"};
-        if (clientf.getId(tempClient, myParam).isEmpty()){
-            request.setAttribute("etat","vrai");
-            clientf.create(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"), request.getParameter("email")));
-            this.connexion(request, response);
-        } else {
-            request.setAttribute("etat","faux");
-            getServletContext().getRequestDispatcher("/WEB-INF/Inscription.jsp").forward(request, response);
+        String[] tempParam = {"email"};
+        if (clientf.getId(tempClient, tempParam).isEmpty()){
+            request.setAttribute("email", "faux");
+            getServletContext().getRequestDispatcher("/WEB-INF/PasswordOublie.jsp").forward(request, response);
+        }else{
+            tempClient = clientf.find(clientf.getId(tempClient, tempParam).get(0));
+            sendEmail(tempClient.getEmail(), "[Projet Jboss EJB] Votre mot de passe", "Bonjour,\nVoici votre mot de passe : " + tempClient.getMotDePasse() + ".\nCordialement,\nL'équipe Projet EJB");
+            pageConnexion(request,response);
         }
-    }
-
-    private void pageInscription(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("etat","vrai");
-        getServletContext().getRequestDispatcher("/WEB-INF/Inscription.jsp").forward(request, response);
-    }
-
-    private void pageConnexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("etat","vrai");
-        getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
-    }
-
-    private void connexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-
-        String[] parametres = {"email", "motDePasse"};
-        ArrayList<Long> findId = clientf.getId(new Client(request.getParameter("nomClient"), request.getParameter("prenomClient"), request.getParameter("passWord"), request.getParameter("email")), parametres);
-        if (findId.isEmpty()) {
-            request.setAttribute("etat","faux");
-            getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
-        } else {
-            request.getSession().setAttribute("mode", "client");
-            clientConnect.setEmail(request.getParameter("email"));
-            clientConnect.setMotDePasse(request.getParameter("passWord"));
-            clientConnect = clientf.find(clientf.getId(clientConnect, parametres).get(0));
-            getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
-        }
-    }
-
-    private void confirmOrder(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        if (request.getParameter("ok").equals("Annuler")) {
-            panierClient.removeAll();
-        } else {
-            panierClient.confirmOrder(clientConnect);
-            request.getSession().removeAttribute("panier"); //On retire le panier de la request car il n'existe plus
-        }
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
-    }
-
-    private void deconnexion(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
-        panierClient.removeAll();
-        request.getSession().invalidate();
-        getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
     
     //Fonction de recherche
@@ -327,6 +285,298 @@ public class ControleurClients extends HttpServlet {
         }
         request.setAttribute("setDvd", arrayDvd);
         pageRechercherDvd(request, response);
+    }
+
+    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DocumentException{
+        request.setAttribute("attente",commandef.getAttente(clientConnect));
+        request.setAttribute("cours",commandef.getCours(clientConnect));
+        request.setAttribute("effectuee",commandef.getEffectuee(clientConnect));
+        
+        List<Commande> attente = commandef.getAttente();
+        List<Commande> cours = commandef.getCours();
+        List<Commande> effectue = commandef.getEffectuee();
+        if(!attente.isEmpty()){
+            for(Commande c : attente ){
+                Document document1 = new Document();
+                PdfWriter.getInstance(document1, new FileOutputStream("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf"));
+
+                document1.open();
+                Paragraph text = new Paragraph();
+                text.add(new Paragraph("Grenoble Dvd", new Font(Font.FontFamily.TIMES_ROMAN,24,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("Facture", new Font(Font.FontFamily.TIMES_ROMAN,24,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("En attente : Commande n°"+c.getId().toString(), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                
+                document1.add(text);
+                
+                Paragraph p = new Paragraph(c.getDate(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC));
+                p.setAlignment(Element.ALIGN_RIGHT);
+                p.add(new Paragraph(" "));
+                p.add(new Paragraph(" "));
+                document1.add(p);
+               
+                Paragraph text1= new Paragraph();
+                text1.add(new Paragraph("Cher " +c.getClient().getNom() + " " +c.getClient().getPrenom(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                text1.add(new Paragraph("Email: "+c.getClient().getEmail(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                
+                document1.add(text1);
+                
+                PdfPTable table = new PdfPTable(3);
+                //On créer l'objet cellule.
+                PdfPCell cell;
+                        
+                cell = new PdfPCell(new Phrase("Facture"));
+                cell.setColspan(3);
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Nom du Dvd"));
+                cell.setRowspan(1);
+                table.addCell(cell);
+                //contenu du tableau.
+                table.addCell("Quantité");
+                table.addCell("Prix");
+                
+                for (Entry<Dvd, Integer> entry : c.getDvds().entrySet()){
+                    
+                    Dvd dvd = (Dvd) entry.getKey();
+                    Object value = entry.getValue();
+                    //Image dvdimage = Image.getInstance(dvd.getImage());
+                    //On créer un objet table dans lequel on intialise ça taille.
+                    
+                    cell = new PdfPCell(new Phrase(dvd.getTitre()));
+                    cell.setRowspan(1);
+                    table.addCell(cell);
+                    
+                    table.addCell(String.valueOf(value));
+                    table.addCell(String.valueOf(dvd.getPrix()));
+                    
+                }
+                
+                cell = new PdfPCell(new Phrase("Total: " + String.valueOf(c.getMontant())));
+                cell.setColspan(3);
+                
+                table.addCell(cell);
+                    
+                document1.add(table);
+                Paragraph p1 = new Paragraph();
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" Grenoble Dvd: 12 avenue des ensimag 38000 Grenoble", new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                p1.setAlignment(Element.ALIGN_RIGHT);
+                document1.add(p1);
+                document1.close();
+            }  
+        }
+        
+        if(!cours.isEmpty()){
+            for(Commande c : cours ){
+                Document document1 = new Document();
+                PdfWriter.getInstance(document1, new FileOutputStream("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf"));
+
+                document1.open();
+                Paragraph text = new Paragraph();
+                text.add(new Paragraph("Grenoble Dvd", new Font(Font.FontFamily.TIMES_ROMAN,24,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("Facture", new Font(Font.FontFamily.TIMES_ROMAN,24,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("En cours : Commande n°"+c.getId().toString(), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                
+                document1.add(text);
+                
+                Paragraph p = new Paragraph(c.getDate(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC));
+                p.setAlignment(Element.ALIGN_RIGHT);
+                p.add(new Paragraph(" "));
+                p.add(new Paragraph(" "));
+                document1.add(p);
+               
+                Paragraph text1= new Paragraph();
+                text1.add(new Paragraph("Cher "+c.getClient().getNom() + " " +c.getClient().getPrenom(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                text1.add(new Paragraph("Email: "+c.getClient().getEmail(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                
+                document1.add(text1);
+                
+                PdfPTable table = new PdfPTable(3);
+                //On créer l'objet cellule.
+                PdfPCell cell;
+                        
+                cell = new PdfPCell(new Phrase("Facture"));
+                cell.setColspan(3);
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Nom du Dvd"));
+                cell.setRowspan(1);
+                table.addCell(cell);
+                //contenu du tableau.
+                table.addCell("Quantité");
+                table.addCell("Prix");
+                
+                for (Entry<Dvd, Integer> entry : c.getDvds().entrySet()){
+                    
+                    Dvd dvd = (Dvd) entry.getKey();
+                    Object value = entry.getValue();
+                    //Image dvdimage = Image.getInstance(dvd.getImage());
+                    //On créer un objet table dans lequel on intialise ça taille.
+                    
+                    cell = new PdfPCell(new Phrase(dvd.getTitre()));
+                    cell.setRowspan(1);
+                    table.addCell(cell);
+                    
+                    table.addCell(String.valueOf(value));
+                    table.addCell(String.valueOf(dvd.getPrix()));
+                    
+                }
+                
+                cell = new PdfPCell(new Phrase("Total: " + String.valueOf(c.getMontant())));
+                cell.setColspan(3);
+                
+                table.addCell(cell);
+                    
+                document1.add(table);
+                Paragraph p1 = new Paragraph();
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" Grenoble Dvd: 12 avenue des ensimag 38000 Grenoble", new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                p1.setAlignment(Element.ALIGN_RIGHT);
+                document1.add(p1);
+                document1.close();
+            }  
+        }
+        
+        if(!effectue.isEmpty()){
+            for(Commande c : effectue ){
+                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf").delete();
+                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf").delete();
+                
+                
+                        Document document1 = new Document();
+                PdfWriter.getInstance(document1, new FileOutputStream("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/effectue"+c.getId().toString()+".pdf"));
+
+                document1.open();
+                Paragraph text = new Paragraph();
+                text.add(new Paragraph("Grenoble Dvd", new Font(Font.FontFamily.TIMES_ROMAN,24,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("Facture", new Font(Font.FontFamily.TIMES_ROMAN,24,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph("Effectuée : Commande n°"+c.getId().toString(), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD))); 
+                text.add(new Paragraph(" "));
+                text.add(new Paragraph(" "));
+                
+                document1.add(text);
+                
+                Paragraph p = new Paragraph(c.getDate(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC));
+                p.setAlignment(Element.ALIGN_RIGHT);
+                p.add(new Paragraph(" "));
+                p.add(new Paragraph(" "));
+                document1.add(p);
+               
+                Paragraph text1= new Paragraph();
+                text1.add(new Paragraph("Cher"+c.getClient().getNom() + " " +c.getClient().getPrenom(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                text1.add(new Paragraph("Email: "+c.getClient().getEmail(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                text1.add(new Paragraph(" "));
+                
+                document1.add(text1);
+                
+                PdfPTable table = new PdfPTable(3);
+                //On créer l'objet cellule.
+                PdfPCell cell;
+                        
+                cell = new PdfPCell(new Phrase("Facture"));
+                cell.setColspan(3);
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Nom du Dvd"));
+                cell.setRowspan(1);
+                table.addCell(cell);
+                //contenu du tableau.
+                table.addCell("Quantité");
+                table.addCell("Prix");
+                
+                for (Entry<Dvd, Integer> entry : c.getDvds().entrySet()){
+                    
+                    Dvd dvd = (Dvd) entry.getKey();
+                    Object value = entry.getValue();
+                    //Image dvdimage = Image.getInstance(dvd.getImage());
+                    //On créer un objet table dans lequel on intialise ça taille.
+                    
+                    cell = new PdfPCell(new Phrase(dvd.getTitre()));
+                    cell.setRowspan(1);
+                    table.addCell(cell);
+                    
+                    table.addCell(String.valueOf(value));
+                    table.addCell(String.valueOf(dvd.getPrix()));
+                    
+                }
+                
+                cell = new PdfPCell(new Phrase("Total: " + String.valueOf(c.getMontant())));
+                cell.setColspan(3);
+                
+                table.addCell(cell);
+                    
+                document1.add(table);
+                
+                Paragraph p1 = new Paragraph();
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" "));
+                p1.add(new Paragraph(" Grenoble Dvd: 12 avenue des ensimag 38000 Grenoble", new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                p1.setAlignment(Element.ALIGN_RIGHT);
+                document1.add(p1);
+                document1.close();
+            }
+            
+        }
+        
+        getServletContext().getRequestDispatcher("/WEB-INF/Commande.jsp").forward(request, response);
+    }
+
+    private void pageConnexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("etat","vrai");
+        getServletContext().getRequestDispatcher("/WEB-INF/Connexion.jsp").forward(request, response);
     }
 
     private void pageDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -362,147 +612,34 @@ public class ControleurClients extends HttpServlet {
         return dvds;
     }
 
-    private void removeCart(HttpServletRequest request, HttpServletResponse response, Panier panier) throws ServletException, IOException {
-        panier.removeDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))));
-        this.pagePanier(request, response, panier);
-    }
-
     private void pageForgetPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("email","vrai");
         getServletContext().getRequestDispatcher("/WEB-INF/PasswordOublie.jsp").forward(request, response);
     }
 
-    private void forgetPassword(HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException, IOException {
-        Client tempClient = new Client();
-        tempClient.setEmail(request.getParameter("email"));
-        String[] tempParam = {"email"};
-        if (clientf.getId(tempClient, tempParam).isEmpty()){
-            request.setAttribute("email", "faux");
-            getServletContext().getRequestDispatcher("/WEB-INF/PasswordOublie.jsp").forward(request, response);
-        }else{
-            tempClient = clientf.find(clientf.getId(tempClient, tempParam).get(0));
-            sendEmail(tempClient.getEmail(), "[Projet Jboss EJB] Votre mot de passe", "Bonjour,\nVoici votre mot de passe : " + tempClient.getMotDePasse() + ".\nCordialement,\nL'équipe Projet EJB");
-            pageConnexion(request,response);
-        }
+    private void pageInscription(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("etat","vrai");
+        getServletContext().getRequestDispatcher("/WEB-INF/Inscription.jsp").forward(request, response);
     }
-    
-    //Affiche les commandes
-    private void pageCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DocumentException{
-        request.setAttribute("attente",commandef.getAttente(clientConnect));
-        request.setAttribute("cours",commandef.getCours(clientConnect));
-        request.setAttribute("effectuee",commandef.getEffectuee(clientConnect));
-        
-        List<Commande> attente = commandef.getAttente();
-        List<Commande> cours = commandef.getCours();
-        List<Commande> effectue = commandef.getEffectuee();
-        if(!attente.isEmpty()){
-          for(Commande c : attente ){
-            Document document = new Document();
-                PdfWriter.getInstance(document, new FileOutputStream("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf"));
 
-                document.open();
-                Paragraph text = new Paragraph();
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph("En attente : Commande n°"+c.getId().toString(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD))); 
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph(" "));
-                Set listKeys=c.getDvds().keySet();
-                Iterator it = listKeys.iterator();
-                    while (it.hasNext()){
-                       Object cle = it.next(); 
-                       Dvd dvd = (Dvd) cle;
-                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
-                       text.add(new Paragraph(" "));
-                       //Image dvdimage = Image.getInstance(dvd.getImage());
-                       
-                       //text.add(dvdimage);
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Quantité: "+dvd.getQuantite(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Description: "+dvd.getDescription(), new Font(Font.FontFamily.TIMES_ROMAN,12,Font.ITALIC)));
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph(" "));
-                    }
-                    
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph(" "));
-                
-                text.add(new Paragraph(c.getDate(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
-                
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant()), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
-                document.add(text);
+    private void pagePanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+        request.setAttribute("panier", panierClient.getDvd());
+        request.setAttribute("toPay", panierClient.toPay());
+        getServletContext().getRequestDispatcher("/WEB-INF/Panier.jsp").forward(request, response);
+    }
 
-                document.close();
-        }  
+    private void pageRechercherDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ArrayList<Dvd> list = (ArrayList<Dvd>) dvdf.findAll();
+        request.setAttribute("listeDvds", list);
+        if (request.getAttribute("setDvd") == null){
+            request.setAttribute("setDvd", new ArrayList<>());
         }
-        
-        if(!cours.isEmpty()){
-          for(Commande c : cours ){
-            Document document1 = new Document();
-                PdfWriter.getInstance(document1, new FileOutputStream("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf"));
+        getServletContext().getRequestDispatcher("/WEB-INF/RechercheDvd.jsp").forward(request, response);
+    }
 
-                document1.open();
-                Paragraph text = new Paragraph();
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph("En cours : Commande n°"+c.getId().toString(), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD))); 
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph(" "));
-                
-                text.add(new Paragraph(" "));
-                
-                Set listKeys=c.getDvds().keySet();
-                Iterator it = listKeys.iterator();
-                    while (it.hasNext()){
-                       Object cle = it.next(); 
-                       Dvd dvd = (Dvd) cle;
-                       //Image dvdimage = Image.getInstance(dvd.getImage());
-                       
-                       text.add(new Paragraph("Titre du Dvd: "+dvd.getTitre(),new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
-                       text.add(new Paragraph(" "));
-                       //text.add(dvdimage);
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Date de Sortie: "+dvd.getDateSortie(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Quantité: "+dvd.getQuantite(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.BOLD)));
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph("Description: "+dvd.getDescription(), new Font(Font.FontFamily.TIMES_ROMAN,12,Font.ITALIC)));
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph(" "));
-                       text.add(new Paragraph(" "));
-                    }
-                    
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph(" "));
-                
-                text.add(new Paragraph(c.getDate(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
-                
-                text.add(new Paragraph(" "));
-                text.add(new Paragraph("Prix : "+String.valueOf(c.getMontant()), new Font(Font.FontFamily.TIMES_ROMAN,18,Font.BOLD)));
-                document1.add(text);
-
-                document1.close();
-        }  
-        }
-        
-        if(!effectue.isEmpty()){
-            for(Commande c : effectue ){
-                new File("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf").delete();
-                new File("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf").delete();
-                
-            }
-        }
-        
-        
-        
-        
-        
-        getServletContext().getRequestDispatcher("/WEB-INF/Commande.jsp").forward(request, response);
+    private void removeCart(HttpServletRequest request, HttpServletResponse response, Panier panier) throws ServletException, IOException {
+        panier.removeDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))));
+        this.pagePanier(request, response, panier);
     }
 
 }

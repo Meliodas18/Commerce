@@ -73,7 +73,7 @@
                         }else {
                             out.println("<ul>");
                             for (Commande c : effectuee){%>
-                                <li><p>Commande n°<%=c.getId()%>, montant de <%=c.getMontant()%> €, passée le <%=c.getDate().substring(0,11)%> à <%=c.getDate().substring(11)%></p></li>
+                            <li><p><a href="pdf/effectue<%=c.getId()%>.pdf">Commande n°<%=c.getId()%></a>, montant de <%=c.getMontant()%> €, passée le <%=c.getDate().substring(0,11)%> à <%=c.getDate().substring(11)%></p></li>
                             <%}
                         }
                         out.println("</ul>");
