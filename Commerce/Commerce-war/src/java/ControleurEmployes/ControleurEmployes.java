@@ -142,6 +142,8 @@ public class ControleurEmployes extends HttpServlet {
             case "envoiColis":
                 envoiColis(request,response);
                 break;
+            case "rajouterDvd":
+                rajouter(request,response);
             default:
                 break;
         }        
@@ -211,6 +213,9 @@ public class ControleurEmployes extends HttpServlet {
     
     private void pageAjouterDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Categorie> tempList = categorief.findAll();
+        if (request.getAttribute("etat") == null){
+            request.setAttribute("etat","vrai");
+        }
         request.setAttribute("Cat",tempList);
         request.setAttribute("prix","vrai");
         getServletContext().getRequestDispatcher("/WEB-INF/AjoutDvds.jsp").forward(request, response);
@@ -500,6 +505,19 @@ public class ControleurEmployes extends HttpServlet {
     private void pageEnvoiColis(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("etat", "possible");
         getServletContext().getRequestDispatcher("/WEB-INF/EnvoiColis.jsp").forward(request, response);
+    }
+
+    private void rajouter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Dvd temp = dvdf.find(Long.valueOf(request.getParameter("id")));
+        if (temp == null){
+            request.setAttribute("etat","faux");
+        } else {
+            int ti = Integer.parseInt(request.getParameter("quantite"));
+            if(!(temp.getQuantite() > ti)){
+                dvdf.increaseQuantity(ti, temp);
+            }
+        }
+        this.pageAjouterDvd(request, response);
     }
     
 }

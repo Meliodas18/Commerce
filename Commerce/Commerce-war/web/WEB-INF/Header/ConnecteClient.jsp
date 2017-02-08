@@ -16,7 +16,6 @@
         <link rel="stylesheet" href="css/fwslider.css" media="all">
         <script src="js/jquery-ui.min.js"></script>
         <script src="js/fwslider.js"></script>
-        <script src="js/verification.js"></script>
         <!--end slider -->
         <script type="text/javascript">
                 $(document).ready(function() {

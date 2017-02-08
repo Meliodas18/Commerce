@@ -20,7 +20,7 @@
                         <h2 class="my-line-2">Livraisons</h2>
                     </div>
                     <br/><br/><br/><br/><br/></br>
-                    <form method="POST" action="ControleurEmployes" onsubmit="return verifFormColi(this)">
+                    <form method="POST" action="ControleurEmployes" onsubmit="return verifFormDvd(this)">
                         <input type="hidden" name="action" value="livraisons"/>
                         <%if (((String)request.getAttribute("etat")).equals("impossible")){
                         out.println("<font color=\"red\">Cette sous-commande ne peut-être envoyée : elle est dans l'état \"Reçue\" !</font>");    

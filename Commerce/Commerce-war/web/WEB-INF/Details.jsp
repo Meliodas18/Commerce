@@ -16,7 +16,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Details</title>
-        <%@include file="Header/ConnecteClient.jsp" %>
+        <%HttpSession sess = request.getSession();
+            if ((String)(sess.getAttribute("mode")) == "client"){%>
+                <%@include file="Header/ConnecteClient.jsp" %>
+        <%} else {%>
+                <%@include file="Header/NonConnecte.jsp" %>
+        <%}
+        %>
         <link href="css/mycss.css" rel='stylesheet' type='text/css' />
         <% Dvd dvd = (Dvd)request.getAttribute("dvd");
            Set<Dvd> set = (Set<Dvd>)request.getAttribute("set");
@@ -76,27 +82,7 @@
                     <div class="desc">
 			<h4>Description</h4><br/>
 			<p><%=dvd.getDescription()%></p>
-                    </div>
-                    <div class="row"><br/>
-                        <h4 class="m_11">Films qui peuvent vous intéresser !</h4><br/>
-                        <% for (Dvd myDvd : set){%>
-                        <div class="col-md-3 shop_box">
-                            <a href="ControleurClients?action=pageDetails&id=<%=myDvd.getId()%>" class="my-class-for-a">
-                                <img src="images/pic1.jpg" class="img-responsive" alt=""/>
-                                <div class="shop_desc">
-                                    <h3><%=myDvd.getTitre()%></h3>
-                                    <% if (myDvd.getQuantite() <= 0){
-                                        out.println("<h5>En rupture !</h5>");
-                                    } else {
-                                        out.println("<h5>En stock !</h5>");
-                                    }%>
-                                    <h5><%=myDvd.getPrix()%> €</h5><br>
-                                    <div class="clear"> </div>
-                                </div>
-                            </a>
-                        </div> 
-                        <%}%>        
-                    </div>	
+                    </div> 
                 </div>
             </div>
 	</div>

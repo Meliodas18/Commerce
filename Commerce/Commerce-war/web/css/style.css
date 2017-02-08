@@ -1720,6 +1720,23 @@ h4.title {
 .button1 input[type="submit"]:hover, input[type="reset"]:hover {
 	background: #555;
 }
+.button2 input[type="submit"], input[type="reset"] {
+        margin-left : 500px;
+        margin-top : -15px;
+	background: #000;
+	border: 1px solid white;
+	color: #FFF;
+        padding: 10px 20px;
+	cursor: pointer;
+	float: right;
+	font-family: 'Open Sans', sans-serif;
+	outline: none;
+	font-size: 1em;
+        
+}
+.button2 input[type="submit"]:hover, input[type="reset"]:hover {
+	background: #555;
+}
 #login-form label {
 	color: #777;
 	line-height: 2.8em;
@@ -1766,6 +1783,10 @@ fieldset.input input[type="submit"]:hover {
 	color:#00BFF0;
 }
 .button1 {
+	float: left;
+	margin-top: 2%;
+}
+.button2 {
 	float: left;
 	margin-top: 2%;
 }

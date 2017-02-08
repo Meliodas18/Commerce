@@ -7,7 +7,6 @@ package ControleurClients;
 
 import Controleur.Controleur;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import entity.Client;
@@ -20,7 +19,6 @@ import static java.lang.Integer.min;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -39,9 +37,11 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import java.util.Map;
+import entity.Categorie;
 import java.util.Map.Entry;
+import javax.servlet.http.HttpSession;
 import session.AuteurFacade;
+import session.CategorieFacade;
 import session.ClientFacade;
 import session.CommandeFacade;
 import session.DvdFacade;
@@ -64,6 +64,9 @@ public class ControleurClients extends HttpServlet {
     @EJB
     private DvdFacade dvdf;
     
+    @EJB 
+    private CategorieFacade categorief;
+    
     @EJB
     private CommandeFacade commandef;
 
@@ -72,7 +75,7 @@ public class ControleurClients extends HttpServlet {
     private void actualiserPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
         Dvd dvd = dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id"))));
 
-            panierClient.addDvd(dvd, 1);
+        panierClient.addDvd(dvd, 1);
 
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
@@ -105,7 +108,11 @@ public class ControleurClients extends HttpServlet {
         }
     }
 
-    private void ajouterPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException {
+    private void ajouterPanier(HttpServletRequest request, HttpServletResponse response, Panier panierClient) throws ServletException, IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        HttpSession sess = request.getSession();
+        if ((String)(sess.getAttribute("mode")) != "client"){
+            pageConnexion(request,response);
+        }
         panierClient.addDvd(dvdf.find(Integer.toUnsignedLong(Integer.parseInt(request.getParameter("id")))), Integer.parseInt(request.getParameter("quantite")));
         getServletContext().getRequestDispatcher("/WEB-INF/Accueil.jsp").forward(request, response);
     }
@@ -281,6 +288,22 @@ public class ControleurClients extends HttpServlet {
             if (!temp1.equals("") && !dvd.getRealisateur().getPrenom().equals(temp1)){
                 continue;
             }
+            temp1 = request.getParameter("auteurN");
+            if (!temp1.equals("") && !dvd.getAuteur().getNom().equals(temp1)){
+                continue;
+            }
+            temp1 = request.getParameter("auteurP");
+            if (!temp1.equals("") && !dvd.getAuteur().getPrenom().equals(temp1)){
+                continue;
+            }
+            temp1 = request.getParameter("editeur");
+            if (!temp1.equals("") && !dvd.getEditeur().getNom().equals(temp1)){
+                continue;
+            }
+            temp1 = request.getParameter("categorie");
+            if (!temp1.equals("") && !dvd.getCategories().getType().equals(temp1)){
+                continue;
+            }
             arrayDvd.add(dvd);
         }
         request.setAttribute("setDvd", arrayDvd);
@@ -325,7 +348,7 @@ public class ControleurClients extends HttpServlet {
                 document1.add(p);
                
                 Paragraph text1= new Paragraph();
-                text1.add(new Paragraph("Cher " +c.getClient().getNom() + " " +c.getClient().getPrenom(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                text1.add(new Paragraph("Mr " + c.getClient().getNom().substring(0,1).toUpperCase() + c.getClient().getNom().substring(1) + " " + c.getClient().getPrenom().substring(0,1).toUpperCase() + c.getClient().getPrenom().substring(1), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
                 text1.add(new Paragraph("Email: "+c.getClient().getEmail(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
                 
                 text1.add(new Paragraph(" "));
@@ -367,7 +390,7 @@ public class ControleurClients extends HttpServlet {
                     
                 }
                 
-                cell = new PdfPCell(new Phrase("Total: " + String.valueOf(c.getMontant())));
+                cell = new PdfPCell(new Phrase("Total: " + String.valueOf(c.getMontant()) + " €"));
                 cell.setColspan(3);
                 
                 table.addCell(cell);
@@ -415,7 +438,7 @@ public class ControleurClients extends HttpServlet {
                 document1.add(p);
                
                 Paragraph text1= new Paragraph();
-                text1.add(new Paragraph("Cher "+c.getClient().getNom() + " " +c.getClient().getPrenom(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                text1.add(new Paragraph("Mr " + c.getClient().getNom().substring(0,1).toUpperCase() + c.getClient().getNom().substring(1) + " " + c.getClient().getPrenom().substring(0,1).toUpperCase() + c.getClient().getPrenom().substring(1), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
                 text1.add(new Paragraph("Email: "+c.getClient().getEmail(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
                 
                 text1.add(new Paragraph(" "));
@@ -457,7 +480,7 @@ public class ControleurClients extends HttpServlet {
                     
                 }
                 
-                cell = new PdfPCell(new Phrase("Total: " + String.valueOf(c.getMontant())));
+                cell = new PdfPCell(new Phrase("Total : " + String.valueOf(c.getMontant()) + " €"));
                 cell.setColspan(3);
                 
                 table.addCell(cell);
@@ -477,8 +500,8 @@ public class ControleurClients extends HttpServlet {
         
         if(!effectue.isEmpty()){
             for(Commande c : effectue ){
-                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf").delete();
-                new File("/home/huang/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf").delete();
+                new File("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/attente"+c.getId().toString()+".pdf").delete();
+                new File("/home/aymeric/Commerce/Commerce/Commerce-war/web/pdf/cours"+c.getId().toString()+".pdf").delete();
                 
                 
                         Document document1 = new Document();
@@ -509,7 +532,7 @@ public class ControleurClients extends HttpServlet {
                 document1.add(p);
                
                 Paragraph text1= new Paragraph();
-                text1.add(new Paragraph("Cher"+c.getClient().getNom() + " " +c.getClient().getPrenom(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
+                text1.add(new Paragraph("Mr " + c.getClient().getNom().substring(0,1).toUpperCase() + c.getClient().getNom().substring(1) + " " + c.getClient().getPrenom().substring(0,1).toUpperCase() + c.getClient().getPrenom().substring(1), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
                 text1.add(new Paragraph("Email: "+c.getClient().getEmail(), new Font(Font.FontFamily.TIMES_ROMAN,14,Font.ITALIC)));
                 
                 text1.add(new Paragraph(" "));
@@ -551,7 +574,7 @@ public class ControleurClients extends HttpServlet {
                     
                 }
                 
-                cell = new PdfPCell(new Phrase("Total: " + String.valueOf(c.getMontant())));
+                cell = new PdfPCell(new Phrase("Total : " + String.valueOf(c.getMontant()) + " €"));
                 cell.setColspan(3);
                 
                 table.addCell(cell);
@@ -631,6 +654,8 @@ public class ControleurClients extends HttpServlet {
     private void pageRechercherDvd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ArrayList<Dvd> list = (ArrayList<Dvd>) dvdf.findAll();
         request.setAttribute("listeDvds", list);
+        List<Categorie> tempList = categorief.findAll();
+        request.setAttribute("Cat",tempList);
         if (request.getAttribute("setDvd") == null){
             request.setAttribute("setDvd", new ArrayList<>());
         }

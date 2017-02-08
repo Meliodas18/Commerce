@@ -4,6 +4,7 @@
     Author     : aymeric
 --%>
 
+<%@page import="entity.Categorie"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.Set"%>
@@ -31,7 +32,13 @@
                 return false;
             }
         </script>
-        <%@include file="Header/ConnecteClient.jsp" %>
+        <%HttpSession sess = request.getSession();
+            if ((String)(sess.getAttribute("mode")) == "client"){%>
+                <%@include file="Header/ConnecteClient.jsp" %>
+        <%} else {%>
+                <%@include file="Header/NonConnecte.jsp" %>
+        <%}
+        %>
         <div class="main">
             <div class="shop_top">
                 <div class="container">
@@ -49,32 +56,43 @@
                             <input type="hidden" name="action" value="interactiveResearch"/>
                             <div id="pp2" class="to">
                                 <h3 class="h3-for-recherche">Entrez l'auteur : </h3>
-                                <div class="col-md-4">
-                                    <input type="text" name="auteurP"/>
+                                <div class="col-md-6">
+                                    <input type="text" name="auteurP" value="Prénom" onclick="this.value='';"/>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" name="auteurN"/>
+                                <div class="col-md-6">
+                                    <input type="text" name="auteurN" value="Nom" onclick="this.value='';"/>
                                 </div>
                             </div>
                             <div id="pp4" class="to">
-                                <h3 class="h3-for-recherche">Entrez le réalisateur : </h3><div class="col-md-4">
-                                    <input type="text" name="realisateurP"/>
+                                <h3 class="h3-for-recherche">Entrez le réalisateur : </h3><div class="col-md-6">
+                                    <input type="text" name="realisateurP" value="Prénom" onclick="this.value='';"/>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" name="realisateurN"/>
+                                <div class="col-md-6">
+                                    <input type="text" name="realisateurN" value="Nom" onclick="this.value='';"/>
                                 </div>
                             </div>
-                            <div id="pp6" class="to">
-                                <h3 class="h3-for-recherche">Choisissez la catégorie : </h3><input type="text" name="categories"/><br/>
+                            <div class="col-md-6">
+                                <div class="box-info-product1">
+                                    <ul class="prosuct-qty">
+                                        <h3 class="h3-for-recherche">Choisissez la catégorie : </h3>
+                                        <select name="categorie">
+                                            <%List<Categorie> myList = (List<Categorie>)request.getAttribute("Cat");
+                                            for (Categorie c : myList){
+                                                out.println("<option>" + c.getType() + "</option>");
+                                            }
+                                            %>
+                                        </select>
+                                    </ul>
+                                </div>
                             </div>
                             <div id="pp8" class="to">
-                                <h3 class="h3-for-recherche">Entrez les éditeurs: </h3><input type="text" name="editeur"/><br/>
+                                <h3 class="h3-for-recherche">Entrez l' éditeur: </h3><input type="text" name="editeur" value="Nom" onclick="this.value='';"/><br/>
                             </div>
                             <div id="pp10" class="to">
-                                <h3 class="h3-for-recherche">Entrez le titre : </h3><input type="text" name="titre"/><br/>
+                                <h3 class="h3-for-recherche">Entrez le titre : </h3><input type="text" name="titre" value="Titre" onclick="this.value='';"/><br/>
                             </div>
                             <br/><br/><br/><br/>
-                            <div class="button1">
+                            <div class="button2">
                                 <input type="submit" value="Rechercher">
                             </div>
                             <br/><br/><br/><br/><br/><br/><br/><br/>

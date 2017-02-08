@@ -20,7 +20,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
         <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
         <script src="js/jquery.min.js"></script>
-        <script src="js/verification.js"></script>
         <!--<script src="js/jquery.easydropdown.js"></script>-->
         <!--start slider -->
         <link rel="stylesheet" href="css/fwslider.css" media="all">
@@ -88,6 +87,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="menu">
                             <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
                                 <ul class="nav" id="nav">
+                                    <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageRechercherDvd')" >Rechercher des dvds</a></li>
                                     <li><a href='#' onclick="makePostRequest('ControleurClients','action','pageConnexion')">Clients</a></li>
                                     <li><a href='#' onclick="makePostRequest('ControleurEmployes','action','pageConnexionEmploye')">Employés</a></li>
                                 </ul>
